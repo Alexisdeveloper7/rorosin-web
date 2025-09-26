@@ -10,7 +10,7 @@ export default function Home() {
       <HeaderFlotante />
 
       {/* Hero */}
-      <div id="inicio" className="relative w-full h-[108vh] overflow-hidden">
+      <div id="inicio" className="relative w-full h-[100vh] overflow-hidden">
         <img
           src="/images/heropc.png"
           alt="Hero"
