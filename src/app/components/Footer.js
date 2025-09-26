@@ -4,12 +4,12 @@ import { FaWhatsapp, FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from "react-icons/
 export default function Footer() {
   return (
     <footer className="bg-gray-800 text-white py-10">
-      <div className="container mx-auto px-5 flex flex-col md:flex-row justify-between items-start md:items-center">
+      <div className="border-t-1 border-gray-400 container mx-auto px-5 flex flex-col md:flex-row justify-between items-start md:items-center">
         {/* Logo y descripción */}
         
 
         {/* Contacto */}
-        <div className="mb-6 md:mb-0">
+        <div className="mt-5 mb-6 md:mb-0">
           <h2 className="font-bold mb-2">Contacto</h2>
           <ul>
             <li className="flex items-center gap-2 mb-1">

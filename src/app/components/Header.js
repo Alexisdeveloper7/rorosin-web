@@ -27,7 +27,7 @@ export default function HeaderFlotante() {
   const scrollToSection = (id) => {
     const element = document.getElementById(id);
     if (element) {
-      const yOffset = -94; // offset para header flotante
+      const yOffset = -111; // offset para header flotante
       const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
       window.scrollTo({ top: y, behavior: "smooth" });
     }
