@@ -18,29 +18,33 @@ export default function Home() {
         />
 
         {/* Cuadro centrado sobre el hero */}
-        <div className="absolute  inset-0 flex justify-center items-center">
-          <div className=" border-2 border-gray-500   backdrop-blur bg-white/1 mx-5 backdrop-blur- p-2 rounded-4xl text-center max-w-md sm:max-w-xl sm:p-8 -translate-y-">
-            <h1 className="py-2 bg-blue-600 backdrop-blur rounded-full text-2xl sm:text-4xl font-bold text-white p-1 mb-2">
-              Rodillos Rodamientos y Soluciones Industriales
-            </h1>
-            <p className="text-lg text-white text-base sm:text-lg mb-4">
-              Somos una empresa dedicada a ofrecer productos industriales de alta calidad, como rodamientos, cadenas, poleas y soluciones personalizadas para tus proyectos.
-            </p>
-            <button
-              onClick={() => {
-                const element = document.getElementById("productos");
-                if (element) {
-                  const yOffset = -111;
-                  const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-                  window.scrollTo({ top: y, behavior: "smooth" });
-                }
-              }}
-              className="bg-blue-600/80 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
-            >
-              Click aquí para ver nuestros productos ↓
-            </button>
-          </div>
-        </div>
+{/* Cuadro centrado sobre el hero */}
+<div className="absolute inset-0 flex justify-center items-center">
+  <div className="border-2 border-gray-500 backdrop-blur bg-white/10 rounded-4xl text-center max-w-xs p-2 translate-y-">
+    <h1 className="bg-blue-600 backdrop-blur rounded-full text-xl font-bold text-white py-1 mb-1">
+      Rodillos Rodamientos y Soluciones Industriales
+    </h1>
+    <p className="text-sm text-white mb-2">
+      Rodillos, rodamientos y soluciones industriales para todo tipo de aplicaciones. Calidad, precisión y durabilidad en cada componente para tus proyectos y maquinarias.
+    </p>
+    <button
+      onClick={() => {
+        const element = document.getElementById("productos");
+        if (element) {
+          const yOffset = -111;
+          const y =
+            element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+          window.scrollTo({ top: y, behavior: "smooth" });
+        }
+      }}
+      className="bg-blue-600/80 text-white p-2 rounded-md hover:bg-blue-700 transition text-sm"
+    >
+      Click aquí para ver nuestros productos ↓
+    </button>
+  </div>
+</div>
+
+
       </div>
 
       {/* Productos */}
