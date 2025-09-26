@@ -102,10 +102,12 @@ export default function Home() {
       {/* Reseñas */}
 <section className="bg-gray-800 py-12">
   <div className="container px-5 mx-auto text-center">
+    
     <h2 className="text-2xl text-white font-bold mb-8">Reseñas de nuestros clientes</h2>
     <p className="text-gray-300 mb-6">
-      ¿Quieres dejarnos tu opinión? ¡Nos encantaría saber tu experiencia!
-    </p>
+  &iquest;Quieres dejarnos tu opini&oacute;n? &iexcl;Nos encantar&iacute;a saber tu experiencia!
+</p>
+
     <button className="bg-blue-600 text-white px-6 py-2 rounded-xl hover:bg-blue-700 transition mb-8">
       ↓ Dejar una reseña ↓
     </button>
