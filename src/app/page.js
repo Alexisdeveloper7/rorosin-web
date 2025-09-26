@@ -46,7 +46,7 @@ export default function Home() {
       {/* Productos */}
 <section id="productos" className="text-gray-400 body-font">
   <div className="pt- bg-gray-900">
-    <h3 className="rounded-sm flex bg-gray-800 text-center text-white py-5 text-xl justify-center">
+    <h3 className="border-y-2 border-gray-400 rounded-sm flex bg-gray-800 text-center text-white py-5 text-xl justify-center">
       ↓↓ PRODUCTOS ↓↓
     </h3>
   </div>
@@ -121,7 +121,7 @@ export default function Home() {
 
 
 
-      <section className="bg-gray-800 py-12">
+      <section className="bg-gray-800 border-t-3 border-gray-400 py-12">
   <div className="container px-5 mx-auto text-center">
     <h2 className="text-2xl text-white font-bold mb-8">Reseñas de nuestros clientes</h2>
     <p className="text-gray-300 mb-6">

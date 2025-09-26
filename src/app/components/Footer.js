@@ -3,8 +3,8 @@ import { FaWhatsapp, FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from "react-icons/
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-800 text-white py-10">
-      <div className="border-t-1 border-gray-400 container mx-auto px-5 flex flex-col md:flex-row justify-between items-start md:items-center">
+    <footer className="bg-gray-900 border-t-3 border-gray-400  text-white ">
+      <div className=" container mx-auto px-5 flex flex-col md:flex-row justify-between items-start md:items-center">
         {/* Logo y descripción */}
         
 
@@ -28,7 +28,7 @@ export default function Footer() {
         </div>
 
         {/* Redes sociales */}
-        <div>
+        <div className="">
           <h2 className="font-bold mb-2">Síguenos</h2>
           <div className="flex gap-4 text-2xl">
             <a href="#" className="hover:text-green-500 transition"><FaWhatsapp /></a>
@@ -39,7 +39,7 @@ export default function Footer() {
       </div>
 
       {/* Copy */}
-      <div className="mt-8 text-center text-gray-500 text-sm">
+      <div className=" mt-8 pb-10 text-center text-gray-500 text-sm">
         &copy; 2025 Rorosin. Todos los derechos reservados.
       </div>
     </footer>
