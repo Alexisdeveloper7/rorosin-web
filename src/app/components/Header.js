@@ -119,7 +119,7 @@ export default function HeaderFlotante() {
           <h2 className="text-lg p-4">Menu</h2>
           <FaTimes
             onClick={() => setMenuOpen(false)}
-            className="cursor-pointer text-xl p-4"
+            className="cursor-pointer text-white text-2xl mr-3"
           />
         </div>
         <nav className="p-4">
