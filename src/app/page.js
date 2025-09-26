@@ -19,8 +19,8 @@ export default function Home() {
 
         {/* Cuadro centrado sobre el hero */}
         <div className="absolute inset-0 flex justify-center items-center">
-          <div className=" backdrop-blur bg-white/1 mx-5 backdrop-blur- p-2 rounded-4xl text-center max-w-md sm:max-w-xl sm:p-8 -translate-y-6">
-            <h1 className="bg-blue-600 backdrop-blur rounded-full text-2xl sm:text-4xl font-bold text-white p-1 mb-2">
+          <div className=" backdrop-blur bg-white/1 mx-5 backdrop-blur- p-2 rounded-4xl text-center max-w-md sm:max-w-xl sm:p-8 -translate-y-">
+            <h1 className="py-2 bg-blue-600 backdrop-blur rounded-full text-2xl sm:text-4xl font-bold text-white p-1 mb-2">
               Rodillos Rodamientos y Soluciones Industriales
             </h1>
             <p className="text-lg text-white text-base sm:text-lg mb-4">
@@ -46,7 +46,7 @@ export default function Home() {
       {/* Productos */}
 <section id="productos" className="text-gray-400 body-font">
   <div className="pt- bg-gray-900">
-    <h3 className="rounded-sm flex bg-gray-800 text-center text-white py-3 text-xl justify-center">
+    <h3 className="rounded-sm flex bg-gray-800 text-center text-white py-5 text-xl justify-center">
       ↓↓ PRODUCTOS ↓↓
     </h3>
   </div>

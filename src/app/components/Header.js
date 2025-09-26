@@ -58,17 +58,24 @@ export default function HeaderFlotante() {
     </div>
 
     {/* Logo */}
-    <div className="py-2">
-      <img
-        src="/images/logoheader.enc"
-        alt="Rorosin Logo"
-        className={`ml- rounded-full transition-all duration-500
-          ${scrolled
-            ? "w-20 sm:w-20"        // cuando haces scroll, logo pequeño
-            : "w-24 sm:w-32"        // antes de scroll, logo más grande en sm/pc
-          }`}
-      />
-    </div>
+<div className="py-2">
+  <img
+    src="/images/logoheader.enc"
+    alt="Rorosin Logo"
+    className={`cursor-pointer ml- rounded-full transition-all duration-500 ${
+      scrolled ? "w-20 sm:w-20" : "w-24 sm:w-32"
+    }`}
+    onClick={() => {
+      const element = document.getElementById("inicio");
+      if (element) {
+        const yOffset = -111; // offset para header flotante
+        const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: "smooth" });
+      }
+    }}
+  />
+</div>
+
 
     {/* Cart button */}
     <div className="mr-5 text-2xl">
