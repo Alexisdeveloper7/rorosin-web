@@ -47,7 +47,7 @@ export default function HeaderFlotante() {
         }`}
       >
         <div
-  className={`flex items-center justify-between bg-white/3 backdrop-blur-md rounded-3xl mx-5 transition-all duration-500 ${
+  className={`flex items-center justify-between bg-whit backdrop-blur-md rounded-3xl mx-5 transition-all duration-500 ${
     scrollingUp ? "mt-" : ""
   }`}
 >
