@@ -8,7 +8,6 @@ import { UserProvider, useUser } from "@/context/UserContext";
 import { CarritoProvider } from "@/context/CarritoContext";
 import GlobalOverlay from "@/components/GlobalOverlay";
 
-// Componente interno para manejar overlay global
 function GlobalOverlayWrapper() {
   const { loginModalOpen, signupModalOpen, closeLoginModal, closeSignupModal } = useUser();
   const overlayVisible = loginModalOpen || signupModalOpen;
@@ -24,13 +23,16 @@ function GlobalOverlayWrapper() {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="h-full">
+      <head>
+        <title>Rorosin</title>
+        {/* Aquí pones tu logo en la pestaña */}
+        <link rel="icon" href="/iconoo.png" />
+      </head>
       <body className="bg-gray-50 min-h-screen flex flex-col">
         <AppProvider>
           <UserProvider>
             <CarritoProvider>
-              {/* Overlay global */}
               <GlobalOverlayWrapper />
-
               <Header />
               <main className="flex flex-1 flex-col">{children}</main>
               <Footer />
