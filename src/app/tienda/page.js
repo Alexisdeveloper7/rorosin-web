@@ -125,7 +125,7 @@ export default function TiendaPage() {
 
   // -------------------- RENDER --------------------
   return (
-    <div className="flex-1 flex flex-col bg-white w-full">
+    <div className="flex-1 flex flex-col bg-whit w-full">
       <h1 className="text-4xl text-center text-[#042F80] font-bold mt-4 mb-4">
         Catálogo de Productos
       </h1>
@@ -177,7 +177,7 @@ export default function TiendaPage() {
       </div>
 
       {/* PRODUCTOS */}
-      <div className="flex-1 bg-white grid grid-cols-2 gap-4 w-full p-3 items-start justify-items-center">
+      <div className="flex-1 bg-whit grid grid-cols-2 gap-4 w-full p-3 items-start justify-items-center">
         {productosOrdenados.map((prod) => (
           <div
             key={prod.id}

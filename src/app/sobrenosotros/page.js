@@ -4,9 +4,9 @@ import { FaHistory, FaCog, FaClock, FaMapMarkerAlt } from "react-icons/fa";
 
 export default function SobreNosotros() {
   return (
-    <div className="bg-gray-100 w-full h-auto">
+    <div className="bg-gray-10 w-full h-auto">
       {/* Título pegado arriba */}
-      <h1 className="text-2xl sm:text-3xl font-bold text-black px-4 py-2 sticky top-0 bg-gray-100 z-10 border-b border-gray-300">
+      <h1 className="text-2xl sm:text-3xl font-bold text-black px-4 py-2 sticky top-0 bg-gray-10 z-10 border-b border-gray-300">
         Sobre Nosotros
       </h1>
 

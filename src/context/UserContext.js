@@ -19,6 +19,8 @@ export function UserProvider({ children }) {
      🔹 FUNCIONES MODALES
   =============================== */
   const openLoginModal = (message = "") => {
+    // cerrar cualquier signup abierto antes de abrir login
+    setSignupModalOpen(false);
     setLoginMessage(typeof message === "string" ? message : "");
     setLoginModalOpen(true);
   };
@@ -79,8 +81,11 @@ export function UserProvider({ children }) {
       const data = await res.json();
       if (!res.ok || !data.success) return { success: false, message: data.message || "Error en signup" };
 
-      // Abrir login modal con mensaje desde signup
-      openLoginModal(data.message || "Cuenta creada, inicia sesión");
+      // ✅ Cerrar signup y abrir login con mensaje
+      closeSignupModal();
+      setTimeout(() => {
+        openLoginModal(data.message || "Cuenta creada, inicia sesión");
+      }, 50);
 
       return { success: true, message: data.message };
     } catch (error) {
@@ -140,7 +145,13 @@ export function UserProvider({ children }) {
       <SignupModal
         isOpen={signupModalOpen}
         onClose={closeSignupModal}
-        onOpenLogin={(message) => openLoginModal(message)}
+        onOpenLogin={(message) => {
+          // cerrar signup antes de abrir login
+          closeSignupModal();
+          setTimeout(() => {
+            openLoginModal(message);
+          }, 50);
+        }}
       />
     </UserContext.Provider>
   );

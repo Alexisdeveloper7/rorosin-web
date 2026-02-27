@@ -7,30 +7,31 @@ export default function Page() {
       {/* HERO */}
       <section
         id="inicio"
-        className="w-full h-screen bg-[url('/images/ppp.png')] bg-cover bg-center"
+        className="w-full h-screen bg-[url('/images/ppp.png')] bg-cover bg-center -mt-[124px]"
       >
-        {/* Espacio del header sticky */}
-        <div className="-mt-[124px]"></div>
-
-        {/* Contenido centrado verticalmente */}
-        <div className="flex flex-col justify-center items-center text-center h-[calc(100vh-124px)]">
-          <div className="backdrop-blur bg-white/7 mx-6 rounded-2xl inline-block">
-            <h1 className="text-3xl py-1 font-bold bg-black/60 rounded-2xl">
+        {/* Wrapper desde bottom del header hasta bottom del hero */}
+        <div className="w-full h-full pt-[124px] flex flex-col justify-center items-center text-center px-4">
+          {/* Contenido centrado estilo móvil con breakpoint LG */}
+          <div className="backdrop-blur bg-white/7 mx-4 rounded-2xl inline-block p-3 max-w-xs lg:max-w-lg lg:p-8">
+            <h1 className="text-xl lg:text-5xl py-1 font-bold bg-black/60 rounded-2xl">
               Bienvenido a ROROSIN
             </h1>
-            <p className="text-white font-bold break-words text-black">
-              Explora nuestro sitio web para descubrir nuestros productos y servicios, conoce nuestra empresa y encuentra justo lo que necesitas, disfrutando de una experiencia única y agradable al navegar.
+            <p className="text-white font-bold break-words text-black mt-2 text-sm lg:text-lg">
+              Explora nuestro sitio web para descubrir nuestros productos y
+              servicios, conoce nuestra empresa y encuentra justo lo que
+              necesitas, disfrutando de una experiencia única y agradable al
+              navegar.
             </p>
           </div>
 
           {/* Flechas animadas */}
-          <div className="mt-2 animate-bounce text-white text-3xl">
+          <div className="mt-2 animate-bounce text-white text-2xl lg:text-4xl">
             &#x2193; &#x2193; &#x2193;
           </div>
 
           {/* Botón de invitación */}
           <button
-            className="p-2 -mt-2 bg-blue-600 hover:bg-blue-700 rounded text-white"
+            className="p-1 -mt-2 bg-blue-600 hover:bg-blue-700 rounded text-white font-semibold cursor-pointer text-sm lg:px-6 lg:py-3 lg:text-lg"
             onClick={() =>
               document
                 .getElementById("productos")
