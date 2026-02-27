@@ -13,20 +13,19 @@ export function UserProvider({ children }) {
   // Modales globales
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [signupModalOpen, setSignupModalOpen] = useState(false);
-  const [loginMessage, setLoginMessage] = useState(""); // mensaje opcional de login desde signup
+  const [loginMessage, setLoginMessage] = useState(""); // mensaje opcional al abrir login desde signup
 
   /* ===============================
      🔹 FUNCIONES MODALES
   =============================== */
-  const openLoginModal = (message) => {
-    // Siempre asegurarse que sea string
+  const openLoginModal = (message = "") => {
     setLoginMessage(typeof message === "string" ? message : "");
     setLoginModalOpen(true);
   };
 
   const closeLoginModal = () => {
     setLoginModalOpen(false);
-    setLoginMessage(""); // limpia mensaje al cerrar
+    setLoginMessage("");
   };
 
   const openSignupModal = () => setSignupModalOpen(true);
@@ -45,12 +44,12 @@ export function UserProvider({ children }) {
         body: JSON.stringify({ usuario, contrasena }),
       });
       const data = await res.json();
-      if (!res.ok || !data.success) return { success: false };
+      if (!res.ok || !data.success) return { success: false, message: data.message };
       setUser(data.user);
       return { success: true };
     } catch (error) {
       console.error("Login error:", error);
-      return { success: false };
+      return { success: false, message: error.message || "Error inesperado" };
     } finally {
       setLoading(false);
     }
@@ -78,11 +77,15 @@ export function UserProvider({ children }) {
         body: JSON.stringify({ usuario, contrasena }),
       });
       const data = await res.json();
-      if (!res.ok || !data.success) return { success: false, message: data.message };
-      return { success: true };
+      if (!res.ok || !data.success) return { success: false, message: data.message || "Error en signup" };
+
+      // Abrir login modal con mensaje desde signup
+      openLoginModal(data.message || "Cuenta creada, inicia sesión");
+
+      return { success: true, message: data.message };
     } catch (error) {
       console.error("Signup error:", error);
-      return { success: false };
+      return { success: false, message: error.message || "Error inesperado" };
     } finally {
       setLoading(false);
     }
@@ -116,6 +119,7 @@ export function UserProvider({ children }) {
         signup,
         loginModalOpen,
         signupModalOpen,
+        loginMessage,
         openLoginModal,
         closeLoginModal,
         openSignupModal,
@@ -129,7 +133,7 @@ export function UserProvider({ children }) {
         isOpen={loginModalOpen}
         onClose={closeLoginModal}
         onOpenSignup={() => openSignupModal()}
-        initialMessage={loginMessage || ""} // Siempre string seguro
+        initialMessage={loginMessage || ""}
       />
 
       {/* MODAL SIGNUP */}

@@ -20,6 +20,11 @@ export function CarritoProvider({ children }) {
      🔄 FETCH CARRITO
   =============================== */
   const fetchCarrito = useCallback(async () => {
+    if (!user) {
+      setItems([]);
+      return [];
+    }
+    setLoading(true);
     try {
       const res = await fetch("/api/carrito/listar", { credentials: "include" });
       const data = await res.json();
@@ -30,8 +35,10 @@ export function CarritoProvider({ children }) {
       console.error("Error cargando carrito:", error);
       setItems([]);
       return [];
+    } finally {
+      setLoading(false);
     }
-  }, []);
+  }, [user]);
 
   /* ===============================
      🔄 FETCH PEDIDOS
@@ -41,6 +48,7 @@ export function CarritoProvider({ children }) {
       setPedidos([]);
       return [];
     }
+    setLoadingPedidos(true);
     try {
       const res = await fetch(`/api/pedidos/usuario?usuarioId=${user.id}`, { credentials: "include" });
       const data = await res.json();
@@ -51,6 +59,8 @@ export function CarritoProvider({ children }) {
       console.error("Error cargando pedidos:", error);
       setPedidos([]);
       return [];
+    } finally {
+      setLoadingPedidos(false);
     }
   }, [user]);
 
@@ -66,17 +76,10 @@ export function CarritoProvider({ children }) {
       return;
     }
 
-    const cargarDatos = async () => {
-      setLoading(true);
-      setLoadingPedidos(true);
-      await fetchCarrito();
-      await fetchPedidos();
-      setLoading(false);
-      setLoadingPedidos(false);
-    };
-
-    cargarDatos();
-  }, [user]);
+    // Cargar carrito y pedidos en paralelo
+    fetchCarrito();
+    fetchPedidos();
+  }, [user, fetchCarrito, fetchPedidos]);
 
   /* ===============================
      🔔 SYNC ENTRE PESTAÑAS
@@ -162,7 +165,6 @@ export function CarritoProvider({ children }) {
 
   /* ===============================
      🧾 CONFIRMAR PEDIDO
-     ✅ Devuelve { success, message }
   =============================== */
   const confirmarPedido = async () => {
     if (!user || items.length === 0) return { success: false, message: "Carrito vacío" };
@@ -170,7 +172,7 @@ export function CarritoProvider({ children }) {
     try {
       const itemsParaAPI = items.map((i) => ({
         id_producto: i.id_producto,
-        nombre_producto: i.producto_nombre, // debe coincidir con tu backend
+        nombre_producto: i.producto_nombre,
         cantidad: i.cantidad,
         precio: i.precio || 0,
       }));
@@ -183,8 +185,6 @@ export function CarritoProvider({ children }) {
       });
 
       const data = await res.json();
-
-      // 🔑 Solo revisar data.success, NO res.ok
       if (!data.success) return { success: false, message: data.message || "❌ No se pudo confirmar el pedido" };
 
       // Vaciar carrito y actualizar pedidos
