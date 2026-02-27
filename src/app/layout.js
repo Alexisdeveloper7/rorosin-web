@@ -1,4 +1,4 @@
-"use client"; // necesario porque vamos a usar useUser()
+"use client"; // necesario porque usamos hooks
 
 import "./globals.css";
 import Header from "@/components/Header";
@@ -8,8 +8,10 @@ import { UserProvider, useUser } from "@/context/UserContext";
 import { CarritoProvider } from "@/context/CarritoContext";
 import GlobalOverlay from "@/components/GlobalOverlay";
 
-function GlobalOverlayWrapper() {
+// ⚡ Wrapper para mostrar overlay global de modales de usuario
+function UserOverlay() {
   const { loginModalOpen, signupModalOpen, closeLoginModal, closeSignupModal } = useUser();
+
   const overlayVisible = loginModalOpen || signupModalOpen;
 
   const handleClickOverlay = () => {
@@ -25,14 +27,16 @@ export default function RootLayout({ children }) {
     <html lang="en" className="h-full">
       <head>
         <title>Rorosin</title>
-        {/* Aquí pones tu logo en la pestaña */}
         <link rel="icon" href="/iconoo.png" />
       </head>
       <body className="bg-gray-50 min-h-screen flex flex-col">
         <AppProvider>
+          {/* ⚠ UserProvider envuelve todo lo que use useUser */}
           <UserProvider>
             <CarritoProvider>
-              <GlobalOverlayWrapper />
+              {/* Overlay global dentro del provider */}
+              <UserOverlay />
+
               <Header />
               <main className="flex flex-1 flex-col">{children}</main>
               <Footer />

@@ -42,7 +42,7 @@ export default function ModalProducto({ producto, onCerrar }) {
 
   const handleAgregar = async () => {
     if (!user) {
-      setMensajeExito("Para agregar un producto al carrito debes iniciar sesión ❌");
+      setMensajeExito("⚠️ Debes iniciar sesión para agregar productos al carrito");
       return;
     }
 
@@ -55,7 +55,7 @@ export default function ModalProducto({ producto, onCerrar }) {
 
     if (exito) {
       setMensajeExito("Producto agregado correctamente✅");
-      setTimeout(() => onCerrar(), 1500);
+      setTimeout(() => onCerrar(), 800);
     } else {
       setMensajeExito("No se pudo agregar el producto ❌");
     }

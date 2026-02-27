@@ -13,29 +13,22 @@ export function UserProvider({ children }) {
   // Modales globales
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [signupModalOpen, setSignupModalOpen] = useState(false);
-  const [loginMessage, setLoginMessage] = useState(""); // mensaje opcional al abrir login desde signup
+  const [loginMessage, setLoginMessage] = useState("");
 
-  /* ===============================
-     🔹 FUNCIONES MODALES
-  =============================== */
+  // 🔹 FUNCIONES MODALES
   const openLoginModal = (message = "") => {
-    // cerrar cualquier signup abierto antes de abrir login
     setSignupModalOpen(false);
     setLoginMessage(typeof message === "string" ? message : "");
     setLoginModalOpen(true);
   };
-
   const closeLoginModal = () => {
     setLoginModalOpen(false);
     setLoginMessage("");
   };
-
   const openSignupModal = () => setSignupModalOpen(true);
   const closeSignupModal = () => setSignupModalOpen(false);
 
-  /* ===============================
-     🔹 LOGIN / LOGOUT
-  =============================== */
+  // 🔹 LOGIN
   const login = async (usuario, contrasena) => {
     setLoading(true);
     try {
@@ -46,7 +39,12 @@ export function UserProvider({ children }) {
         body: JSON.stringify({ usuario, contrasena }),
       });
       const data = await res.json();
-      if (!res.ok || !data.success) return { success: false, message: data.message };
+
+      if (!res.ok || !data.success) {
+        return { success: false, message: data.message || "Usuario o contraseña incorrectos" };
+      }
+
+      // ✅ Actualizamos usuario pero NO cerramos el modal aquí
       setUser(data.user);
       return { success: true };
     } catch (error) {
@@ -57,6 +55,7 @@ export function UserProvider({ children }) {
     }
   };
 
+  // 🔹 LOGOUT
   const logout = async () => {
     try {
       await fetch("/api/auth/logout", { method: "POST", credentials: "include" });
@@ -66,9 +65,7 @@ export function UserProvider({ children }) {
     }
   };
 
-  /* ===============================
-     🔹 SIGNUP
-  =============================== */
+  // 🔹 SIGNUP
   const signup = async (usuario, contrasena) => {
     setLoading(true);
     try {
@@ -78,13 +75,22 @@ export function UserProvider({ children }) {
         credentials: "include",
         body: JSON.stringify({ usuario, contrasena }),
       });
-      const data = await res.json();
-      if (!res.ok || !data.success) return { success: false, message: data.message || "Error en signup" };
 
-      // ✅ Cerrar signup y abrir login con mensaje
+      let data;
+      try {
+        data = await res.json();
+      } catch (err) {
+        console.error("Respuesta inesperada de signup:", await res.text());
+        return { success: false, message: "Error inesperado del servidor" };
+      }
+
+      if (!res.ok || !data.success) {
+        return { success: false, message: data.message || "Ya hay una cuenta creada con este nombre de usuario, intenta con otro nombre" };
+      }
+
       closeSignupModal();
       setTimeout(() => {
-        openLoginModal(data.message || "Cuenta creada, inicia sesión");
+        openLoginModal(typeof data.message === "string" ? data.message : "Cuenta creada correctamente. ¡Inicia sesión!");
       }, 50);
 
       return { success: true, message: data.message };
@@ -96,9 +102,7 @@ export function UserProvider({ children }) {
     }
   };
 
-  /* ===============================
-     🔹 Persistencia de sesión
-  =============================== */
+  // 🔹 Persistencia de sesión
   useEffect(() => {
     const fetchSession = async () => {
       try {
@@ -137,21 +141,14 @@ export function UserProvider({ children }) {
       <LoginModal
         isOpen={loginModalOpen}
         onClose={closeLoginModal}
-        onOpenSignup={() => openSignupModal()}
-        initialMessage={loginMessage || ""}
+        onOpenSignup={openSignupModal} 
+        initialMessage={loginMessage}        
       />
 
       {/* MODAL SIGNUP */}
       <SignupModal
         isOpen={signupModalOpen}
         onClose={closeSignupModal}
-        onOpenLogin={(message) => {
-          // cerrar signup antes de abrir login
-          closeSignupModal();
-          setTimeout(() => {
-            openLoginModal(message);
-          }, 50);
-        }}
       />
     </UserContext.Provider>
   );

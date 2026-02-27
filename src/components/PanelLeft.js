@@ -67,42 +67,35 @@ export default function PanelLeft({
             </div>
 
             {/* Navigation */}
-            <nav className="flex-1 mt-8 flex flex-col gap-2 text-base">
+            <nav className="flex-1 mt-8 flex flex-col gap-3 text-base">
 
-              <button
-                onClick={() => goTo('/')}
-                className="text-left px-4 py-3 rounded-xl font-medium text-gray-700 hover:bg-green-50 hover:text-green-600 transition-all duration-200 cursor-pointer"
-              >
-                Inicio
-              </button>
-
-              <button
-                onClick={() => goTo('/tienda')}
-                className="text-left px-4 py-3 rounded-xl font-medium text-gray-700 hover:bg-green-50 hover:text-green-600 transition-all duration-200 cursor-pointer"
-              >
-                Productos
-              </button>
-
-              <button
-                onClick={() => goTo('/carrito')}
-                className="text-left px-4 py-3 rounded-xl font-medium text-gray-700 hover:bg-green-50 hover:text-green-600 transition-all duration-200 cursor-pointer"
-              >
-                Carrito
-              </button>
-
-              <button
-                onClick={() => goTo('/pedidos')}
-                className="text-left px-4 py-3 rounded-xl font-medium text-gray-700 hover:bg-green-50 hover:text-green-600 transition-all duration-200 cursor-pointer"
-              >
-                Mis Pedidos
-              </button>
-
-              <button
-                onClick={() => goTo('/sobrenosotros')}
-                className="text-left px-4 py-3 rounded-xl font-medium text-gray-700 hover:bg-green-50 hover:text-green-600 transition-all duration-200 cursor-pointer"
-              >
-                Acerca De Nosotros
-              </button>
+              {[
+                { name: 'Inicio', path: '/' },
+                { name: 'Tienda', path: '/tienda' },
+                { name: 'Mi carrito', path: '/carrito' },
+                { name: 'Mis pedidos', path: '/pedidos' },
+                { name: 'Acerca de la empresa', path: '/sobrenosotros' },
+              ].map((item) => (
+                <button
+                  key={item.name}
+                  onClick={() => goTo(item.path)}
+                  className="flex items-center justify-between px-5 py-3 rounded-2xl font-medium text-gray-700 
+                             bg-gray-50 hover:bg-green-50 hover:text-green-600 shadow-sm hover:shadow-md 
+                             transition-all duration-200 cursor-pointer border border-gray-100"
+                >
+                  <span>{item.name}</span>
+                  <svg
+                    className="w-5 h-5 text-green-600"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7"></path>
+                  </svg>
+                </button>
+              ))}
 
               <div className="border-t border-gray-200 my-4"></div>
 

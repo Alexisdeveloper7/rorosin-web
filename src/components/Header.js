@@ -8,6 +8,7 @@ import PanelRight from "./PanelRight";
 import ModalLogin from "./ModalLogin";
 import ModalSignup from "./ModalSignup";
 import GlobalOverlay from "./GlobalOverlay";
+import { useUser } from "@/context/UserContext"; // ⚡ Usamos el contexto global
 
 export default function HeaderBare() {
   const router = useRouter();
@@ -16,22 +17,28 @@ export default function HeaderBare() {
   const [activePanel, setActivePanel] = useState(null);
   const [showHeader, setShowHeader] = useState(true); // Siempre visible al cargar
 
-  const [loginOpen, setLoginOpen] = useState(false);
-  const [signupOpen, setSignupOpen] = useState(false);
-  const [loginMsg, setLoginMsg] = useState("");
-
   const lastScroll = useRef(0);
+
+  // 🔹 Contexto global de usuario
+  const {
+    loginModalOpen,
+    signupModalOpen,
+    loginMessage,
+    openLoginModal,
+    openSignupModal,
+    closeLoginModal,
+  } = useUser();
 
   // 🔥 Fuerza header visible si hay modal o panel
   useEffect(() => {
-    if (loginOpen || signupOpen || activePanel) {
+    if (loginModalOpen || signupModalOpen || activePanel) {
       setShowHeader(true);
     }
-  }, [loginOpen, signupOpen, activePanel]);
+  }, [loginModalOpen, signupModalOpen, activePanel]);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (loginOpen || signupOpen || activePanel) return;
+      if (loginModalOpen || signupModalOpen || activePanel) return;
 
       const scrollY = window.scrollY;
       const isHome = pathname === "/";
@@ -51,31 +58,21 @@ export default function HeaderBare() {
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [pathname, loginOpen, signupOpen, activePanel]);
+  }, [pathname, loginModalOpen, signupModalOpen, activePanel]);
 
   const togglePanel = panel => {
     setActivePanel(prev => (prev === panel ? null : panel));
   };
 
-  const abrirLogin = () => {
-    setSignupOpen(false);
-    setLoginMsg("");
-    setLoginOpen(true);
-  };
-
-  const abrirSignup = () => {
-    setLoginOpen(false);
-    setLoginMsg("");
-    setSignupOpen(true);
-  };
+  // 🔹 Funciones para abrir login/signup usando contexto
+  const abrirLogin = (msg = "") => openLoginModal(msg);
+  const abrirSignup = () => openSignupModal();
 
   const signupExitoso = () => {
-    setSignupOpen(false);
-    setLoginMsg("Cuenta creada correctamente");
-    setLoginOpen(true);
+    openLoginModal("Cuenta creada correctamente");
   };
 
-  const overlayVisible = activePanel !== null || loginOpen || signupOpen;
+  const overlayVisible = activePanel !== null || loginModalOpen || signupModalOpen;
 
   return (
     <>
@@ -84,9 +81,7 @@ export default function HeaderBare() {
         isVisible={overlayVisible}
         onClick={() => {
           setActivePanel(null);
-          setLoginOpen(false);
-          setSignupOpen(false);
-          setLoginMsg("");
+          closeLoginModal();
         }}
       />
 
@@ -131,24 +126,20 @@ export default function HeaderBare() {
       <PanelRight
         isOpen={activePanel === "right"}
         onClose={() => setActivePanel(null)}
-        abrirLogin={abrirLogin}     // ✅ Agregado
-        abrirSignup={abrirSignup}   // ✅ Agregado si lo usas
+        abrirLogin={abrirLogin}
+        abrirSignup={abrirSignup}
       />
 
       {/* MODAL LOGIN */}
       <ModalLogin
-        isOpen={loginOpen}
-        successMessage={loginMsg}
-        onClose={() => {
-          setLoginOpen(false);
-          setLoginMsg("");
-        }}
+        isOpen={loginModalOpen}
+        successMessage={loginMessage}
+        onClose={closeLoginModal}
         onOpenSignup={abrirSignup}
         onLoginSuccess={() => {
-          setLoginMsg("Sesión iniciada correctamente");
+          openLoginModal("Sesión iniciada correctamente");
           setTimeout(() => {
-            setLoginOpen(false);
-            setLoginMsg("");
+            closeLoginModal();
             setActivePanel("left");
           }, 900);
         }}
@@ -156,8 +147,8 @@ export default function HeaderBare() {
 
       {/* MODAL SIGNUP */}
       <ModalSignup
-        isOpen={signupOpen}
-        onClose={() => setSignupOpen(false)}
+        isOpen={signupModalOpen}
+        onClose={abrirSignup} // ⚡ Cierra usando contexto
         onOpenLogin={abrirLogin}
         onSignupSuccess={signupExitoso}
       />

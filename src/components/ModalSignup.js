@@ -4,8 +4,8 @@ import { useState, useEffect } from "react";
 import { X, Eye, EyeOff } from "lucide-react";
 import { useUser } from "@/context/UserContext";
 
-export default function ModalSignup({ isOpen, onClose, onOpenLogin }) {
-  const { signup } = useUser();
+export default function ModalSignup({ isOpen, onClose }) {
+  const { signup, openLoginModal, closeSignupModal } = useUser();
 
   const [form, setForm] = useState({ usuario: "", contrasena: "" });
   const [errorUser, setErrorUser] = useState("");
@@ -68,19 +68,17 @@ export default function ModalSignup({ isOpen, onClose, onOpenLogin }) {
         return;
       }
 
-      // ✅ Cuenta creada: cerrar signup y abrir login con mensaje
+      // ✅ Solo cerrar modal y limpiar formulario
       onClose();
-      onOpenLogin("Cuenta creada con éxito. Inicia sesión para continuar.");
-
-      // 🔹 Limpiar formulario y errores
       setForm({ usuario: "", contrasena: "" });
       setErrorUser("");
       setErrorPass("");
+      setLoading(false);
 
+      // 🔹 No llamamos onOpenLogin, el UserContext abrirá LoginModal
     } catch (err) {
       setErrorUser("Error del servidor");
       console.error(err);
-    } finally {
       setLoading(false);
     }
   };
@@ -155,7 +153,10 @@ export default function ModalSignup({ isOpen, onClose, onOpenLogin }) {
         <div className="text-sm text-center mt-4">
           <span className="text-gray-700">¿Ya tienes cuenta? </span>
           <button
-            onClick={() => { onClose(); onOpenLogin(); }}
+            onClick={() => {
+              closeSignupModal();
+              openLoginModal();
+            }}
             className="text-green-600 font-bold hover:scale-105 transition cursor-pointer"
           >
             ¡Inicia sesión!

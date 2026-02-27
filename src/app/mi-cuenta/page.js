@@ -126,17 +126,18 @@ export default function MiCuentaPage() {
                     className="border px-3 py-1 text-sm rounded-md flex-1 min-w-[150px]"
                     value={nuevoUsuario}
                     onChange={e => setNuevoUsuario(e.target.value)}
+                    placeholder="Escribe tu nuevo nombre"
                   />
                   <button onClick={async () => {
                     const res = await fetch(`/api/micuenta`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: user.id, usuario: nuevoUsuario }) });
                     const data = await res.json();
-                    if(data.ok){ setDatos(prev => ({...prev, usuario: nuevoUsuario})); setEditUsuario(false); }
+                    if(data.ok){ setDatos(prev => ({...prev, usuario: nuevoUsuario})); setEditUsuario(false); setNuevoUsuario(""); }
                   }} className="px-5 py-1 text-sm font-medium rounded-md bg-green-600 text-white hover:bg-green-700 flex-shrink-0">Guardar</button>
-                  <button onClick={() => setEditUsuario(false)} className="px-5 py-1 text-sm font-medium rounded-md bg-gray-400 text-white hover:bg-gray-500 flex-shrink-0">Cancelar</button>
+                  <button onClick={() => { setEditUsuario(false); setNuevoUsuario(""); }} className="px-5 py-1 text-sm font-medium rounded-md bg-gray-400 text-white hover:bg-gray-500 flex-shrink-0">Cancelar</button>
                 </div>
               ) : <span className="ml-2">{datos.usuario}</span>}
               boton={!editUsuario ? "Editar" : null}
-              onClick={() => setEditUsuario(true)}
+              onClick={() => { setEditUsuario(true); setNuevoUsuario(""); }}
               color="blue"
             />
 
@@ -229,7 +230,7 @@ function Fila({ label, value, boton, onClick, color, disabled }) {
 
   return (
     <div className="flex justify-between items-center bg-gray-50 px-3 py-3 rounded-md relative">
-      <span className="text-sm font-semibold text-gray-600 w-36">{label}</span> {/* Label más claro y ancho fijo */}
+      <span className="text-sm font-semibold text-gray-600 w-36">{label}</span>
       <div className="flex items-center gap-3 flex-wrap w-full justify-between">
         <div className="flex-1">{value}</div>
         {boton && (

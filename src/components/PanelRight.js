@@ -110,7 +110,7 @@ export default function PanelRight({
                 ) : !user ? (
                   <div className="flex flex-col items-center text-center gap-4 mt-10">
                     <p className="text-gray-600">
-                      Debes iniciar sesión para ver tu carrito.
+                      Inicia sesión para ver tu carrito
                     </p>
 
                     <div className="flex flex-col gap-3 w-full">
