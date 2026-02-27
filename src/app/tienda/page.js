@@ -26,6 +26,11 @@ export default function TiendaPage() {
   const [filtro, setFiltro] = useState(null);
   const [orden, setOrden] = useState("predeterminado");
 
+  // ❗ Scroll al inicio solo al entrar a la página
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }, []);
+
   useEffect(() => {
     const fetchProductos = async () => {
       try {
