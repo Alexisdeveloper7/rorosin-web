@@ -23,7 +23,6 @@ export async function GET() {
     `);
 
     const rows = res.rows;
-    const categorias = [];
     const catMap = new Map();
 
     for (const row of rows) {
@@ -37,7 +36,7 @@ export async function GET() {
       }
       const cat = catMap.get(row.idcategoria);
 
-      // Subcategoría (solo si existe)
+      // Subcategoría
       let sub;
       if (row.idsubcategoria != null) {
         sub = cat.subcategorias.find(sc => sc.id === row.idsubcategoria);
@@ -47,7 +46,7 @@ export async function GET() {
         }
       }
 
-      // Producto (solo si existe subcategoría y producto)
+      // Producto
       let prod;
       if (sub && row.idproducto != null) {
         prod = sub.productos.find(p => p.id === row.idproducto);
@@ -63,7 +62,7 @@ export async function GET() {
         }
       }
 
-      // Variación (solo si existe producto y variación)
+      // Variación
       let vari;
       if (prod && row.idvariacion != null) {
         vari = prod.variaciones.find(v => v.id === row.idvariacion);
@@ -73,14 +72,13 @@ export async function GET() {
         }
       }
 
-      // Medida (solo si existe variación y medida)
+      // Medida
       if (vari && row.idmedida != null) {
         vari.medidas[row.nombremedida] = row.valor;
       }
     }
 
-    await client.end();
-
+    // ✅ Devuelve resultado
     return new Response(JSON.stringify(Array.from(catMap.values())), {
       status: 200,
       headers: { 'Content-Type': 'application/json' }
@@ -88,7 +86,9 @@ export async function GET() {
 
   } catch (error) {
     console.error('DB Error:', error.message);
-    if (client) await client.end();
-    return new Response(JSON.stringify({ error: error.message }), { status: 500 });
+    return new Response(JSON.stringify({ error: error.message, message: "Error al obtener productos" }), { status: 500 });
+
+  } finally {
+    if (client) await client.end(); // siempre cerrar client
   }
 }
