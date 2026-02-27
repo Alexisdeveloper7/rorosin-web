@@ -38,12 +38,14 @@ export default function ProductosListaClient({ categorias = [] }) {
   // 🔎 FILTRADO
   const categoriasFiltradas = (() => {
     if (!filtro) return categorias;
+
     if (filtro.tipo === "categoria") {
       return categorias.map((cat) => ({
         ...cat,
         subcategorias: cat.subcategorias.map((sub) => ({ ...sub })),
       }));
     }
+
     if (filtro.tipo === "subcategoria") {
       return categorias
         .map((cat) => ({
@@ -58,6 +60,7 @@ export default function ProductosListaClient({ categorias = [] }) {
         }))
         .filter((cat) => cat.subcategorias.length > 0);
     }
+
     return categorias;
   })();
 
@@ -72,9 +75,9 @@ export default function ProductosListaClient({ categorias = [] }) {
   })();
 
   return (
-    <div className="flex-1 flex flex-col w-full bg-whit">
+    <div className="flex-1 flex flex-col w-full bg-white">
       {/* PANEL SUPERIOR */}
-      <div className="flex justify-between items-center mx-2 md:mx-25  m-3">
+      <div className="flex justify-between items-center mx-2 md:mx-25 m-3">
         <button
           onClick={() =>
             setPanelAbierto(panelAbierto === "categorias" ? null : "categorias")
@@ -120,7 +123,7 @@ export default function ProductosListaClient({ categorias = [] }) {
       </div>
 
       {/* PRODUCTOS */}
-      <div className="flex-1 bg-whit grid grid-cols-2 gap-4 w-full p-3 items-start justify-items-center">
+      <div className="flex-1 bg-white grid grid-cols-2 gap-4 w-full p-3 items-start justify-items-center">
         {productosOrdenados.map((prod) => (
           <div
             key={prod.id}
@@ -165,10 +168,7 @@ export default function ProductosListaClient({ categorias = [] }) {
 
       {/* MODAL */}
       {modalAbierto && producto && (
-        <ModalProducto
-          producto={producto}
-          onCerrar={cerrarModal}
-        />
+        <ModalProducto producto={producto} onCerrar={cerrarModal} />
       )}
     </div>
   );
