@@ -3,9 +3,8 @@ import { connectDB } from '../../../connectDB.js';
 export const dynamic = "force-dynamic"; // evita caché en Vercel
 
 export async function GET() {
-  let client;
   try {
-    client = await connectDB();
+    const client = await connectDB(); // singleton, no cerrar en serverless
 
     const res = await client.query(`
       SELECT 
@@ -87,8 +86,5 @@ export async function GET() {
   } catch (error) {
     console.error('DB Error:', error.message);
     return new Response(JSON.stringify({ error: error.message, message: "Error al obtener productos" }), { status: 500 });
-
-  } finally {
-    if (client) await client.end(); // siempre cerrar client
   }
-}
+};
