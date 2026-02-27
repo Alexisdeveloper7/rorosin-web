@@ -5,12 +5,11 @@ export const dynamic = "force-dynamic";
 
 export default async function TiendaPage() {
   try {
-    // Detectar la URL base según si estamos en Vercel o en local
+    // 🔹 URL absoluta para fetch en SSR
     const baseUrl = process.env.VERCEL_URL
       ? `https://${process.env.VERCEL_URL}`
       : "http://localhost:3000";
 
-    // Fetch a la API de productos con cache desactivada
     const res = await fetch(`${baseUrl}/api/productos`, { cache: "no-store" });
 
     if (!res.ok) {
@@ -31,7 +30,6 @@ export default async function TiendaPage() {
       </div>
     );
   } catch (error) {
-    // Mostrar error de forma amigable sin que falle el build
     return (
       <div className="flex-1 flex flex-col bg-white items-center justify-center">
         <h1 className="text-2xl text-red-600 font-bold">
