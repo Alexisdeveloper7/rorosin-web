@@ -2,6 +2,21 @@
 import ProductosDestacados from "../components/ProductosDestacados";
 
 export default function Page() {
+  const scrollToProductos = () => {
+    const productosSection = document.getElementById("productos");
+    if (productosSection) {
+      // Altura fija de tu header
+      const headerHeight = 124;
+      // Posición real de la sección en el documento
+      const topPos = productosSection.getBoundingClientRect().top + window.scrollY;
+      // Scroll compensando la altura del header
+      window.scrollTo({
+        top: topPos - headerHeight,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
     <div className="bg-gray-800 text-white">
       {/* HERO */}
@@ -9,9 +24,7 @@ export default function Page() {
         id="inicio"
         className="w-full h-screen bg-[url('/images/ppp.png')] bg-cover bg-center -mt-[124px]"
       >
-        {/* Wrapper desde bottom del header hasta bottom del hero */}
         <div className="w-full h-full pt-[124px] flex flex-col justify-center items-center text-center px-4">
-          {/* Contenido centrado estilo móvil con breakpoint LG */}
           <div className="backdrop-blur bg-white/7 mx-4 rounded-2xl inline-block p-3 max-w-xs lg:max-w-lg lg:p-8">
             <h1 className="text-xl lg:text-5xl py-1 font-bold bg-black/60 rounded-2xl">
               Bienvenido a ROROSIN
@@ -24,19 +37,13 @@ export default function Page() {
             </p>
           </div>
 
-          {/* Flechas animadas */}
           <div className="mt-2 animate-bounce text-white text-2xl lg:text-4xl">
             &#x2193; &#x2193; &#x2193;
           </div>
 
-          {/* Botón de invitación */}
           <button
             className="p-1 -mt-2 bg-blue-600 hover:bg-blue-700 rounded text-white font-semibold cursor-pointer text-sm lg:px-6 lg:py-3 lg:text-lg"
-            onClick={() =>
-              document
-                .getElementById("productos")
-                .scrollIntoView({ behavior: "smooth", block: "start" })
-            }
+            onClick={scrollToProductos}
           >
             Seguir viendo
           </button>
