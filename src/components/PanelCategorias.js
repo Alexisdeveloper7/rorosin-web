@@ -12,7 +12,6 @@ export default function PanelCategorias({ isOpen, onCerrar, onFiltrar }) {
   useEffect(() => {
     const fetchCategorias = async () => {
       try {
-        // ✅ Ruta relativa, sin localhost
         const res = await fetch("/api/productos", { cache: "no-store" });
         const data = await res.json();
         setCategorias(data);
@@ -27,21 +26,9 @@ export default function PanelCategorias({ isOpen, onCerrar, onFiltrar }) {
     setCategoriaAbierta((prev) => (prev === id ? null : id));
   };
 
-  const manejarClickCategoria = (nombre) => {
-    setSeleccionActual(nombre);
-    onFiltrar("categoria", nombre);
-    onCerrar();
-  };
-
   const manejarClickSubcategoria = (nombre) => {
     setSeleccionActual(nombre);
     onFiltrar("subcategoria", nombre);
-    onCerrar();
-  };
-
-  const mostrarTodos = () => {
-    setSeleccionActual(null);
-    onFiltrar(null, null);
     onCerrar();
   };
 
@@ -67,16 +54,10 @@ export default function PanelCategorias({ isOpen, onCerrar, onFiltrar }) {
               Categorías
             </h2>
 
-            <button
-              onClick={mostrarTodos}
-              className={`w-full flex justify-between items-center px-3 py-2 mb-3 rounded-lg font-semibold transition ${
-                !seleccionActual
-                  ? "bg-green-100 text-green-700"
-                  : "bg-blue-100 hover:bg-blue-200 text-blue-700"
-              }`}
-            >
-              <span>Todos</span>
-            </button>
+            {/* Mensaje destacado */}
+            <div className="mb-4 px-3 text-lg py-2 bg-blue-50 border-l-4 border-blue-400 text-blue-700 font-medium rounded shadow-sm">
+              Selecciona una categoria   &#x2193;
+            </div>
 
             {categorias.length === 0 ? (
               <p className="text-gray-500 text-sm">Cargando...</p>
@@ -85,21 +66,9 @@ export default function PanelCategorias({ isOpen, onCerrar, onFiltrar }) {
                 <div key={cat.id} className="mb-2">
                   <button
                     onClick={() => toggleCategoria(cat.id)}
-                    className={`w-full flex justify-between items-center px-3 py-2 rounded-lg transition ${
-                      seleccionActual === cat.nombre
-                        ? "bg-green-100 text-green-700 font-semibold"
-                        : "bg-gray-100 hover:bg-gray-200 text-gray-800"
-                    }`}
+                    className="w-full flex justify-between items-center px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-800 transition"
                   >
-                    <span
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        manejarClickCategoria(cat.nombre);
-                      }}
-                      className="text-sm"
-                    >
-                      {cat.nombre}
-                    </span>
+                    <span className="text-sm">{cat.nombre}</span>
                     <ChevronDown
                       className={`w-4 h-4 text-gray-600 transition-transform ${
                         categoriaAbierta === cat.id ? "rotate-180" : ""

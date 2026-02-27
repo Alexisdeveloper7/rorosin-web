@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/context/UserContext";
 import { useCarrito } from "@/context/CarritoContext";
+import { motion, AnimatePresence } from "framer-motion";
 
 import PanelCategorias from "../../components/PanelCategorias";
 import ModalProducto from "../../components/ModalProducto";
@@ -26,7 +27,6 @@ export default function TiendaPage() {
   const [filtro, setFiltro] = useState(null);
   const [orden, setOrden] = useState("predeterminado");
 
-  // ❗ Scroll al inicio solo al entrar a la página
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "auto" });
   }, []);
@@ -110,37 +110,24 @@ export default function TiendaPage() {
 
   return (
     <div className="flex-1 flex flex-col bg-white w-full">
-      {/* TÍTULO SIEMPRE VISIBLE */}
       <h1 className="text-4xl text-center text-[#042F80] font-bold mt-4 mb-4">
         Catálogo de Productos
       </h1>
 
-      {/* LOADING SKELETON */}
       {loadingProductos && (
         <div className="max-w-md mx-auto p-4 space-y-4">
           <p className="text-center text-gray-400 animate-pulse">
             Cargando productos...
           </p>
-          {/* Una card skeleton simple */}
-          <div className="m-1 bg-gray-200 rounded-3xl flex flex-col items-center w-full max-w-[300px] animate-pulse">
-            <div className="w-full aspect-square bg-gray-300 rounded-t-3xl"></div>
-            <div className="w-full p-2 flex flex-col items-center justify-between rounded-b-3xl">
-              <div className="h-4 w-3/4 bg-gray-400 rounded mb-2"></div>
-              <div className="h-3 w-5/6 bg-gray-400 rounded mb-2"></div>
-              <div className="h-6 w-full bg-gray-500 rounded"></div>
-            </div>
-          </div>
         </div>
       )}
 
-      {/* ERROR */}
       {error && !loadingProductos && (
         <div className="flex-1 flex items-center justify-center">
           <p className="text-red-600 font-bold">{error}</p>
         </div>
       )}
 
-      {/* PANEL SUPERIOR Y PRODUCTOS */}
       {!loadingProductos && !error && (
         <>
           <div className="flex justify-between items-center mx-2 md:mx-25 m-3">
@@ -148,7 +135,7 @@ export default function TiendaPage() {
               onClick={() =>
                 setPanelAbierto(panelAbierto === "categorias" ? null : "categorias")
               }
-              className="text-md bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold cursor-pointer transform transition-all duration-300 hover:scale-105 hover:bg-blue-700"
+              className="text-md bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 hover:scale-105 hover:bg-blue-700"
             >
               Categorías
             </button>
@@ -158,7 +145,7 @@ export default function TiendaPage() {
                 onClick={() =>
                   setPanelAbierto(panelAbierto === "ordenar" ? null : "ordenar")
                 }
-                className="px-3 py-2 text-sm rounded-lg bg-green-700 text-white font-semibold flex items-center justify-between w-36 shadow transform transition-all duration-300 hover:scale-105 hover:bg-green-800 cursor-pointer"
+                className="px-3 py-2 text-sm rounded-lg bg-green-700 text-white font-semibold flex items-center justify-between w-36 shadow transition-all duration-300 hover:scale-105 hover:bg-green-800"
               >
                 Ordenar <ChevronDown className="w-4 h-4 ml-1" />
               </button>
@@ -188,38 +175,51 @@ export default function TiendaPage() {
             </div>
           </div>
 
-          {/* PRODUCTOS */}
-          <div className="flex-1 grid grid-cols-2 gap-4 w-full p-3 items-start justify-items-center">
-            {productosOrdenados.map((prod) => (
-              <div
-                key={prod.id}
-                className="m-1 bg-gradient-to-br from-white to-gray-50 border border-gray-300 rounded-3xl flex flex-col items-center w-full max-w-[300px] transform transition-transform duration-300 hover:scale-105"
-              >
-                <div className="w-full aspect-square bg-gray-100 flex items-center justify-center overflow-hidden rounded-t-3xl">
-                  {prod.imagen ? (
-                    <img
-                      src={prod.imagen}
-                      alt={prod.nombre}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <span className="text-gray-400 text-xs">Sin imagen</span>
-                  )}
-                </div>
+          {/* GRID ANIMADO */}
+          <motion.div
+            layout
+            className="flex-1 grid grid-cols-2 gap-4 w-full p-3 items-start justify-items-center"
+          >
+            <AnimatePresence>
+              {productosOrdenados.map((prod) => (
+                <motion.div
+                  key={prod.id}
+                  layout
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.35 }}
+                  className="m-1 bg-gradient-to-br from-white to-gray-50 border border-gray-300 rounded-3xl flex flex-col items-center w-full max-w-[300px]"
+                >
+                  <div className="w-full aspect-square bg-gray-100 flex items-center justify-center overflow-hidden rounded-t-3xl">
+                    {prod.imagen ? (
+                      <img
+                        src={prod.imagen}
+                        alt={prod.nombre}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <span className="text-gray-400 text-xs">Sin imagen</span>
+                    )}
+                  </div>
 
-                <div className="w-full bg-gray-800 p-2 flex flex-col items-center justify-between rounded-b-3xl text-center text-white">
-                  <h4 className="text-xs sm:text-sm font-semibold text-gray-100">{prod.nombre}</h4>
-                  <p className="text-[10px] sm:text-xs text-gray-50 mt-1">{prod.descripcion}</p>
-                  <button
-                    onClick={() => abrirModal(prod)}
-                    className="mt-2 w-full text-xs sm:text-sm bg-blue-600 hover:bg-blue-700 text-white py-1.5 rounded-lg transition-colors duration-300 cursor-pointer"
-                  >
-                    Añadir al carrito
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+                  <div className="w-full bg-gray-800 p-2 flex flex-col items-center justify-between rounded-b-3xl text-center text-white">
+                    <h4 className="text-xs sm:text-sm font-semibold">
+                      {prod.nombre}
+                    </h4>
+                    <p className="text-[10px] sm:text-xs mt-1">
+                      {prod.descripcion}
+                    </p>
+                    <button
+                      onClick={() => abrirModal(prod)}
+                      className="mt-2 w-full text-xs sm:text-sm bg-blue-600 hover:bg-blue-700 text-white py-1.5 rounded-lg transition-colors duration-300"
+                    >
+                      Añadir al carrito
+                    </button>
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
         </>
       )}
 
