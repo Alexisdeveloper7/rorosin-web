@@ -1,6 +1,6 @@
 import { connectDB } from '../../../connectDB.js';
 
-export const dynamic = "force-dynamic"; // 👈 evita el caché en Vercel
+export const dynamic = "force-dynamic"; // evita caché en Vercel
 
 export async function GET() {
   let client;
@@ -27,6 +27,7 @@ export async function GET() {
     const catMap = new Map();
 
     for (const row of rows) {
+      // Categoría
       if (!catMap.has(row.idcategoria)) {
         catMap.set(row.idcategoria, {
           id: row.idcategoria,
@@ -36,25 +37,44 @@ export async function GET() {
       }
       const cat = catMap.get(row.idcategoria);
 
-      let sub = cat.subcategorias.find(sc => sc.id === row.idsubcategoria);
-      if (!sub && row.idsubcategoria != null) {
-        sub = { id: row.idsubcategoria, nombre: row.nombresubcategoria, productos: [] };
-        cat.subcategorias.push(sub);
+      // Subcategoría (solo si existe)
+      let sub;
+      if (row.idsubcategoria != null) {
+        sub = cat.subcategorias.find(sc => sc.id === row.idsubcategoria);
+        if (!sub) {
+          sub = { id: row.idsubcategoria, nombre: row.nombresubcategoria, productos: [] };
+          cat.subcategorias.push(sub);
+        }
       }
 
-      let prod = sub?.productos.find(p => p.id === row.idproducto);
-      if (!prod && row.idproducto != null) {
-        prod = { id: row.idproducto, nombre: row.nombreproducto, descripcion: row.descripcionproducto, imagen: row.imagen, variaciones: [] };
-        sub.productos.push(prod);
+      // Producto (solo si existe subcategoría y producto)
+      let prod;
+      if (sub && row.idproducto != null) {
+        prod = sub.productos.find(p => p.id === row.idproducto);
+        if (!prod) {
+          prod = {
+            id: row.idproducto,
+            nombre: row.nombreproducto,
+            descripcion: row.descripcionproducto,
+            imagen: row.imagen,
+            variaciones: []
+          };
+          sub.productos.push(prod);
+        }
       }
 
-      let vari = prod?.variaciones.find(v => v.id === row.idvariacion);
-      if (!vari && row.idvariacion != null) {
-        vari = { id: row.idvariacion, nombre: row.nombrevariacion, medidas: {} };
-        prod.variaciones.push(vari);
+      // Variación (solo si existe producto y variación)
+      let vari;
+      if (prod && row.idvariacion != null) {
+        vari = prod.variaciones.find(v => v.id === row.idvariacion);
+        if (!vari) {
+          vari = { id: row.idvariacion, nombre: row.nombrevariacion, medidas: {} };
+          prod.variaciones.push(vari);
+        }
       }
 
-      if (row.idmedida != null) {
+      // Medida (solo si existe variación y medida)
+      if (vari && row.idmedida != null) {
         vari.medidas[row.nombremedida] = row.valor;
       }
     }

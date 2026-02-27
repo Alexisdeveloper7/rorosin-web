@@ -1,14 +1,25 @@
+"use client"; // necesario porque vamos a usar useUser()
+
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import AppProvider from "@/components/AppProvider";
-import { UserProvider } from "@/context/UserContext";
+import { UserProvider, useUser } from "@/context/UserContext";
 import { CarritoProvider } from "@/context/CarritoContext";
+import GlobalOverlay from "@/components/GlobalOverlay";
 
-export const metadata = {
-  title: "My App",
-  description: "Auth modal system",
-};
+// Componente interno para manejar overlay global
+function GlobalOverlayWrapper() {
+  const { loginModalOpen, signupModalOpen, closeLoginModal, closeSignupModal } = useUser();
+  const overlayVisible = loginModalOpen || signupModalOpen;
+
+  const handleClickOverlay = () => {
+    if (loginModalOpen) closeLoginModal();
+    if (signupModalOpen) closeSignupModal();
+  };
+
+  return <GlobalOverlay isVisible={overlayVisible} onClick={handleClickOverlay} />;
+}
 
 export default function RootLayout({ children }) {
   return (
@@ -17,12 +28,11 @@ export default function RootLayout({ children }) {
         <AppProvider>
           <UserProvider>
             <CarritoProvider>
+              {/* Overlay global */}
+              <GlobalOverlayWrapper />
+
               <Header />
-
-              <main className="flex flex-1 flex-col">
-                {children}
-              </main>
-
+              <main className="flex flex-1 flex-col">{children}</main>
               <Footer />
             </CarritoProvider>
           </UserProvider>

@@ -14,7 +14,7 @@ export default function HeaderBare() {
   const pathname = usePathname();
 
   const [activePanel, setActivePanel] = useState(null);
-  const [showHeader, setShowHeader] = useState(true);
+  const [showHeader, setShowHeader] = useState(true); // Siempre visible al cargar
 
   const [loginOpen, setLoginOpen] = useState(false);
   const [signupOpen, setSignupOpen] = useState(false);
@@ -131,6 +131,8 @@ export default function HeaderBare() {
       <PanelRight
         isOpen={activePanel === "right"}
         onClose={() => setActivePanel(null)}
+        abrirLogin={abrirLogin}     // ✅ Agregado
+        abrirSignup={abrirSignup}   // ✅ Agregado si lo usas
       />
 
       {/* MODAL LOGIN */}

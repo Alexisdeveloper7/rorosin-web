@@ -5,8 +5,13 @@ export const dynamic = "force-dynamic";
 
 export default async function TiendaPage() {
   try {
-    // Fetch interno usando ruta relativa
-    const res = await fetch("/api/productos", { cache: "no-store" });
+    // Detectar la URL base según si estamos en Vercel o en local
+    const baseUrl = process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : "http://localhost:3000";
+
+    // Fetch a la API de productos con cache desactivada
+    const res = await fetch(`${baseUrl}/api/productos`, { cache: "no-store" });
 
     if (!res.ok) {
       throw new Error("Error al obtener productos");
@@ -26,7 +31,7 @@ export default async function TiendaPage() {
       </div>
     );
   } catch (error) {
-    // Manejo simple de errores para evitar que el build falle
+    // Mostrar error de forma amigable sin que falle el build
     return (
       <div className="flex-1 flex flex-col bg-white items-center justify-center">
         <h1 className="text-2xl text-red-600 font-bold">
