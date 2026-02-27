@@ -196,7 +196,7 @@ export function CarritoProvider({ children }) {
       return { success: true, message: data.message || "✅ Pedido realizado correctamente" };
     } catch (error) {
       console.error("Error confirmando pedido:", error);
-      return { success: false, message: error.message || "❌ Error inesperado al confirmar pedido" };
+      return { success: false, message: error.message || "❌ Error al confirmar pedido" };
     }
   };
 

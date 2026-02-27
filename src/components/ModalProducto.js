@@ -54,7 +54,7 @@ export default function ModalProducto({ producto, onCerrar }) {
     setLoading(false);
 
     if (exito) {
-      setMensajeExito("Producto agregado correctamente ✅");
+      setMensajeExito("Producto agregado correctamente✅");
       setTimeout(() => onCerrar(), 1500);
     } else {
       setMensajeExito("No se pudo agregar el producto ❌");

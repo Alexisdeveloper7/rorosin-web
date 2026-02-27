@@ -18,14 +18,14 @@ export async function POST(req) {
     );
 
     if (result.rows.length === 0) {
-      return NextResponse.json({ success: false, message: "Credenciales incorrectas" }, { status: 401 });
+      return NextResponse.json({ success: false, message: "Usuario o contraseña incorrectos" }, { status: 401 });
     }
 
     const user = result.rows[0];
     const ok = await bcrypt.compare(contrasena, user.contrasena);
 
     if (!ok) {
-      return NextResponse.json({ success: false, message: "Credenciales incorrectas" }, { status: 401 });
+      return NextResponse.json({ success: false, message: "Usuario o contraseña incorrectos" }, { status: 401 });
     }
 
     // Crear token JWT

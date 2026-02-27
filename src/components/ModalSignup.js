@@ -70,7 +70,7 @@ export default function ModalSignup({ isOpen, onClose, onOpenLogin }) {
 
       // ✅ Cuenta creada: cerrar signup y abrir login con mensaje
       onClose();
-      onOpenLogin("Cuenta creada, ahora inicia sesión");
+      onOpenLogin("Cuenta creada con éxito. Inicia sesión para continuar.");
 
       // 🔹 Limpiar formulario y errores
       setForm({ usuario: "", contrasena: "" });
