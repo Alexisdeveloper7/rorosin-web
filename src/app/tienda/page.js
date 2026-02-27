@@ -34,12 +34,8 @@ export default function TiendaPage() {
   useEffect(() => {
     const fetchProductos = async () => {
       try {
-        const res = await fetch("/api/productos", {
-          cache: "no-store",
-        });
-
+        const res = await fetch("/api/productos", { cache: "no-store" });
         if (!res.ok) throw new Error("Error al obtener productos");
-
         const data = await res.json();
         setCategorias(data);
       } catch (err) {
@@ -115,10 +111,21 @@ export default function TiendaPage() {
       </h1>
 
       {loadingProductos && (
-        <div className="max-w-md mx-auto p-4 space-y-4">
-          <p className="text-center text-gray-400 animate-pulse">
+        <div className="max-w-md mx-auto p-4 space-y-2">
+          <p className="text-center text-gray-600 font-semibold animate-pulse">
             Cargando productos...
           </p>
+          {/* Skeleton de 1 card */}
+          <div className="flex justify-center">
+            <div className="w-full max-w-[300px] bg-white border border-gray-300 rounded-3xl overflow-hidden animate-pulse">
+              <div className="w-full aspect-square bg-gray-200" />
+              <div className="p-4 space-y-2">
+                <div className="h-4 bg-gray-300 rounded w-3/4" />
+                <div className="h-3 bg-gray-300 rounded w-full" />
+                <div className="h-6 bg-gray-300 rounded w-full mt-2" />
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
