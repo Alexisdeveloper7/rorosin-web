@@ -74,7 +74,7 @@ export default function PanelRight({
             exit={{ opacity: 0 }}
           >
             <motion.div
-              className="w-80 h-full bg-white p-6 shadow-xl flex flex-col relative"
+              className="w-80 h-full bg-white p-6 shadow-xl flex flex-col relative rounded-tl-2xl"
               onClick={(e) => e.stopPropagation()}
               initial={{ x: 300 }}
               animate={{ x: 0 }}
@@ -228,13 +228,14 @@ export default function PanelRight({
                       >
                         Ver pedidos realizados
                       </button>
-
-                      <div className="flex justify-center mt-4">
-                        <div className="h-1 w-16 bg-blue-600 rounded-full"></div>
-                      </div>
                     </div>
                   </>
                 )}
+              </div>
+
+              {/* Línea azul siempre al fondo, pegada al panel */}
+              <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2">
+                <div className="h-1 w-16 bg-blue-600 rounded-full"></div>
               </div>
             </motion.div>
           </motion.div>

@@ -92,7 +92,7 @@ export default function PedidosPage() {
       <div className="max-w-4xl mx-auto p-6 space-y-4 text-center">
         <h1 className="text-2xl font-bold mb-6 text-blue-600">Mis pedidos</h1>
         <p className="mb-4 text-green-800 bg-green-50 p-4 border rounded-lg">
-          Aún no tienes pedidos. Agrega productos al carrito y confirma tu primer pedido.
+          Aún no tienes pedidos realizados. Agrega productos al carrito y confirma tu primer pedido.
         </p>
         <div className="flex justify-center gap-4 flex-wrap">
           <button

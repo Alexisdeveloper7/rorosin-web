@@ -73,10 +73,11 @@ export default function ModalProducto({ producto, onCerrar }) {
       <div
         className="bg-white rounded-md p-4 w-11/12 max-w-xs text-center shadow-lg relative flex flex-col max-h-[90vh]"
       >
-        {/* Botón X cerrar grande y rojo */}
+        {/* Botón X cerrar grande y rojo con hover mejorado */}
         <button
           onClick={onCerrar}
-          className="absolute top-2 right-2 w-8 h-8 flex items-center justify-center rounded-full bg-red-600 hover:bg-red-500 text-white text-xl font-bold cursor-pointer"
+          className="absolute top-2 right-2 w-8 h-8 flex items-center justify-center rounded-full bg-red-900 text-white text-xl font-bold cursor-pointer
+                     hover:bg-red-400 hover:scale-110 transition-transform duration-200"
           title="Cerrar"
         >
           ×
