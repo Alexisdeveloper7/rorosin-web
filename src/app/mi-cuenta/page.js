@@ -109,7 +109,7 @@ export default function MiCuentaPage() {
 
   return (
     <div className="flex flex-1 items-center justify-center bg-gray-100 px-3 py-6">
-      <div className="w-full max-w-xs sm:max-w-md bg-white shadow-xl rounded-xl p-5 space-y-5">
+      <div className="w-full max-w-xl sm:max-w-2xl bg-white shadow-xl rounded-xl p-5 space-y-5">
         <h1 className="text-lg sm:text-xl font-bold text-center mb-4">Mi Cuenta</h1>
 
         {(loading || cargandoDatos) && <p className="text-center text-gray-500 text-sm animate-pulse">Cargando...</p>}
