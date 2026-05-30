@@ -38,10 +38,10 @@ export default function Home() {
 
             <h1 className="text-[2.45rem] sm:text-5xl md:text-7xl font-semibold leading-[1.08] md:leading-tight tracking-tight">
               Desarrollo sitios web,
-<br className="hidden sm:block" />
-<span className="text-white/90">
-  {" "}páginas de presentación y tiendas online
-</span>
+              <br className="hidden sm:block" />
+              <span className="text-white/90">
+                {" "}páginas de presentación y tiendas online
+              </span>
             </h1>
 
             <p className="mt-5 text-white/65 text-[15px] md:text-lg max-w-2xl leading-relaxed">
@@ -124,18 +124,23 @@ export default function Home() {
             <div className="p-5 md:p-7 rounded-2xl bg-[#2a2a2a] border border-white/5 hover:bg-[#313131] transition">
               <div className="flex items-center justify-between gap-4">
                 <h3 className="text-lg font-medium">
-                  Sistemas web
+                  Próximamente
                 </h3>
 
                 <span className="text-xs text-white/40 border border-white/10 rounded-full px-3 py-1">
-                  Web apps
+                  En desarrollo
                 </span>
               </div>
 
               <p className="mt-3 text-white/60 text-sm md:text-base leading-relaxed">
-                Sistemas con usuarios, paneles administrativos, base de datos y
-                funciones hechas a la medida del proyecto.
+                Estoy preparando nuevos proyectos web con usuarios, paneles
+                administrativos, base de datos y funciones hechas a la medida.
+                Esta sección se actualizará con próximos trabajos reales.
               </p>
+
+              <span className="mt-5 inline-block text-sm text-white/35">
+                Nuevo proyecto pronto →
+              </span>
             </div>
           </div>
         </div>

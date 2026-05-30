@@ -169,7 +169,6 @@ export default function CarritoPage() {
         );
       } else {
         setLocalItems((prev) => [
-          ...prev,
           {
             id_item: item.id,
             producto_nombre: item.producto_nombre,
@@ -178,6 +177,7 @@ export default function CarritoPage() {
             categoria: item.categoria,
             cantidad: 1,
           },
+          ...prev,
         ]);
       }
 
@@ -407,32 +407,26 @@ export default function CarritoPage() {
 
   return (
     <div className="w-full px-4 py-6">
-
       <h1 className="text-4xl font-extrabold text-center text-blue-600 mb-6">
         Tu Carrito
       </h1>
 
       {user && (
         <div className="flex flex-col md:flex-row gap-6 max-w-6xl mx-auto">
-
           {/* TOTAL ARRIBA MOBILE */}
-          {/* TOTAL ARRIBA MOBILE */}
-{!isEmpty && (
-  <div className="md:hidden">
-    <ResumenTotal
-      total={total}
-      onConfirm={() => setModalOpen(true)}
-    />
-  </div>
-)}
+          {!isEmpty && (
+            <div className="md:hidden">
+              <ResumenTotal
+                total={total}
+                onConfirm={() => setModalOpen(true)}
+              />
+            </div>
+          )}
 
           {/* CARRITO */}
           <div className="flex-1">
-
             {isEmpty ? (
-
               <div className="flex flex-col items-center justify-center py-14 text-center">
-
                 <div className="w-24 h-24 rounded-full bg-gray-100 flex items-center justify-center mb-5">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -460,7 +454,6 @@ export default function CarritoPage() {
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-3 mt-6 w-full sm:w-auto">
-
                   <button
                     onClick={() =>
                       router.push("/quickcart/tienda")
@@ -478,32 +471,24 @@ export default function CarritoPage() {
                   >
                     Ver pedidos
                   </button>
-
                 </div>
               </div>
-
             ) : (
-
               <div className="bg-white border border-gray-200 rounded-2xl p-4 md:p-5">
-  <ListaCarrito
-    items={localItems}
-    loading={loadingListaCarrito}
-    onUpdate={handleUpdate}
-    onDelete={handleDelete}
-  />
-</div>
+                <ListaCarrito
+                  items={localItems}
+                  loading={loadingListaCarrito}
+                  onUpdate={handleUpdate}
+                  onDelete={handleDelete}
+                />
+              </div>
             )}
-
-      
-
           </div>
 
           {/* SIDEBAR PC */}
           <div className="hidden md:flex w-[320px] flex-col gap-4">
-
             {!isEmpty && (
               <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm flex flex-col gap-4">
-
                 <div className="flex justify-between items-center">
                   <span className="font-bold text-lg">
                     Total
@@ -524,26 +509,25 @@ export default function CarritoPage() {
             )}
 
             <ProductosRecomendados
-  relatedProducts={relatedProducts}
-  addingId={addingId}
-  addedId={addedId}
-  handleAddRecommended={handleAddRecommended}
-/>
-
+              relatedProducts={relatedProducts}
+              addingId={addingId}
+              addedId={addedId}
+              handleAddRecommended={handleAddRecommended}
+            />
           </div>
         </div>
       )}
 
       {/* RECOMENDADOS MOBILE */}
       {user && (
-  <ProductosRecomendados
-    mobile
-    relatedProducts={relatedProducts}
-    addingId={addingId}
-    addedId={addedId}
-    handleAddRecommended={handleAddRecommended}
-  />
-)}
+        <ProductosRecomendados
+          mobile
+          relatedProducts={relatedProducts}
+          addingId={addingId}
+          addedId={addedId}
+          handleAddRecommended={handleAddRecommended}
+        />
+      )}
 
       <ConfirmarPedidoModal
         isOpen={modalOpen}

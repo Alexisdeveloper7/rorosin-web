@@ -3,12 +3,16 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { FaBars, FaShoppingCart } from "react-icons/fa";
+
 import PanelLeft from "./PanelLeft";
 import PanelRight from "./PanelRight";
 import ModalLogin from "./ModalLogin";
 import ModalSignup from "./ModalSignup";
 import GlobalOverlay from "./GlobalOverlay";
+import ConfirmarPedidoModal from "./ConfirmarPedidoModal";
+
 import { useUser } from "@/context/UserContext";
+import { useCarrito } from "@/context/CarritoContext";
 import Toast from "@/components/Toast";
 
 export default function Header() {
@@ -18,6 +22,7 @@ export default function Header() {
   const [activePanel, setActivePanel] = useState(null);
   const [showHeader, setShowHeader] = useState(true);
   const [scrollControlActive, setScrollControlActive] = useState(false);
+  const [confirmarPedidoOpen, setConfirmarPedidoOpen] = useState(false);
 
   const lastScroll = useRef(0);
 
@@ -30,12 +35,19 @@ export default function Header() {
     closeLoginModal,
   } = useUser();
 
+  const { confirmarPedido } = useCarrito();
+
   // FORCE SHOW when modals or panels are open
   useEffect(() => {
-    if (loginModalOpen || signupModalOpen || activePanel) {
+    if (
+      loginModalOpen ||
+      signupModalOpen ||
+      activePanel ||
+      confirmarPedidoOpen
+    ) {
       setShowHeader(true);
     }
-  }, [loginModalOpen, signupModalOpen, activePanel]);
+  }, [loginModalOpen, signupModalOpen, activePanel, confirmarPedidoOpen]);
 
   // OBSERVER (activates scroll logic only after trigger leaves viewport)
   useEffect(() => {
@@ -62,7 +74,14 @@ export default function Header() {
   // SCROLL LOGIC (only active after trigger disappears)
   useEffect(() => {
     const handleScroll = () => {
-      if (loginModalOpen || signupModalOpen || activePanel) return;
+      if (
+        loginModalOpen ||
+        signupModalOpen ||
+        activePanel ||
+        confirmarPedidoOpen
+      ) {
+        return;
+      }
 
       if (!scrollControlActive) {
         setShowHeader(true);
@@ -80,9 +99,18 @@ export default function Header() {
       lastScroll.current = scrollY;
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("scroll", handleScroll, {
+      passive: true,
+    });
+
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [loginModalOpen, signupModalOpen, activePanel, scrollControlActive]);
+  }, [
+    loginModalOpen,
+    signupModalOpen,
+    activePanel,
+    confirmarPedidoOpen,
+    scrollControlActive,
+  ]);
 
   const togglePanel = (panel) => {
     setActivePanel((prev) => (prev === panel ? null : panel));
@@ -91,6 +119,7 @@ export default function Header() {
   const irAQuickCart = () => {
     setActivePanel(null);
     closeLoginModal();
+    setConfirmarPedidoOpen(false);
     setShowHeader(true);
 
     if (pathname === "/quickcart") {
@@ -105,9 +134,25 @@ export default function Header() {
   };
 
   const abrirLogin = (msg = "") => openLoginModal(msg);
+
   const abrirSignup = () => openSignupModal();
+
   const signupExitoso = () =>
     openLoginModal("Cuenta creada correctamente");
+
+  const abrirConfirmarPedido = () => {
+    setActivePanel(null);
+
+    setTimeout(() => {
+      setConfirmarPedidoOpen(true);
+    }, 300);
+  };
+
+  const cerrarTodo = () => {
+    setActivePanel(null);
+    setConfirmarPedidoOpen(false);
+    closeLoginModal();
+  };
 
   const overlayVisible =
     activePanel !== null || loginModalOpen || signupModalOpen;
@@ -117,10 +162,7 @@ export default function Header() {
       {/* GLOBAL OVERLAY */}
       <GlobalOverlay
         isVisible={overlayVisible}
-        onClick={() => {
-          setActivePanel(null);
-          closeLoginModal();
-        }}
+        onClick={cerrarTodo}
       />
 
       {/* HEADER */}
@@ -175,6 +217,14 @@ export default function Header() {
         onClose={() => setActivePanel(null)}
         abrirLogin={abrirLogin}
         abrirSignup={abrirSignup}
+        abrirConfirmarPedido={abrirConfirmarPedido}
+      />
+
+      {/* CONFIRMAR PEDIDO MODAL */}
+      <ConfirmarPedidoModal
+        isOpen={confirmarPedidoOpen}
+        onClose={() => setConfirmarPedidoOpen(false)}
+        onConfirm={confirmarPedido}
       />
 
       {/* LOGIN MODAL */}
@@ -185,6 +235,7 @@ export default function Header() {
         onOpenSignup={abrirSignup}
         onLoginSuccess={() => {
           openLoginModal("Sesión iniciada correctamente");
+
           setTimeout(() => {
             closeLoginModal();
             setActivePanel("left");
