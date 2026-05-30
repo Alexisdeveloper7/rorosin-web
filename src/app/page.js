@@ -29,11 +29,11 @@ export default function Home() {
       <PortfolioHeader />
 
       {/* HERO */}
-      <section className="min-h-[68vh] md:min-h-[78vh] flex items-center px-5 md:px-6 bg-[#242424] pt-24 pb-10 md:pb-12">
+      <section className="min-h-[68vh] md:min-h-[78vh] flex items-center px-5 md:px-6 bg-[#242424] pt-24 pb-8 md:pb-12">
         <div className="mx-auto max-w-6xl w-full">
           <div className="max-w-4xl">
             <p className="mb-4 text-xs md:text-sm text-white/45 tracking-[0.22em] uppercase">
-              Web Developer • Freelance
+              Desarrollador web • Freelancer
             </p>
 
             <h1 className="text-[2.45rem] sm:text-5xl md:text-7xl font-semibold leading-[1.08] md:leading-tight tracking-tight">
@@ -45,9 +45,8 @@ export default function Home() {
             </h1>
 
             <p className="mt-5 text-white/65 text-[15px] md:text-lg max-w-2xl leading-relaxed">
-              Creo, mejoro y doy mantenimiento a proyectos web. Trabajo con
-              páginas profesionales, tiendas online, sistemas administrativos y
-              aplicaciones conectadas a base de datos.
+              Creo, mejoro y doy mantenimiento a proyectos web, desde páginas profesionales hasta sistemas administrativos conectados a base de datos, creando una experiencia clara para cada usuario.
+
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row gap-3 md:gap-4">
@@ -68,9 +67,7 @@ export default function Home() {
               </button>
             </div>
 
-            <div className="mt-7 text-white/35 text-xs md:text-sm leading-relaxed">
-              Frontend • Backend • React • Next.js • Node.js • Database
-            </div>
+            
           </div>
         </div>
       </section>

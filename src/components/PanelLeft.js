@@ -84,7 +84,7 @@ export default function PanelLeft({
             </div>
 
             {/* BODY */}
-            <nav className="flex-1 overflow-hidden px-4 py-3 space-y-2.5 bg-[#f5f5f7]">
+            <nav className="flex-1 overflow-y-auto px-4 py-3 space-y-2.5 bg-[#f5f5f7]">
               {[
                 { name: "Inicio", path: "/quickcart" },
                 { name: "Tienda", path: "/quickcart/tienda" },

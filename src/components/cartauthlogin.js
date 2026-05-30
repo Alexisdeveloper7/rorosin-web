@@ -79,7 +79,6 @@ export default function CartAuthLogin({
             flex items-center justify-center
             px-4
           "
-          onClick={cerrarModal}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
