@@ -14,6 +14,53 @@ export default function CardProducto({
   const rating = prod?.rating > 0 ? prod.rating : null;
   const reviews = prod?.reviews > 0 ? prod.reviews : null;
 
+  const convertirSingular = (texto) => {
+    if (!texto) return "Sin categoría";
+
+    const categoria = texto.trim();
+
+    const categoriasEspeciales = {
+      "Celulares": "Celular",
+      "Audífonos": "Audífono",
+      "Audífonos de diadema": "Audífono de diadema",
+      "Headsets": "Audífono de diadema",
+      "Laptops": "Laptop",
+      "Computadoras": "Computadora",
+      "Teclados": "Teclado",
+      "Mouses": "Mouse",
+      "Ratones": "Mouse",
+      "Monitores": "Monitor",
+      "Tablets": "Tablet",
+      "Cámaras": "Cámara",
+      "Bocinas": "Bocina",
+      "Consolas": "Consola",
+      "Accesorios": "Accesorio",
+      "Relojes": "Reloj",
+      "Impresoras": "Impresora",
+    };
+
+    if (categoriasEspeciales[categoria]) {
+      return categoriasEspeciales[categoria];
+    }
+
+    if (categoria.endsWith("es")) {
+      return categoria.slice(0, -2);
+    }
+
+    if (categoria.endsWith("s")) {
+      return categoria.slice(0, -1);
+    }
+
+    return categoria;
+  };
+
+  const categoria = convertirSingular(
+    prod.categoria_nombre ||
+      prod.nombre_categoria ||
+      prod.categoria ||
+      prod.tipo_categoria
+  );
+
   const isLoading = loading;
   const isSuccess = success;
 
@@ -60,9 +107,13 @@ export default function CardProducto({
 
       {/* INFO */}
       <div className="p-2 flex flex-col flex-1">
+        {/* CATEGORY */}
+        <p className="mb-1 text-[10px] font-medium text-indigo-600 truncate">
+          {categoria}
+        </p>
 
         {/* TITLE */}
-        <h4 className="text-xs font-medium text-gray-900 line-clamp-2 min-h-[28px]">
+        <h4 className="text-[13px] font-semibold text-gray-950 line-clamp-2 min-h-[32px] leading-snug">
           {prod.nombre}
         </h4>
 
@@ -91,7 +142,6 @@ export default function CardProducto({
 
         {/* BUTTONS */}
         <div className="mt-3 flex flex-col gap-1.5">
-
           {/* ADD TO CART */}
           <button
             disabled={disabled}
@@ -111,7 +161,6 @@ export default function CardProducto({
           >
             Ver detalles
           </button>
-
         </div>
       </div>
     </motion.div>

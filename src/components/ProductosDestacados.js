@@ -26,7 +26,7 @@ export default function CategoriasDestacadas() {
     },
     {
       img: "/images/4.png",
-      nombre: "Headsets",
+      nombre: "Audífonos de diadema",
       categoria_id: 4,
       descripcion: "Audio envolvente con micrófono de alta calidad.",
     },
