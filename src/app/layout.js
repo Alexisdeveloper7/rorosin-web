@@ -57,6 +57,9 @@ export default function RootLayout({ children }) {
           property="og:image"
           content="https://alexissanchez.vercel.app/iconoo.png"
         />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="QuickCart" />
 
         <meta name="twitter:card" content="summary_large_image" />
 
