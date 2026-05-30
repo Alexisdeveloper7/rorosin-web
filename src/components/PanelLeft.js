@@ -1,29 +1,31 @@
-'use client';
+"use client";
 
-import { useUser } from '../context/UserContext';
-import { useRouter } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
-import { X } from 'lucide-react';
-import { useEffect } from 'react';
+import { useUser } from "../context/UserContext";
+import { useToast } from "@/context/ToastContext";
+import { useRouter } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
+import { X } from "lucide-react";
+import { useEffect } from "react";
 
 export default function PanelLeft({
   isOpen,
   onClose,
   abrirLogin,
-  abrirSignup
+  abrirSignup,
 }) {
   const { user, logout, loading } = useUser();
+  const { showToast } = useToast();
   const router = useRouter();
 
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     }
 
     return () => {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     };
   }, [isOpen]);
 
@@ -54,7 +56,7 @@ export default function PanelLeft({
             }}
             style={{
               boxShadow:
-                '0 20px 60px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.7)',
+                "0 20px 60px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.7)",
             }}
           >
             {/* HEADER */}
@@ -64,7 +66,7 @@ export default function PanelLeft({
                 className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white hover:bg-[#f5f5f7] active:scale-95 transition-all duration-200 flex items-center justify-center cursor-pointer border border-[#ececec]"
                 style={{
                   boxShadow:
-                    '0 4px 12px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.8)',
+                    "0 4px 12px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.8)",
                 }}
               >
                 <X size={15} strokeWidth={2.7} className="text-[#6e6e73]" />
@@ -84,12 +86,15 @@ export default function PanelLeft({
             {/* BODY */}
             <nav className="flex-1 overflow-hidden px-4 py-3 space-y-2.5 bg-[#f5f5f7]">
               {[
-                { name: 'Inicio', path: '/quickcart' },
-                { name: 'Tienda', path: '/quickcart/tienda' },
-                { name: 'Mi carrito', path: '/quickcart/carrito' },
-                { name: 'Mis pedidos', path: '/quickcart/pedidos' },
-                { name: 'Acerca de la empresa', path: '/quickcart/sobrenosotros' },
-                { name: 'Ver Portafolio', path: '/' },
+                { name: "Inicio", path: "/quickcart" },
+                { name: "Tienda", path: "/quickcart/tienda" },
+                { name: "Mi carrito", path: "/quickcart/carrito" },
+                { name: "Mis pedidos", path: "/quickcart/pedidos" },
+                {
+                  name: "Acerca de la empresa",
+                  path: "/quickcart/sobrenosotros",
+                },
+                { name: "Ver Portafolio", path: "/" },
               ].map((item) => (
                 <button
                   key={item.name}
@@ -97,7 +102,7 @@ export default function PanelLeft({
                   className="w-full flex items-center justify-between px-4 py-3 rounded-[20px] text-[14px] font-semibold text-[#1d1d1f] bg-white hover:bg-[#f5f5f7] transition-all duration-200 cursor-pointer border border-[#ececec]"
                   style={{
                     boxShadow:
-                      '0 6px 20px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.9)',
+                      "0 6px 20px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.9)",
                   }}
                 >
                   <span>{item.name}</span>
@@ -110,7 +115,11 @@ export default function PanelLeft({
                     viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg"
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7"></path>
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M9 5l7 7-7 7"
+                    ></path>
                   </svg>
                 </button>
               ))}
@@ -129,7 +138,7 @@ export default function PanelLeft({
                     className="bg-white p-3 rounded-[20px] border border-[#ececec]"
                     style={{
                       boxShadow:
-                        '0 6px 20px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.9)',
+                        "0 6px 20px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.9)",
                     }}
                   >
                     <p className="text-[9px] font-semibold tracking-[0.16em] uppercase text-[#b0b0b5]">
@@ -142,11 +151,11 @@ export default function PanelLeft({
                   </div>
 
                   <button
-                    onClick={() => goTo('/quickcart/mi-cuenta')}
+                    onClick={() => goTo("/quickcart/mi-cuenta")}
                     className="w-full bg-white text-[#1d1d1f] py-2.5 rounded-[18px] text-[14px] font-semibold transition-all duration-200 cursor-pointer border border-[#e5e5ea] hover:bg-[#f5f5f7]"
                     style={{
                       boxShadow:
-                        '0 8px 24px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.9)',
+                        "0 8px 24px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.9)",
                     }}
                   >
                     Mi Cuenta
@@ -156,6 +165,7 @@ export default function PanelLeft({
                     onClick={() => {
                       logout();
                       onClose();
+                      showToast("Sesión cerrada correctamente", "success");
                     }}
                     className="w-full bg-[#fff1f1] text-[#ff453a] py-2.5 rounded-[18px] text-[14px] font-semibold hover:bg-[#ffe8e8] transition-all duration-200 cursor-pointer border border-[#ffd6d6]"
                   >
@@ -172,7 +182,7 @@ export default function PanelLeft({
                     className="w-full bg-white text-[#1d1d1f] py-2.5 rounded-[18px] text-[14px] font-semibold transition-all duration-200 cursor-pointer border border-[#e5e5ea] hover:bg-[#f5f5f7]"
                     style={{
                       boxShadow:
-                        '0 8px 24px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.9)',
+                        "0 8px 24px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.9)",
                     }}
                   >
                     Iniciar Sesión

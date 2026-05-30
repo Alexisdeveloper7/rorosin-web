@@ -112,11 +112,14 @@ export default function ModalLogin({
       }
 
       setSuccess("¡Sesión iniciada correctamente!");
-      showToast("Sesión iniciada correctamente ✅", "success");
 
       setTimeout(() => {
         setLoading(false);
         onClose();
+
+        setTimeout(() => {
+          showToast("Sesión iniciada correctamente ✅", "success");
+        }, 300);
       }, 1200);
     } catch {
       setErrorPass("Error del servidor");

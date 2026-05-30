@@ -7,21 +7,21 @@ export default function Toast() {
   const { toast } = useToast();
 
   return (
-    <div className="w-full flex justify-center pointer-events-none px-4">
-      <AnimatePresence mode="popLayout">
+    <div className="w-full flex justify-center pointer-events-none px-2">
+      <AnimatePresence>
         {toast && (
           <motion.div
             key="toast"
-            initial={{ y: -10, opacity: 0, scale: 0.98 }}
-            animate={{ y: 0, opacity: 1, scale: 1 }}
-            exit={{ y: -10, opacity: 0, scale: 0.98 }}
+            initial={{ y: -10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -10, opacity: 0 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
             className="
-              flex items-start gap-2
-              w-fit
+              inline-flex items-start justify-center gap-2
+              w-auto
               max-w-[92vw]
-              sm:max-w-md
-              px-5 py-3
+              min-w-fit
+              px-3 py-2.5
               bg-white
               border-b border-gray-100
               shadow-sm
@@ -30,6 +30,7 @@ export default function Toast() {
               leading-relaxed
               whitespace-normal
               break-words
+              text-center
             "
           >
             <span
