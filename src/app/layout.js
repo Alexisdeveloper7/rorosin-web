@@ -11,7 +11,7 @@ function UserOverlay() {
     loginModalOpen,
     signupModalOpen,
     closeLoginModal,
-    closeSignupModal
+    closeSignupModal,
   } = useUser();
 
   const overlayVisible = loginModalOpen || signupModalOpen;
@@ -31,31 +31,49 @@ function UserOverlay() {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className="h-full">
+    <html lang="es" className="h-full">
       <head>
-        <title>QuickCart</title>
+        <title>QuickCart | Miguel Alexis Sánchez Carranza</title>
 
         <meta
           name="description"
-          content="Tienda online de demostración creada para presentar mis habilidades en desarrollo web."
+          content="Tienda online demostrativa creada para mostrar una experiencia de compra moderna, intuitiva y fácil de usar."
         />
 
-        <meta property="og:title" content="QuickCart | Tienda online demo" />
+        <meta
+          property="og:title"
+          content="QuickCart | Miguel Alexis Sánchez Carranza"
+        />
+
         <meta
           property="og:description"
-          content="Tienda online de demostración creada para presentar mis habilidades en desarrollo web."
+          content="Tienda online demostrativa creada para mostrar una experiencia de compra moderna, intuitiva y fácil de usar."
         />
+
         <meta property="og:url" content="https://alexissanchez.vercel.app" />
         <meta property="og:type" content="website" />
-        <meta property="og:image" content="https://alexissanchez.vercel.app/iconoo.png" />
+
+        <meta
+          property="og:image"
+          content="https://alexissanchez.vercel.app/iconoo.png"
+        />
 
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="QuickCart | Tienda online demo" />
+
+        <meta
+          name="twitter:title"
+          content="QuickCart | Miguel Alexis Sánchez Carranza"
+        />
+
         <meta
           name="twitter:description"
-          content="Tienda online de demostración creada para presentar mis habilidades en desarrollo web."
+          content="Tienda online demostrativa creada para mostrar una experiencia de compra moderna, intuitiva y fácil de usar."
         />
-        <meta name="twitter:image" content="https://alexissanchez.vercel.app/iconoo.png" />
+
+        <meta
+          name="twitter:image"
+          content="https://alexissanchez.vercel.app/iconoo.png"
+        />
 
         <link rel="icon" href="/icone.png" />
       </head>
@@ -63,6 +81,7 @@ export default function RootLayout({ children }) {
       <body className="bg-re min-h-screen flex flex-col">
         <AppProvider>
           <UserOverlay />
+
           <main className="flex flex-1 flex-col">
             {children}
           </main>
