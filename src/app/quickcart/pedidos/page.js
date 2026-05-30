@@ -327,56 +327,6 @@ export default function PedidosPage() {
         Mis pedidos
       </h1>
 
-      {!isEmpty && (
-        <div className="max-w-6xl mx-auto mb-6">
-          <div className="bg-white border border-gray-200 rounded-2xl p-4 shadow-sm">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-              <div>
-                <p className="text-sm font-semibold text-gray-800">
-                  ¿Quieres seguir comprando?
-                </p>
-
-                <p className="text-xs text-gray-500 mt-1">
-                  Puedes volver a la tienda o revisar tu carrito cuando quieras.
-                </p>
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-3">
-                <button
-                  onClick={() => router.push("/quickcart")}
-                  className="
-                    bg-gray-900 hover:bg-black
-                    text-white
-                    px-5 py-3
-                    rounded-xl
-                    text-sm font-semibold
-                    transition
-                    shadow-sm
-                  "
-                >
-                  Ver tienda
-                </button>
-
-                <button
-                  onClick={() => router.push("/quickcart/carrito")}
-                  className="
-                    bg-blue-600 hover:bg-blue-700
-                    text-white
-                    px-5 py-3
-                    rounded-xl
-                    text-sm font-semibold
-                    transition
-                    shadow-sm
-                  "
-                >
-                  Ver carrito
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
       <div className="flex flex-col md:flex-row gap-6 max-w-6xl mx-auto">
         <div className="flex-1 space-y-4">
           {isEmpty ? (
@@ -420,116 +370,165 @@ export default function PedidosPage() {
               </div>
             </div>
           ) : (
-            localPedidos.map((p) => {
-              const totalProductos = getTotalProductos(p);
-              const totalPedido = getTotalPedido(p);
+            <>
+              {localPedidos.map((p) => {
+                const totalProductos = getTotalProductos(p);
+                const totalPedido = getTotalPedido(p);
 
-              return (
-                <div
-                  key={p.id}
-                  className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm"
-                >
-                  <div className="flex justify-between gap-4 p-4 border-b bg-gray-50">
-                    <div>
-                      <p className="text-[11px] text-gray-500">
-                        Pedido realizado
-                      </p>
+                return (
+                  <div
+                    key={p.id}
+                    className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm"
+                  >
+                    <div className="flex justify-between gap-4 p-4 border-b bg-gray-50">
+                      <div>
+                        <p className="text-[11px] text-gray-500">
+                          Pedido realizado
+                        </p>
 
-                      <p className="text-[12px] font-medium text-gray-800">
-                        {new Date(p.fecha).toLocaleString()}
-                      </p>
-                    </div>
+                        <p className="text-[12px] font-medium text-gray-800">
+                          {new Date(p.fecha).toLocaleString()}
+                        </p>
+                      </div>
 
-                    <div className="text-right">
-                      <p className="text-[11px] text-gray-500">Productos</p>
+                      <div className="text-right">
+                        <p className="text-[11px] text-gray-500">Productos</p>
 
-                      <p className="text-[13px] font-bold text-gray-800">
-                        {totalProductos}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="p-3 space-y-3">
-                    {p.items?.map((i, idx) => {
-                      const cantidad = Number(i.cantidad) || 1;
-                      const precioUnitario = getItemPrice(i);
-                      const subtotal = getItemSubtotal(i);
-
-                      return (
-                        <div
-                          key={`${p.id}-${i.id || i.producto_id || idx}`}
-                          className="flex gap-3 bg-gray-50 p-3 rounded-xl border border-gray-100"
-                        >
-                          <img
-                            src={i.imagen || "/placeholder.png"}
-                            className="w-14 h-14 object-contain bg-white border rounded-lg"
-                            alt={i.nombre_producto}
-                          />
-
-                          <div className="flex-1 min-w-0">
-                            <p className="text-[12px] font-semibold text-gray-800 truncate">
-                              {i.nombre_producto}
-                            </p>
-
-                            <div className="mt-1 space-y-0.5">
-                              <p className="text-[11px] text-gray-500">
-                                Cantidad:{" "}
-                                <span className="font-medium text-gray-700">
-                                  {cantidad}
-                                </span>
-                              </p>
-
-                              <p className="text-[11px] text-gray-500">
-                                Precio unitario:{" "}
-                                <span className="font-medium text-gray-700">
-                                  ${formatPrice(precioUnitario)}
-                                </span>
-                              </p>
-
-                              <p className="text-[11px] text-gray-500">
-                                Subtotal:{" "}
-                                <span className="font-bold text-blue-600">
-                                  ${formatPrice(subtotal)}
-                                </span>
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })}
-
-                    <div className="border-t pt-3 mt-2">
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <p className="text-[12px] font-semibold text-gray-800">
-                            Total del pedido
-                          </p>
-
-                          <p className="text-[11px] text-gray-500">
-                            {totalProductos}{" "}
-                            {totalProductos === 1
-                              ? "producto"
-                              : "productos"}{" "}
-                            en total
-                          </p>
-                        </div>
-
-                        <p className="text-[16px] font-extrabold text-blue-600">
-                          ${formatPrice(totalPedido)}
+                        <p className="text-[13px] font-bold text-gray-800">
+                          {totalProductos}
                         </p>
                       </div>
                     </div>
 
+                    <div className="p-3 space-y-3">
+                      {p.items?.map((i, idx) => {
+                        const cantidad = Number(i.cantidad) || 1;
+                        const precioUnitario = getItemPrice(i);
+                        const subtotal = getItemSubtotal(i);
+
+                        return (
+                          <div
+                            key={`${p.id}-${i.id || i.producto_id || idx}`}
+                            className="flex gap-3 bg-gray-50 p-3 rounded-xl border border-gray-100"
+                          >
+                            <img
+                              src={i.imagen || "/placeholder.png"}
+                              className="w-14 h-14 object-contain bg-white border rounded-lg"
+                              alt={i.nombre_producto}
+                            />
+
+                            <div className="flex-1 min-w-0">
+                              <p className="text-[12px] font-semibold text-gray-800 truncate">
+                                {i.nombre_producto}
+                              </p>
+
+                              <div className="mt-1 space-y-0.5">
+                                <p className="text-[11px] text-gray-500">
+                                  Cantidad:{" "}
+                                  <span className="font-medium text-gray-700">
+                                    {cantidad}
+                                  </span>
+                                </p>
+
+                                <p className="text-[11px] text-gray-500">
+                                  Precio unitario:{" "}
+                                  <span className="font-medium text-gray-700">
+                                    ${formatPrice(precioUnitario)}
+                                  </span>
+                                </p>
+
+                                <p className="text-[11px] text-gray-500">
+                                  Subtotal:{" "}
+                                  <span className="font-bold text-blue-600">
+                                    ${formatPrice(subtotal)}
+                                  </span>
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+
+                      <div className="border-t pt-3 mt-2">
+                        <div className="flex justify-between items-center">
+                          <div>
+                            <p className="text-[12px] font-semibold text-gray-800">
+                              Total del pedido
+                            </p>
+
+                            <p className="text-[11px] text-gray-500">
+                              {totalProductos}{" "}
+                              {totalProductos === 1
+                                ? "producto"
+                                : "productos"}{" "}
+                              en total
+                            </p>
+                          </div>
+
+                          <p className="text-[16px] font-extrabold text-blue-600">
+                            ${formatPrice(totalPedido)}
+                          </p>
+                        </div>
+                      </div>
+
+                      <button
+                        onClick={() => cancelarPedido(p.id)}
+                        className="text-[11px] text-red-500 hover:underline"
+                      >
+                        Cancelar pedido
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+
+              <div className="bg-white border border-gray-200 rounded-2xl p-4 shadow-sm">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                  <div>
+                    <p className="text-sm font-semibold text-gray-800">
+                      ¿Quieres seguir comprando?
+                    </p>
+
+                    <p className="text-xs text-gray-500 mt-1">
+                      Puedes volver a la tienda o revisar tu carrito cuando
+                      quieras.
+                    </p>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row gap-3">
                     <button
-                      onClick={() => cancelarPedido(p.id)}
-                      className="text-[11px] text-red-500 hover:underline"
+                      onClick={() => router.push("/quickcart")}
+                      className="
+                        bg-gray-900 hover:bg-black
+                        text-white
+                        px-5 py-3
+                        rounded-xl
+                        text-sm font-semibold
+                        transition
+                        shadow-sm
+                      "
                     >
-                      Cancelar pedido
+                      Ver tienda
+                    </button>
+
+                    <button
+                      onClick={() => router.push("/quickcart/carrito")}
+                      className="
+                        bg-blue-600 hover:bg-blue-700
+                        text-white
+                        px-5 py-3
+                        rounded-xl
+                        text-sm font-semibold
+                        transition
+                        shadow-sm
+                      "
+                    >
+                      Ver carrito
                     </button>
                   </div>
                 </div>
-              );
-            })
+              </div>
+            </>
           )}
         </div>
 

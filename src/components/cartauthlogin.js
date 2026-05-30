@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function CartAuthLogin({
@@ -7,28 +8,98 @@ export default function CartAuthLogin({
   onClose,
   onLoginClick,
 }) {
+  const [visible, setVisible] = useState(false);
+  const scrollYRef = useRef(0);
+
+  // =========================
+  // 🔥 CONTROL DE VISIBILIDAD + BLOQUEO SCROLL
+  // =========================
+  useEffect(() => {
+    if (isOpen) {
+      setVisible(true);
+
+      scrollYRef.current = window.scrollY;
+
+      const scrollBarWidth =
+        window.innerWidth - document.documentElement.clientWidth;
+
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollYRef.current}px`;
+      document.body.style.left = "0";
+      document.body.style.right = "0";
+      document.body.style.width = "100%";
+      document.body.style.overflow = "hidden";
+      document.body.style.paddingRight = `${scrollBarWidth}px`;
+    }
+
+    return () => {
+      const scrollY = scrollYRef.current;
+
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.left = "";
+      document.body.style.right = "";
+      document.body.style.width = "";
+      document.body.style.overflow = "";
+      document.body.style.paddingRight = "";
+
+      window.scrollTo(0, scrollY);
+    };
+  }, [isOpen]);
+
+  // =========================
+  // ❌ CERRAR CON ANIMACIÓN
+  // =========================
+  const cerrarModal = () => {
+    setVisible(false);
+
+    setTimeout(() => {
+      onClose();
+    }, 200);
+  };
+
+  // =========================
+  // ✅ LOGIN
+  // =========================
+  const handleLoginClick = () => {
+    setVisible(false);
+
+    setTimeout(() => {
+      onLoginClick();
+    }, 200);
+  };
+
   return (
-    <AnimatePresence>
-      {isOpen && (
+    <AnimatePresence mode="wait">
+      {visible && isOpen && (
         <motion.div
           className="
             fixed inset-0
-            bg-black/40 backdrop-blur-sm
+            z-[9999]
             flex items-center justify-center
-            z-[90]
+            px-4
           "
+          onClick={cerrarModal}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
+          {/* OVERLAY */}
           <motion.div
+            className="absolute inset-0 bg-black/60"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          />
+
+          {/* MODAL */}
+          <motion.div
+            onClick={(e) => e.stopPropagation()}
             initial={{ scale: 0.92, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.92, opacity: 0 }}
             transition={{
-              type: "spring",
-              stiffness: 260,
-              damping: 22,
+              duration: 0.2,
             }}
             className="
               relative
@@ -39,11 +110,12 @@ export default function CartAuthLogin({
               shadow-2xl
               p-6
               text-center
+              border-4 border-gray-200
             "
           >
             {/* CLOSE */}
             <button
-              onClick={onClose}
+              onClick={cerrarModal}
               className="
                 absolute top-4 right-4
                 w-8 h-8
@@ -78,7 +150,7 @@ export default function CartAuthLogin({
             {/* BUTTONS */}
             <div className="flex gap-3">
               <button
-                onClick={onClose}
+                onClick={cerrarModal}
                 className="
                   flex-1
                   py-3
@@ -96,7 +168,7 @@ export default function CartAuthLogin({
               </button>
 
               <button
-                onClick={onLoginClick}
+                onClick={handleLoginClick}
                 className="
                   flex-1
                   py-3
