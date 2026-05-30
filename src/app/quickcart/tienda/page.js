@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState, useRef } from "react";
+import { Suspense, useEffect, useMemo, useState, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { AnimatePresence } from "framer-motion";
 import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
@@ -14,7 +14,7 @@ import { useCarrito } from "@/context/CarritoContext";
 import { useUser } from "@/context/UserContext";
 import { useToast } from "@/context/ToastContext";
 
-export default function TiendaPage() {
+function TiendaContent() {
   const searchParams = useSearchParams();
 
   const [productos, setProductos] = useState([]);
@@ -450,5 +450,13 @@ export default function TiendaPage() {
         }}
       />
     </div>
+  );
+}
+
+export default function TiendaPage() {
+  return (
+    <Suspense fallback={null}>
+      <TiendaContent />
+    </Suspense>
   );
 }
