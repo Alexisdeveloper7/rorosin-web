@@ -1,75 +1,131 @@
+// components/ConfirmarPedidoModal.jsx
+
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCarrito } from "@/context/CarritoContext";
 
 export default function ConfirmarPedidoModal({ isOpen, onClose }) {
   const { confirmarPedido } = useCarrito();
+
   const [loading, setLoading] = useState(false);
-  const [mensajeExito, setMensajeExito] = useState("");
+  const [mensaje, setMensaje] = useState("");
+  const [success, setSuccess] = useState(false);
+
+  // =========================
+  // 🔄 RESET
+  // =========================
+  useEffect(() => {
+    if (!isOpen) {
+      setLoading(false);
+      setMensaje("");
+      setSuccess(false);
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
+  // =========================
+  // ✅ CONFIRMAR
+  // =========================
   const handleConfirm = async () => {
     if (loading) return;
 
     setLoading(true);
+    setMensaje("");
 
     try {
-      const result = await confirmarPedido(); // Devuelve { success, message }
+      const result = await confirmarPedido();
 
-      if (result.success) {
-        setMensajeExito(result.message || "✅ Pedido realizado correctamente");
+      console.log("📦 RESULT:", result);
 
-        // Mantener mensaje visible 2 segundos antes de cerrar
+      if (result?.success) {
+        setSuccess(true);
+
+        setMensaje(
+          result.message || "Pedido realizado correctamente"
+        );
+
+        // Espera para mostrar el estado verde y luego cierra
         setTimeout(() => {
-          setMensajeExito("");
-          setLoading(false);
           onClose();
-        }, 1200);
+        }, 1400);
       } else {
-        // Mensaje de error dentro del modal
-        setMensajeExito(result.message || "❌ No se pudo confirmar el pedido");
-        setTimeout(() => {
-          setMensajeExito("");
-          setLoading(false);
-        }, 2500);
+        setSuccess(false);
+
+        setMensaje(
+          result?.message || "No se pudo confirmar el pedido"
+        );
       }
     } catch (error) {
       console.error(error);
-      setMensajeExito("❌ Error inesperado al confirmar pedido");
-      setTimeout(() => {
-        setMensajeExito("");
-        setLoading(false);
-      }, 2500);
+
+      setSuccess(false);
+
+      setMensaje("Error inesperado al confirmar pedido");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center">
-      <div className="bg-white rounded-xl p-6 w-80 max-w-full text-center shadow-2xl">
-        {/* Mostrar mensaje si existe */}
-        {mensajeExito ? (
-          <p
-            className={`font-semibold text-center mb-4 ${
-              mensajeExito.startsWith("✅") ? "text-green-600" : "text-red-600"
-            }`}
-          >
-            {mensajeExito}
-          </p>
-        ) : (
-          <>
-            <h2 className="text-lg font-bold mb-4">Confirmar pedido</h2>
-            <p className="text-sm text-gray-700 mb-6">
-              ¿Estás seguro de que quieres confirmar este pedido?
+    <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center px-4">
+      <div className="bg-white rounded-3xl p-6 w-full max-w-sm shadow-2xl border border-gray-100">
+
+        {/* SUCCESS */}
+        {success ? (
+          <div className="text-center py-3">
+            <div className="mx-auto mb-4 w-14 h-14 rounded-full bg-green-100 flex items-center justify-center">
+              <span className="text-green-600 text-3xl font-bold">
+                ✓
+              </span>
+            </div>
+
+            <h2 className="text-lg font-bold text-gray-900 mb-2">
+              Pedido confirmado
+            </h2>
+
+            <p className="text-sm text-green-600 font-semibold mb-1">
+              {mensaje}
             </p>
 
-            <div className="flex justify-center gap-3">
+            <p className="text-xs text-gray-400">
+              Cerrando automáticamente...
+            </p>
+          </div>
+        ) : (
+          <>
+            {/* TITLE */}
+            <div className="text-center mb-5">
+              <div className="mx-auto mb-4 w-14 h-14 rounded-full bg-gray-100 flex items-center justify-center">
+                <span className="text-gray-500 text-2xl">
+                  🛒
+                </span>
+              </div>
+
+              <h2 className="text-xl font-bold text-gray-900">
+                Confirmar pedido
+              </h2>
+
+              <p className="text-sm text-gray-500 mt-2 leading-relaxed">
+                ¿Estás seguro de que quieres confirmar este pedido?
+              </p>
+            </div>
+
+            {/* MESSAGE */}
+            {mensaje && (
+              <p className="text-center text-red-600 bg-red-50 border border-red-100 rounded-xl text-sm font-semibold mb-4 py-2 px-3">
+                {mensaje}
+              </p>
+            )}
+
+            {/* BUTTONS */}
+            <div className="flex gap-3">
               <button
                 onClick={onClose}
                 disabled={loading}
-                className={`px-4 py-2 rounded bg-gray-300 ${
-                  loading ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-400"
+                className={`flex-1 py-3 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition ${
+                  loading ? "opacity-50 cursor-not-allowed" : ""
                 }`}
               >
                 Cancelar
@@ -78,33 +134,14 @@ export default function ConfirmarPedidoModal({ isOpen, onClose }) {
               <button
                 onClick={handleConfirm}
                 disabled={loading}
-                className={`px-4 py-2 rounded text-white flex items-center justify-center ${
+                className={`flex-1 py-3 rounded-xl text-white font-medium flex items-center justify-center transition shadow-sm ${
                   loading
-                    ? "bg-green-600 opacity-70 cursor-not-allowed"
+                    ? "bg-green-500 opacity-80 cursor-not-allowed"
                     : "bg-green-600 hover:bg-green-700"
                 }`}
               >
                 {loading ? (
-                  <svg
-                    className="animate-spin h-5 w-5 text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    />
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 100 16v-4l-3 3 3 3v-4a8 8 0 01-8-8z"
-                    />
-                  </svg>
+                  <span className="animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full"></span>
                 ) : (
                   "Confirmar"
                 )}
@@ -112,6 +149,7 @@ export default function ConfirmarPedidoModal({ isOpen, onClose }) {
             </div>
           </>
         )}
+
       </div>
     </div>
   );

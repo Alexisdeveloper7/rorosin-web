@@ -2,33 +2,75 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown } from "lucide-react";
 
-export default function PanelCategorias({ isOpen, onCerrar, onFiltrar }) {
+export default function PanelCategorias({
+  isOpen,
+  onCerrar,
+  onFiltrar,
+  categoriaSeleccionada,
+}) {
   const [categorias, setCategorias] = useState([]);
-  const [categoriaAbierta, setCategoriaAbierta] = useState(null);
-  const [seleccionActual, setSeleccionActual] = useState(null);
+  const [seleccionada, setSeleccionada] = useState(null);
+
+  useEffect(() => {
+    if (categoriaSeleccionada) {
+      setSeleccionada(Number(categoriaSeleccionada));
+    } else {
+      setSeleccionada(null);
+    }
+  }, [categoriaSeleccionada]);
 
   useEffect(() => {
     const fetchCategorias = async () => {
       try {
-        const res = await fetch("/api/productos", { cache: "no-store" });
+        const res = await fetch("/api/productos", {
+          cache: "no-store",
+        });
+
         const data = await res.json();
-        setCategorias(data);
-      } catch (error) {
-        console.error("Error fetching categorias:", error);
+
+        const map = new Map();
+
+        data.forEach((p) => {
+          if (!map.has(p.categoria_id)) {
+            map.set(p.categoria_id, {
+              id: p.categoria_id,
+              nombre: p.categoria,
+            });
+          }
+        });
+
+        setCategorias([...map.values()]);
+      } catch (err) {
+        console.error(err);
       }
     };
+
     fetchCategorias();
   }, []);
 
-  const toggleCategoria = (id) => {
-    setCategoriaAbierta((prev) => (prev === id ? null : id));
+  // BLOQUEO DE SCROLL
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isOpen]);
+
+  const seleccionarCategoria = (cat) => {
+    setSeleccionada(cat.id);
+    onFiltrar("categoria", cat.id, cat.nombre);
+    onCerrar();
   };
 
-  const manejarClickSubcategoria = (nombre) => {
-    setSeleccionActual(nombre);
-    onFiltrar("subcategoria", nombre);
+  const verTodos = () => {
+    setSeleccionada(null);
+    onFiltrar(null, null, null);
     onCerrar();
   };
 
@@ -36,81 +78,89 @@ export default function PanelCategorias({ isOpen, onCerrar, onFiltrar }) {
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 bg-black/50 z-50 flex justify-start items-start"
+          className="fixed inset-0 z-50 flex"
           onClick={onCerrar}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
+          {/* OVERLAY (IGUAL A PANELRIGHT) */}
           <motion.div
-            className="w-80 h-full bg-white p-4 shadow-lg rounded-r-2xl overflow-y-auto"
-            onClick={(e) => e.stopPropagation()}
-            initial={{ x: -100, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: -100, opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-          >
-            <h2 className="text-xl font-bold mb-4 text-blue-600">
-              Categorías
-            </h2>
+            className="absolute inset-0 bg-black/60"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          />
 
-            {/* Mensaje destacado */}
-            <div className="mb-4 px-3 text-lg py-2 bg-blue-50 border-l-4 border-blue-400 text-blue-700 font-medium rounded shadow-sm">
-              Selecciona una categoria   &#x2193;
+          {/* SIDEBAR */}
+          <motion.div
+            className="w-72 rounded-r-3xl h-full bg-gradient-to-b from-white to-gray-50 border-r border-gray-200 shadow-2xl p-4 overflow-y-auto relative"
+            onClick={(e) => e.stopPropagation()}
+            initial={{ x: -100 }}
+            animate={{ x: 0 }}
+            exit={{ x: -100 }}
+            transition={{ type: "spring", stiffness: 260, damping: 25 }}
+          >
+            {/* HEADER */}
+            <div className="flex items-start justify-between mb-5">
+              <div>
+                <h2 className="text-lg font-bold text-gray-900">
+                  Categorías
+                </h2>
+                <p className="text-xs text-gray-500">
+                  Filtra productos rápidamente
+                </p>
+              </div>
+
+              <button
+                onClick={onCerrar}
+                className="w-8 h-8 flex items-center justify-center rounded-full text-red-500 hover:bg-red-50 hover:text-red-600 transition cursor-pointer"
+              >
+                ×
+              </button>
             </div>
 
-            {categorias.length === 0 ? (
-              <p className="text-gray-500 text-sm">Cargando...</p>
-            ) : (
-              categorias.map((cat) => (
-                <div key={cat.id} className="mb-2">
-                  <button
-                    onClick={() => toggleCategoria(cat.id)}
-                    className="w-full flex justify-between items-center px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-800 transition"
-                  >
-                    <span className="text-sm">{cat.nombre}</span>
-                    <ChevronDown
-                      className={`w-4 h-4 text-gray-600 transition-transform ${
-                        categoriaAbierta === cat.id ? "rotate-180" : ""
-                      }`}
-                    />
-                  </button>
+            {/* GUIDED TEXT */}
+            <div className="mb-3">
+              <p className="text-xs font-medium text-gray-500">
+                Selecciona la categoría a filtrar
+              </p>
+            </div>
 
-                  <AnimatePresence>
-                    {categoriaAbierta === cat.id && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="pl-4 mt-2"
-                      >
-                        {cat.subcategorias.map((sub) => (
-                          <p
-                            key={sub.id}
-                            onClick={() => manejarClickSubcategoria(sub.nombre)}
-                            className={`cursor-pointer text-sm py-1 border-b border-gray-200 rounded transition ${
-                              seleccionActual === sub.nombre
-                                ? "bg-green-100 text-green-700 font-semibold"
-                                : "text-gray-700 hover:bg-gray-100 hover:text-blue-600"
-                            }`}
-                          >
-                            {sub.nombre}
-                          </p>
-                        ))}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              ))
-            )}
+            {/* CATEGORÍAS */}
+            <div className="space-y-2">
+              {categorias.map((cat) => (
+                <button
+                  key={cat.id}
+                  onClick={() => seleccionarCategoria(cat)}
+                  className={`w-full text-left px-4 py-3 rounded-2xl border transition cursor-pointer relative ${
+                    seleccionada === cat.id
+                      ? "bg-blue-50 border-blue-400 text-blue-700 font-semibold shadow-sm"
+                      : "hover:bg-gray-100 border-gray-200 text-gray-800"
+                  }`}
+                >
+                  {seleccionada === cat.id && (
+                    <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-blue-500 rounded-r-full" />
+                  )}
 
-            <button
-              onClick={onCerrar}
-              className="mt-6 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm w-full hover:bg-blue-700 transition"
-            >
-              Cerrar
-            </button>
+                  {cat.nombre}
+                </button>
+              ))}
+            </div>
+
+            {/* VER TODOS */}
+            <div className="mt-5 pt-4 border-t border-gray-200">
+              <button
+                onClick={verTodos}
+                className={`w-full text-left px-4 py-3 rounded-2xl border transition cursor-pointer font-medium ${
+                  seleccionada === null
+                    ? "bg-gray-900 text-white border-gray-900 shadow-md"
+                    : "hover:bg-gray-100 border-gray-200 text-gray-800"
+                }`}
+              >
+                Ver todos los productos
+              </button>
+            </div>
           </motion.div>
         </motion.div>
       )}

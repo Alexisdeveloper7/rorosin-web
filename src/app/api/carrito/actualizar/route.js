@@ -2,11 +2,11 @@ import { connectDB } from "../../../../connectDB.js";
 import jwt from "jsonwebtoken";
 import { NextResponse } from "next/server";
 
-export async function POST(req) {
-  let client;
+export const dynamic = "force-dynamic";
 
+export async function POST(req) {
   try {
-    client = await connectDB();
+    const client = await connectDB();
 
     const token = req.cookies.get("token")?.value;
 
@@ -22,7 +22,6 @@ export async function POST(req) {
 
     const { idItem, cantidad } = await req.json();
 
-    // ✅ Validación correcta
     if (!idItem || cantidad === undefined) {
       return NextResponse.json(
         { success: false, message: "Datos incompletos" },
@@ -37,6 +36,7 @@ export async function POST(req) {
       );
     }
 
+    // verificar que el item sea del usuario
     const verifyResult = await client.query(
       `
       SELECT ic.id_item
@@ -75,7 +75,5 @@ export async function POST(req) {
       { success: false, message: "Error interno del servidor" },
       { status: 500 }
     );
-  } finally {
-    if (client) await client.end();
   }
 }

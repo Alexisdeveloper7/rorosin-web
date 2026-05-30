@@ -1,210 +1,256 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+
 import { useCarrito } from "@/context/CarritoContext";
 import { useUser } from "@/context/UserContext";
+import { useToast } from "@/context/ToastContext";
 
-export default function ModalProducto({ producto, onCerrar }) {
+export default function ModalProducto({
+  producto,
+  onCerrar,
+  onRequireAuth,
+}) {
   const { user } = useUser();
   const { addItem } = useCarrito();
+  const { showToast } = useToast();
 
-  const [variacionSeleccionada, setVariacionSeleccionada] = useState(
-    producto.variaciones[0]
-  );
   const [cantidad, setCantidad] = useState(1);
-  const [mensajeExito, setMensajeExito] = useState("");
-  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [locked, setLocked] = useState(false);
 
-  const dropdownRef = useRef(null);
+  // 🔥 FIX: control real de visibilidad para exit animation
+  const [visible, setVisible] = useState(false);
 
-  // cerrar dropdown al clickear fuera
+  const scrollYRef = useRef(0);
+
+  const incrementar = () => setCantidad((p) => p + 1);
+  const decrementar = () => setCantidad((p) => (p > 1 ? p - 1 : 1));
+
   useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setDropdownOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+    if (producto) {
+      setVisible(true);
 
-  const incrementar = () => setCantidad((prev) => prev + 1);
-  const decrementar = () => setCantidad((prev) => (prev > 1 ? prev - 1 : 1));
+      scrollYRef.current = window.scrollY;
 
-  const handleCantidadKey = (e) => {
-    if (e.key === "Enter") {
-      let valor = parseInt(e.target.value);
-      if (isNaN(valor) || valor < 1) valor = 1;
-      setCantidad(valor);
+      const scrollBarWidth =
+        window.innerWidth - document.documentElement.clientWidth;
+
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollYRef.current}px`;
+      document.body.style.left = "0";
+      document.body.style.right = "0";
+      document.body.style.width = "100%";
+      document.body.style.overflow = "hidden";
+      document.body.style.paddingRight = `${scrollBarWidth}px`;
     }
+
+    return () => {
+      const scrollY = scrollYRef.current;
+
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.left = "";
+      document.body.style.right = "";
+      document.body.style.width = "";
+      document.body.style.overflow = "";
+      document.body.style.paddingRight = "";
+
+      window.scrollTo(0, scrollY);
+    };
+  }, [producto]);
+
+  useEffect(() => {
+    if (producto) {
+      setCantidad(1);
+      setLoading(false);
+      setSuccess(false);
+      setLocked(false);
+    }
+  }, [producto]);
+
+  // 🔥 FIX: cierre con delay para permitir exit animation
+  const cerrarModal = () => {
+    setVisible(false);
+
+    setTimeout(() => {
+      setLoading(false);
+      setSuccess(false);
+      setLocked(false);
+      onCerrar();
+    }, 200);
   };
 
   const handleAgregar = async () => {
+    if (loading || locked || success) return;
+
     if (!user) {
-      setMensajeExito("⚠️ Debes iniciar sesión para agregar productos al carrito");
+      cerrarModal();
+      setTimeout(() => onRequireAuth(), 120);
       return;
     }
 
-    setLoading(true);
-    setMensajeExito(""); // limpiar mensaje mientras carga
+    const productoId =
+      producto?.id ?? producto?.producto_id ?? producto?._id;
 
-    const exito = await addItem(producto.id, variacionSeleccionada.id, cantidad);
+    try {
+      setLoading(true);
+      setLocked(true);
 
-    setLoading(false);
+      const result = await addItem(productoId, null, cantidad);
 
-    if (exito) {
-      setMensajeExito("Producto agregado correctamente✅");
-      setTimeout(() => onCerrar(), 800);
-    } else {
-      setMensajeExito("No se pudo agregar el producto ❌");
+      setLoading(false);
+
+      if (!result) {
+        setLocked(false);
+        showToast("No se pudo agregar ❌", "error");
+        return;
+      }
+
+      setSuccess(true);
+      setLocked(true);
+
+      setTimeout(() => {
+        cerrarModal();
+        setTimeout(() => {
+          showToast("Agregado al carrito 🛒", "success");
+        }, 120);
+      }, 900);
+    } catch (error) {
+      setLoading(false);
+      setLocked(false);
+      showToast("Error del servidor ❌", "error");
     }
   };
 
-  const handleVariacionClick = (v) => {
-    setVariacionSeleccionada(v);
-    setDropdownOpen(false);
-  };
+  const precio = Number(producto?.precio || 0);
+  const total = precio * cantidad;
 
   return (
-    <div
-      className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
-    >
-      <div
-        className="bg-white rounded-md p-4 w-11/12 max-w-xs text-center shadow-lg relative flex flex-col max-h-[90vh]"
-      >
-        {/* Botón X cerrar grande y rojo con hover mejorado */}
-        <button
-          onClick={onCerrar}
-          className="absolute top-2 right-2 w-8 h-8 flex items-center justify-center rounded-full bg-red-900 text-white text-xl font-bold cursor-pointer
-                     hover:bg-red-400 hover:scale-110 transition-transform duration-200"
-          title="Cerrar"
+    <AnimatePresence mode="wait">
+      {visible && producto && (
+        <motion.div
+          className="fixed inset-0 z-[9999] flex items-center justify-center px-4"
+          onClick={cerrarModal}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
         >
-          ×
-        </button>
-
-        {/* Imagen */}
-        <img
-          src={producto.imagen}
-          alt={producto.nombre}
-          className="w-full h-auto rounded-md mb-2"
-        />
-
-        {/* Título */}
-        <h2 className="text-base font-semibold mb-2">{producto.nombre}</h2>
-
-        {/* Descripción */}
-        <p className="text-xs text-gray-600 mb-2">{producto.descripcion}</p>
-
-        {/* Dropdown de variaciones */}
-        <div className="mb-2 relative text-left" ref={dropdownRef}>
-          <div
-            className="border rounded p-1 text-xs cursor-pointer bg-white"
-            onClick={() => setDropdownOpen(!dropdownOpen)}
-          >
-            Selecciona una variación: <strong>{variacionSeleccionada.nombre}</strong>
-          </div>
-          {dropdownOpen && (
-            <div className="absolute w-full border rounded mt-1 max-h-32 overflow-y-auto bg-white z-10 shadow-md">
-              <div className="sticky top-0 bg-white font-medium text-xs p-1 border-b">
-                Variaciones
-              </div>
-              {producto.variaciones.map((v) => (
-                <div
-                  key={v.id}
-                  onClick={() => handleVariacionClick(v)}
-                  className="text-xs p-1 hover:bg-gray-100 cursor-pointer"
-                >
-                  {v.nombre}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Medidas */}
-        <div className="mb-2 text-left text-xs">
-          {Object.entries(variacionSeleccionada.medidas).map(([key, value]) => (
-            <div key={key}>
-              {key}: {value}
-            </div>
-          ))}
-        </div>
-
-        {/* Cantidad */}
-        <div className="flex items-center justify-center gap-2 mb-2 text-xs">
-          <button
-            onClick={decrementar}
-            className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300 cursor-pointer"
-          >
-            -
-          </button>
-          <input
-            type="number"
-            min="1"
-            value={cantidad}
-            onChange={(e) => setCantidad(Number(e.target.value))}
-            onKeyDown={handleCantidadKey}
-            className="w-12 text-center border rounded p-1 text-xs"
+          {/* OVERLAY */}
+          <motion.div
+            className="absolute inset-0 bg-black/60"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
           />
-          <button
-            onClick={incrementar}
-            className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300 cursor-pointer"
-          >
-            +
-          </button>
-        </div>
 
-        {/* Mensaje */}
-        {mensajeExito && (
-          <p
-            className={`text-xs mb-2 font-semibold ${
-              mensajeExito.includes("correctamente") ? "text-green-600" : "text-red-600"
-            }`}
+          {/* MODAL */}
+          <motion.div
+            onClick={(e) => e.stopPropagation()}
+            className="border-4 border-gray-200 relative w-full max-w-md max-h-[90vh]
+                       bg-white rounded-[28px] shadow-2xl overflow-y-auto"
+            initial={{ opacity: 0, scale: 0.92 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.92 }}
+            transition={{ duration: 0.2 }}
           >
-            {mensajeExito}
-          </p>
-        )}
+            {/* CLOSE */}
+            <button
+              onClick={cerrarModal}
+              className="absolute top-4 right-4 w-9 h-9 rounded-full bg-red-500 text-white flex items-center justify-center cursor-pointer hover:bg-red-600 hover:scale-105 active:scale-95 transition z-10"
+            >
+              ×
+            </button>
 
-        {/* Botones */}
-        <div className="flex justify-center gap-2 mt-auto">
-          <button
-            onClick={onCerrar}
-            className="px-3 py-1 bg-gray-300 rounded text-xs hover:bg-gray-400 cursor-pointer"
-          >
-            Cerrar
-          </button>
-          <button
-            onClick={handleAgregar}
-            className="px-3 py-1 bg-blue-600 text-white rounded text-xs hover:bg-blue-700 cursor-pointer flex items-center justify-center gap-2"
-            disabled={loading}
-          >
-            {loading ? (
-              <svg
-                className="animate-spin h-4 w-4 text-white"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
+            {/* IMAGE */}
+            <div className="p-5">
+              <img
+                src={producto?.imagen}
+                alt={producto?.nombre}
+                className="w-full h-60 object-contain"
+              />
+            </div>
+
+            {/* CONTENT */}
+            <div className="p-5 border-t-2 border-gray-200">
+              <h2 className="text-xl font-semibold text-gray-900">
+                {producto?.nombre}
+              </h2>
+
+              <p className="text-sm text-gray-500 mt-2">
+                {producto?.descripcion}
+              </p>
+            </div>
+
+            <div className="px-5 pb-5 space-y-4">
+              {/* QUANTITY */}
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-medium">Cantidad</span>
+
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={decrementar}
+                    disabled={locked}
+                    className={`w-10 h-10 rounded-full bg-gray-100 transition ${
+                      locked
+                        ? "cursor-not-allowed opacity-50"
+                        : "cursor-pointer hover:bg-gray-200 active:scale-95"
+                    }`}
+                  >
+                    -
+                  </button>
+
+                  <span className="font-semibold">{cantidad}</span>
+
+                  <button
+                    onClick={incrementar}
+                    disabled={locked}
+                    className={`w-10 h-10 rounded-full bg-gray-100 transition ${
+                      locked
+                        ? "cursor-not-allowed opacity-50"
+                        : "cursor-pointer hover:bg-gray-200 active:scale-95"
+                    }`}
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+
+              {/* TOTAL */}
+              <div className="flex justify-between items-center bg-gray-50 p-3 rounded-xl border border-gray-500">
+                <span className="text-sm font-medium text-gray-600">
+                  Total ({cantidad} {cantidad === 1 ? "pieza" : "piezas"})
+                </span>
+
+                <span className="text-lg font-bold text-gray-900">
+                  ${total.toFixed(2)}
+                </span>
+              </div>
+
+              {/* BUTTON */}
+              <button
+                onClick={handleAgregar}
+                disabled={loading || locked || success}
+                className={`w-full py-3.5 rounded-2xl text-white font-medium cursor-pointer transition-all active:scale-[0.98] ${
+                  success
+                    ? "bg-green-600"
+                    : loading
+                    ? "bg-gray-500 cursor-wait"
+                    : "bg-blue-600 hover:bg-blue-700"
+                }`}
               >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                ></circle>
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 100 16 8 8 0 01-8-8z"
-                ></path>
-              </svg>
-            ) : null}
-            {loading ? "Agregando..." : "Añadir"}
-          </button>
-        </div>
-      </div>
-    </div>
+                {success
+                  ? "Agregado ✔"
+                  : loading
+                  ? "Agregando..."
+                  : "Añadir al carrito"}
+              </button>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }

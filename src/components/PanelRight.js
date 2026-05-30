@@ -26,13 +26,16 @@ export default function PanelRight({
 
   const { user } = useUser();
   const router = useRouter();
+
   const [modalConfirmarOpen, setModalConfirmarOpen] = useState(false);
 
-  /* 🔒 Scroll Lock */
   useEffect(() => {
     if (isOpen) document.body.style.overflow = "hidden";
     else document.body.style.overflow = "";
-    return () => { document.body.style.overflow = ""; };
+
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [isOpen]);
 
   const abrirModalConfirmar = () => {
@@ -41,20 +44,27 @@ export default function PanelRight({
       abrirLogin();
       return;
     }
+
     setModalConfirmarOpen(true);
   };
 
   const handleConfirmarPedido = async () => {
     try {
       const exito = await confirmarPedido();
+
       if (!exito) return false;
 
       await fetchPedidos();
       await fetchCarrito();
 
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+
       setModalConfirmarOpen(false);
       onClose();
+
       return true;
     } catch (error) {
       console.error("Error confirmar pedido:", error);
@@ -67,176 +77,262 @@ export default function PanelRight({
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="fixed inset-0 z-50 flex justify-end items-start"
+            className="fixed inset-0 z-52 flex justify-end items-start"
             onClick={onClose}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
+            {/* OVERLAY */}
             <motion.div
-              className="w-80 h-full bg-white p-6 shadow-xl flex flex-col relative rounded-tl-2xl"
-              onClick={(e) => e.stopPropagation()}
-              initial={{ x: 300 }}
-              animate={{ x: 0 }}
-              exit={{ x: 300 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
-            >
-              {/* Close Button */}
-              <button
-                onClick={onClose}
-                className="absolute top-4 right-4 p-2 rounded-full bg-gray-100 hover:bg-gray-200 active:scale-95 transition shadow-sm cursor-pointer"
-              >
-                <X size={20} strokeWidth={2.5} className="text-gray-700" />
-              </button>
+              className="absolute inset-0 "
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            />
 
-              {/* Header */}
-              <div className="pb-4 border-b border-gray-200">
-                <h2 className="text-xl font-bold text-blue-600 tracking-wide">
-                  Tu Carrito
-                </h2>
+            {/* PANEL */}
+            <motion.div
+              className="w-80 h-full bg-[#fbfbfd] flex flex-col relative overflow-hidden rounded-tl-[36px] border-l border-white/40"
+              onClick={(e) => e.stopPropagation()}
+              initial={{ x: 320 }}
+              animate={{ x: 0 }}
+              exit={{ x: 320 }}
+              transition={{
+                duration: 0.35,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+              style={{
+                boxShadow:
+                  "0 20px 60px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.7)",
+              }}
+            >
+              {/* HEADER */}
+              <div className="relative px-6 pt-7 pb-5 bg-[#fbfbfd]/95 backdrop-blur-xl border-b border-[#ececec]">
+                <button
+                  onClick={onClose}
+                  className="absolute top-5 right-5 w-10 h-10 rounded-full bg-white hover:bg-[#f5f5f7] active:scale-95 transition-all duration-200 flex items-center justify-center cursor-pointer border border-[#ececec]"
+                  style={{
+                    boxShadow:
+                      "0 4px 12px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.8)",
+                  }}
+                >
+                  <X
+                    size={18}
+                    strokeWidth={2.7}
+                    className="text-[#6e6e73]"
+                  />
+                </button>
+
+                <div className="space-y-1">
+                  <p className="text-[12px] font-semibold tracking-[0.22em] uppercase text-[#b0b0b5]">
+                    QuickCart
+                  </p>
+
+                  <h2 className="text-[30px] leading-none font-semibold text-[#1d1d1f] tracking-tight">
+                    Tu Carrito
+                  </h2>
+                </div>
               </div>
 
-              {/* Contenido */}
-              <div className="flex-1 overflow-y-auto mt-6 space-y-4">
+              {/* BODY */}
+              <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3 bg-[#f5f5f7]">
                 {loading ? (
                   [1, 2, 3].map((i) => (
                     <div
                       key={i}
-                      className="flex gap-3 bg-gray-100 p-3 rounded-xl animate-pulse"
+                      className="flex gap-2 bg-white p-3 rounded-[24px] animate-pulse border border-[#efefef]"
                     >
-                      <div className="w-16 h-16 bg-gray-300 rounded-lg"></div>
+                      <div className="w-12 h-12 bg-[#ececec] rounded-[18px]"></div>
+
+                      <div className="flex-1 space-y-2">
+                        <div className="h-3 bg-[#ececec] rounded-full w-28"></div>
+
+                        <div className="h-2.5 bg-[#f4f4f4] rounded-full w-16"></div>
+                      </div>
                     </div>
                   ))
                 ) : !user ? (
-                  <div className="flex flex-col items-center text-center gap-4 mt-10">
-                    <p className="text-gray-600">
-                      Inicia sesión para ver tu carrito
-                    </p>
+                  <div className="flex flex-col items-center text-center gap-5 mt-14">
+                    <div
+                      className="w-24 h-24 rounded-full flex items-center justify-center bg-white border border-[#ececec]"
+                      style={{
+                        boxShadow:
+                          "0 10px 30px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.9)",
+                      }}
+                    >
+                      <span className="text-4xl">🛒</span>
+                    </div>
 
-                    <div className="flex flex-col gap-3 w-full">
+                    <div>
+                      <h3 className="text-[23px] font-semibold text-[#1d1d1f] tracking-tight">
+                        Inicia sesión
+                      </h3>
+
+                      <p className="text-[#86868b] text-sm mt-2 leading-relaxed">
+                        Accede para ver tu carrito y pedidos
+                      </p>
+                    </div>
+
+                    <div className="flex flex-col gap-3 w-full mt-2">
                       <button
-                        onClick={() => { onClose(); abrirLogin(); }}
-                        className="bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition cursor-pointer w-full"
+                        onClick={() => {
+                          onClose();
+                          abrirLogin();
+                        }}
+                        className="w-full bg-white text-[#1d1d1f] py-3.5 rounded-[22px] font-semibold transition-all duration-200 cursor-pointer border border-[#e5e5ea] hover:bg-[#f5f5f7]"
+                        style={{
+                          boxShadow:
+                            "0 8px 24px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.9)",
+                        }}
                       >
                         Iniciar Sesión
                       </button>
 
                       <button
-                        onClick={() => { onClose(); abrirSignup(); }}
-                        className="bg-green-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-green-700 transition cursor-pointer w-full"
+                        onClick={() => {
+                          onClose();
+                          abrirSignup();
+                        }}
+                        className="w-full bg-[#f2f2f7] border border-[#e5e5ea] text-[#1d1d1f] py-3.5 rounded-[22px] font-semibold hover:bg-[#ebebf0] transition-all duration-200 cursor-pointer"
                       >
                         Crear Cuenta
                       </button>
                     </div>
                   </div>
                 ) : items.length === 0 ? (
-                  <div className="flex flex-col items-center text-center gap-4 mt-10">
-                    <p className="text-gray-600">Tu carrito está vacío.</p>
-
-                    <button
-                      onClick={() => { onClose(); router.push("/tienda"); }}
-                      className="bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition cursor-pointer w-full"
+                  <div className="flex flex-col items-center text-center gap-5 mt-14">
+                    <div
+                      className="w-24 h-24 rounded-full flex items-center justify-center bg-white border border-[#ececec]"
+                      style={{
+                        boxShadow:
+                          "0 10px 30px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.9)",
+                      }}
                     >
-                      Ir a tienda
-                    </button>
+                      <span className="text-4xl">📦</span>
+                    </div>
 
-                    <button
-                      onClick={() => { onClose(); router.push("/carrito"); }}
-                      className="bg-gray-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-gray-700 transition cursor-pointer w-full"
-                    >
-                      Ver carrito completo
-                    </button>
+                    <div>
+                      <h3 className="text-[23px] font-semibold text-[#1d1d1f] tracking-tight">
+                        Tu carrito está vacío
+                      </h3>
 
-                    <button
-                      onClick={() => { onClose(); router.push("/pedidos"); }}
-                      className="bg-indigo-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-indigo-700 transition cursor-pointer w-full"
-                    >
-                      Ver pedidos realizados
-                    </button>
+                      <p className="text-[#86868b] text-sm mt-2">
+                        Agrega productos para comenzar
+                      </p>
+                    </div>
                   </div>
                 ) : (
-                  <>
-                    {items.map((item) => (
+                  items.map((item) => (
+                    <motion.div
+                      key={item.id_item}
+                      whileTap={{ scale: 0.985 }}
+                      className="flex gap-2 bg-white p-3 rounded-[24px] border border-[#ececec]"
+                      style={{
+                        boxShadow:
+                          "0 5px 16px rgba(0,0,0,0.035), inset 0 1px 0 rgba(255,255,255,0.9)",
+                      }}
+                    >
                       <div
-                        key={item.id_item}
-                        className="flex gap-3 bg-gray-50 p-3 rounded-xl"
+                        className="w-12 h-12 flex-shrink-0 bg-[#fafafa] rounded-[18px] border border-[#f0f0f0] flex items-center justify-center overflow-hidden"
+                        style={{
+                          boxShadow:
+                            "inset 0 2px 4px rgba(0,0,0,0.03)",
+                        }}
                       >
-                        <div className="w-16 h-16 flex-shrink-0">
-                          <img
-                            src={item.imagen_url || "/placeholder.png"}
-                            alt={item.producto_nombre}
-                            className="w-full h-full object-cover rounded-lg border"
-                          />
-                        </div>
+                        <img
+                          src={item.imagen_url || "/placeholder.png"}
+                          alt={item.producto_nombre}
+                          className="w-full h-full object-contain p-1"
+                        />
+                      </div>
 
-                        <div className="flex-1 flex flex-col justify-between">
-                          <p className="font-semibold text-sm">{item.producto_nombre}</p>
+                      <div className="flex-1 flex flex-col justify-between min-w-0">
+                        <p className="font-semibold text-[12px] text-[#1d1d1f] leading-tight line-clamp-2">
+                          {item.producto_nombre}
+                        </p>
 
-                          <div className="flex items-center gap-2 mt-2">
-                            <button
-                              onClick={() =>
-                                actualizarItem(item.id_item, item.cantidad - 1)
-                              }
-                              className="px-2 py-1 bg-gray-200 rounded-lg text-sm hover:bg-gray-300 transition cursor-pointer"
-                            >
-                              -
-                            </button>
+                        <div className="flex items-center gap-1.5 mt-2">
+                          <button
+                            onClick={() =>
+                              actualizarItem(
+                                item.id_item,
+                                item.cantidad - 1
+                              )
+                            }
+                            className="w-6 h-6 rounded-full bg-[#f2f2f7] hover:bg-[#e5e5ea] text-[#1d1d1f] text-xs font-semibold transition cursor-pointer"
+                          >
+                            -
+                          </button>
 
-                            <span className="min-w-[20px] text-center text-sm font-semibold">
-                              {item.cantidad}
-                            </span>
+                          <span className="min-w-[18px] text-center text-xs font-semibold text-[#1d1d1f]">
+                            {item.cantidad}
+                          </span>
 
-                            <button
-                              onClick={() =>
-                                actualizarItem(item.id_item, item.cantidad + 1)
-                              }
-                              className="px-2 py-1 bg-gray-200 rounded-lg text-sm hover:bg-gray-300 transition cursor-pointer"
-                            >
-                              +
-                            </button>
+                          <button
+                            onClick={() =>
+                              actualizarItem(
+                                item.id_item,
+                                item.cantidad + 1
+                              )
+                            }
+                            className="w-6 h-6 rounded-full bg-[#f2f2f7] hover:bg-[#e5e5ea] text-[#1d1d1f] text-xs font-semibold transition cursor-pointer"
+                          >
+                            +
+                          </button>
 
-                            <button
-                              onClick={() => eliminarItem(item.id_item)}
-                              className="ml-auto text-red-500 text-xs hover:underline cursor-pointer"
-                            >
-                              Eliminar
-                            </button>
-                          </div>
+                          <button
+                            onClick={() => eliminarItem(item.id_item)}
+                            className="ml-auto text-[#ff453a] text-[11px] font-medium hover:opacity-70 cursor-pointer"
+                          >
+                            Eliminar
+                          </button>
                         </div>
                       </div>
-                    ))}
-
-                    {/* Footer con botones */}
-                    <div className="mt-6 pt-4 border-t border-gray-200 space-y-3">
-                      <button
-                        onClick={abrirModalConfirmar}
-                        className="w-full bg-blue-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition cursor-pointer"
-                      >
-                        Confirmar Pedido
-                      </button>
-
-                      <button
-                        onClick={() => { onClose(); router.push("/carrito"); }}
-                        className="w-full border border-blue-600 text-blue-600 py-3 rounded-xl font-semibold hover:bg-blue-50 transition cursor-pointer"
-                      >
-                        Ver carrito completo
-                      </button>
-
-                      <button
-                        onClick={() => { onClose(); router.push("/pedidos"); }}
-                        className="w-full bg-indigo-600 text-white py-3 rounded-xl font-semibold hover:bg-indigo-700 transition cursor-pointer"
-                      >
-                        Ver pedidos realizados
-                      </button>
-                    </div>
-                  </>
+                    </motion.div>
+                  ))
                 )}
               </div>
 
-              {/* Línea azul siempre al fondo, pegada al panel */}
-              <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2">
-                <div className="h-1 w-16 bg-blue-600 rounded-full"></div>
-              </div>
+              {/* FOOTER */}
+              {user && (
+                <div className="p-5 border-t border-[#ececec] bg-[#fbfbfd]/95 backdrop-blur-xl space-y-3">
+                  <div className="flex justify-center">
+                    <div className="h-1 w-16 rounded-full bg-[#d2d2d7]"></div>
+                  </div>
+
+                  <button
+                    onClick={abrirModalConfirmar}
+                    className="w-full bg-white text-[#1d1d1f] py-3.5 rounded-[22px] font-semibold transition-all duration-200 cursor-pointer border border-[#e5e5ea] hover:bg-[#f5f5f7]"
+                    style={{
+                      boxShadow:
+                        "0 8px 24px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.9)",
+                    }}
+                  >
+                    Confirmar Pedido
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      onClose();
+                      router.push("/quickcart/carrito");
+                    }}
+                    className="w-full bg-[#f2f2f7] text-[#1d1d1f] py-3.5 rounded-[22px] font-semibold hover:bg-[#ebebf0] transition-all duration-200 cursor-pointer border border-[#e5e5ea]"
+                  >
+                    Ver carrito completo
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      onClose();
+                      router.push("/quickcart/pedidos");
+                    }}
+                    className="w-full bg-[#f2f2f7] text-[#1d1d1f] py-3.5 rounded-[22px] font-semibold hover:bg-[#ebebf0] transition-all duration-200 cursor-pointer border border-[#e5e5ea]"
+                  >
+                    Ver pedidos realizados
+                  </button>
+                </div>
+              )}
             </motion.div>
           </motion.div>
         )}

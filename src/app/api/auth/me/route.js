@@ -1,4 +1,5 @@
 // src/app/api/auth/me/route.js
+
 import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import { connectDB } from "../../../../connectDB.js";
@@ -9,9 +10,10 @@ export async function GET(req) {
   try {
     // Leer cookie "token"
     const cookieHeader = req.headers.get("cookie") || "";
+
     const token = cookieHeader
       .split("; ")
-      .find(c => c.startsWith("token="))
+      .find((c) => c.startsWith("token="))
       ?.split("=")[1];
 
     if (!token) {
@@ -32,8 +34,9 @@ export async function GET(req) {
       );
     }
 
-    // Conectar a la DB
+    // Conectar a la base de datos
     const client = await connectDB();
+
     const result = await client.query(
       "SELECT id, usuario FROM usuarios WHERE id = $1",
       [decoded.id]
@@ -46,11 +49,19 @@ export async function GET(req) {
       );
     }
 
-    // ✅ Devuelve los datos del usuario
-    return NextResponse.json({ success: true, user: result.rows[0] });
+    const user = result.rows[0];
+
+    return NextResponse.json({
+      success: true,
+      user: {
+        id: user.id,
+        usuario: user.usuario,
+      },
+    });
 
   } catch (err) {
     console.error("❌ ERROR AUTH ME:", err);
+
     return NextResponse.json(
       { success: false, message: "Error del servidor" },
       { status: 500 }

@@ -8,18 +8,19 @@ import PanelRight from "./PanelRight";
 import ModalLogin from "./ModalLogin";
 import ModalSignup from "./ModalSignup";
 import GlobalOverlay from "./GlobalOverlay";
-import { useUser } from "@/context/UserContext"; // ⚡ Usamos el contexto global
+import { useUser } from "@/context/UserContext";
+import Toast from "@/components/Toast";
 
-export default function HeaderBare() {
+export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
 
   const [activePanel, setActivePanel] = useState(null);
-  const [showHeader, setShowHeader] = useState(true); // Siempre visible al cargar
+  const [showHeader, setShowHeader] = useState(true);
+  const [scrollControlActive, setScrollControlActive] = useState(false);
 
   const lastScroll = useRef(0);
 
-  // 🔹 Contexto global de usuario
   const {
     loginModalOpen,
     signupModalOpen,
@@ -29,26 +30,49 @@ export default function HeaderBare() {
     closeLoginModal,
   } = useUser();
 
-  // 🔥 Fuerza header visible si hay modal o panel
+  // FORCE SHOW when modals or panels are open
   useEffect(() => {
     if (loginModalOpen || signupModalOpen || activePanel) {
       setShowHeader(true);
     }
   }, [loginModalOpen, signupModalOpen, activePanel]);
 
+  // OBSERVER (activates scroll logic only after trigger leaves viewport)
+  useEffect(() => {
+    const trigger = document.getElementById("header-trigger");
+    if (!trigger) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setScrollControlActive(false);
+          setShowHeader(true);
+        } else {
+          setScrollControlActive(true);
+        }
+      },
+      { threshold: 0 }
+    );
+
+    observer.observe(trigger);
+
+    return () => observer.disconnect();
+  }, []);
+
+  // SCROLL LOGIC (only active after trigger disappears)
   useEffect(() => {
     const handleScroll = () => {
       if (loginModalOpen || signupModalOpen || activePanel) return;
 
-      const scrollY = window.scrollY;
-      const isHome = pathname === "/";
-      const heroEl = document.getElementById("inicio");
-      const heroHeight = heroEl?.offsetHeight || 0;
-
-      if (isHome && scrollY <= heroHeight) {
+      if (!scrollControlActive) {
         setShowHeader(true);
-      } else if (!isHome) {
-        setShowHeader(scrollY < 88 || scrollY <= lastScroll.current);
+        return;
+      }
+
+      const scrollY = window.scrollY;
+
+      if (scrollY === 0) {
+        setShowHeader(true);
       } else {
         setShowHeader(scrollY <= lastScroll.current);
       }
@@ -58,21 +82,35 @@ export default function HeaderBare() {
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [pathname, loginModalOpen, signupModalOpen, activePanel]);
+  }, [loginModalOpen, signupModalOpen, activePanel, scrollControlActive]);
 
-  const togglePanel = panel => {
-    setActivePanel(prev => (prev === panel ? null : panel));
+  const togglePanel = (panel) => {
+    setActivePanel((prev) => (prev === panel ? null : panel));
   };
 
-  // 🔹 Funciones para abrir login/signup usando contexto
+  const irAQuickCart = () => {
+    setActivePanel(null);
+    closeLoginModal();
+    setShowHeader(true);
+
+    if (pathname === "/quickcart") {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      return;
+    }
+
+    router.push("/quickcart");
+  };
+
   const abrirLogin = (msg = "") => openLoginModal(msg);
   const abrirSignup = () => openSignupModal();
-
-  const signupExitoso = () => {
+  const signupExitoso = () =>
     openLoginModal("Cuenta creada correctamente");
-  };
 
-  const overlayVisible = activePanel !== null || loginModalOpen || signupModalOpen;
+  const overlayVisible =
+    activePanel !== null || loginModalOpen || signupModalOpen;
 
   return (
     <>
@@ -87,35 +125,44 @@ export default function HeaderBare() {
 
       {/* HEADER */}
       <header
-        className={`text-white sticky top-0 z-50 transition-transform duration-300 ${
+        id="main-header"
+        className={`sticky top-0 z-50 transition-transform duration-300 ${
           showHeader ? "translate-y-0" : "-translate-y-full"
         }`}
       >
-        <div className="flex py-1 pb-2 backdrop-blur justify-between items-center w-full bg-black/52 rounded-b-4xl">
+        <div className="relative flex py-2 justify-between items-center w-full bg-white border-b border-gray-100 shadow-sm">
+          {/* MENU */}
           <button
-            className="ml-3 p-2 cursor-pointer"
+            className="ml-3 p-2 cursor-pointer text-gray-700 hover:text-gray-900"
             onClick={() => togglePanel("left")}
           >
-            <FaBars className="text-3xl" />
+            <FaBars className="text-2xl" />
           </button>
 
+          {/* LOGO */}
           <img
             className="w-28 rounded-full cursor-pointer"
-            src="/images/logoheader.enc"
+            src="/iconoo.png"
             alt="Logo"
-            onClick={() => router.push("/")}
+            onClick={irAQuickCart}
           />
 
+          {/* CART */}
           <button
-            className="mr-3 p-2 cursor-pointer"
+            className="mr-3 p-2 cursor-pointer text-gray-700 hover:text-gray-900"
             onClick={() => togglePanel("right")}
           >
-            <FaShoppingCart className="text-3xl" />
+            <FaShoppingCart className="text-2xl" />
           </button>
+
+          {/* TOAST */}
+          <div className="absolute top-full left-0 w-full">
+            <Toast />
+          </div>
         </div>
       </header>
 
-      {/* PANELES */}
+      {/* PANELS */}
       <PanelLeft
         isOpen={activePanel === "left"}
         onClose={() => setActivePanel(null)}
@@ -130,7 +177,7 @@ export default function HeaderBare() {
         abrirSignup={abrirSignup}
       />
 
-      {/* MODAL LOGIN */}
+      {/* LOGIN MODAL */}
       <ModalLogin
         isOpen={loginModalOpen}
         successMessage={loginMessage}
@@ -145,10 +192,10 @@ export default function HeaderBare() {
         }}
       />
 
-      {/* MODAL SIGNUP */}
+      {/* SIGNUP MODAL */}
       <ModalSignup
         isOpen={signupModalOpen}
-        onClose={abrirSignup} // ⚡ Cierra usando contexto
+        onClose={abrirSignup}
         onOpenLogin={abrirLogin}
         onSignupSuccess={signupExitoso}
       />

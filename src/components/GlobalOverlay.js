@@ -12,7 +12,7 @@ export default function GlobalOverlay({ isVisible, onClick }) {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
           onClick={onClick}
-          className="fixed inset-0 bg-black/50 z-40"
+          className="fixed inset-0 bg-black/30 z-51 "
         />
       )}
     </AnimatePresence>

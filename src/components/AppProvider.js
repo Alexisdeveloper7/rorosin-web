@@ -1,24 +1,17 @@
-'use client';
+"use client";
 
-import { UserProvider } from '../context/UserContext';
+import { UserProvider } from "@/context/UserContext";
+import { CarritoProvider } from "@/context/CarritoContext";
+import { ToastProvider } from "@/context/ToastContext";
 
 export default function AppProvider({ children }) {
-  const openLogin = () => {
-    window.dispatchEvent(new CustomEvent("open-login"));
-  };
-
-  const openSignup = () => {
-    window.dispatchEvent(new CustomEvent("open-signup"));
-  };
-
   return (
-    <UserProvider
-      value={{
-        openLogin,
-        openSignup
-      }}
-    >
-      {children}
-    </UserProvider>
+    <ToastProvider>
+      <UserProvider>
+        <CarritoProvider>
+          {children}
+        </CarritoProvider>
+      </UserProvider>
+    </ToastProvider>
   );
 }

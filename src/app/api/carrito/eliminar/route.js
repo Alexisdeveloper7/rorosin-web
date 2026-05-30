@@ -2,13 +2,12 @@ import { connectDB } from "../../../../connectDB.js";
 import jwt from "jsonwebtoken";
 import { NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
 export async function DELETE(req) {
-  let client;
-
   try {
-    client = await connectDB();
+    const client = await connectDB();
 
-    // 🔐 Obtener token
     const token = req.cookies.get("token")?.value;
 
     if (!token) {
@@ -18,11 +17,18 @@ export async function DELETE(req) {
       );
     }
 
-    // 🔓 Verificar JWT
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    let decoded;
+    try {
+      decoded = jwt.verify(token, process.env.JWT_SECRET);
+    } catch {
+      return NextResponse.json(
+        { success: false, message: "Token inválido" },
+        { status: 401 }
+      );
+    }
+
     const usuarioId = decoded.id;
 
-    // ⚠️ Leer body de forma segura (evita error JSON vacío)
     const rawBody = await req.text();
     const body = rawBody ? JSON.parse(rawBody) : {};
     const { idItem } = body;
@@ -34,13 +40,13 @@ export async function DELETE(req) {
       );
     }
 
-    // 🔒 Verificar que el item pertenezca al usuario
+    // 🔒 verificar que el item pertenece al usuario
     const verify = await client.query(
       `
-      SELECT ic.id_item
-      FROM items_carrito ic
-      JOIN carritos c ON c.id_carrito = ic.id_carrito
-      WHERE ic.id_item = $1 AND c.id_usuario = $2
+      SELECT ci.id_item
+      FROM carrito_items ci
+      JOIN carritos c ON c.id_carrito = ci.id_carrito
+      WHERE ci.id_item = $1 AND c.id_usuario = $2
       `,
       [idItem, usuarioId]
     );
@@ -52,9 +58,12 @@ export async function DELETE(req) {
       );
     }
 
-    // 🗑 Eliminar item
+    // 🗑 eliminar item
     await client.query(
-      `DELETE FROM items_carrito WHERE id_item = $1`,
+      `
+      DELETE FROM carrito_items
+      WHERE id_item = $1
+      `,
       [idItem]
     );
 
@@ -64,13 +73,11 @@ export async function DELETE(req) {
     });
 
   } catch (error) {
-    console.error("❌ Error eliminar item:", error);
+    console.error("❌ Error al eliminar item:", error);
 
     return NextResponse.json(
       { success: false, message: "Error interno del servidor" },
       { status: 500 }
     );
-  } finally {
-    if (client) await client.end();
   }
 }

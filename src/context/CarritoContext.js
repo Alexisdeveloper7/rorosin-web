@@ -1,6 +1,14 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+  useRef,
+} from "react";
+
 import { useUser } from "@/context/UserContext";
 
 const CarritoContext = createContext(null);
@@ -8,53 +16,91 @@ const CarritoContext = createContext(null);
 export function CarritoProvider({ children }) {
   const { user } = useUser();
 
-  // 🛒 CARRITO
   const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  // 📦 PEDIDOS
   const [pedidos, setPedidos] = useState([]);
   const [loadingPedidos, setLoadingPedidos] = useState(false);
 
-  /* ===============================
-     🔄 FETCH CARRITO
-  =============================== */
-  const fetchCarrito = useCallback(async () => {
-    if (!user) {
-      setItems([]);
-      return [];
-    }
-    setLoading(true);
-    try {
-      const res = await fetch("/api/carrito/listar", { credentials: "include" });
-      const data = await res.json();
-      const lista = data.success ? data.items || [] : [];
-      setItems(lista);
-      return lista;
-    } catch (error) {
-      console.error("Error cargando carrito:", error);
-      setItems([]);
-      return [];
-    } finally {
-      setLoading(false);
-    }
-  }, [user]);
+  const addingRef = useRef(false);
+  const [adding, setAdding] = useState(false);
+
+  const hasLoadedRef = useRef(false);
 
   /* ===============================
-     🔄 FETCH PEDIDOS
+     FETCH CARRITO
+  =============================== */
+  const fetchCarrito = useCallback(
+    async (force = false) => {
+      if (!user) {
+        setItems([]);
+        setLoading(false);
+        return [];
+      }
+
+      if (!hasLoadedRef.current || force) {
+        setLoading(true);
+      }
+
+      try {
+        const res = await fetch("/api/carrito/listar", {
+          credentials: "include",
+        });
+
+        const data = await res.json();
+
+        const lista = data.success ? data.items || [] : [];
+
+        const normalized = lista.map((item) => ({
+          id_item: item.id_item,
+          producto_id: item.id_producto,
+          producto_nombre: item.producto_nombre,
+          cantidad: Number(item.cantidad || 0),
+          precio_unitario: Number(item.precio_unitario || 0),
+
+          // FRONT: siempre trabajas con imagen_url
+          imagen_url: item.imagen_url || "/placeholder.png",
+
+          categoria: item.categoria || "otros",
+        }));
+
+        setItems(normalized);
+        hasLoadedRef.current = true;
+
+        return normalized;
+      } catch (error) {
+        console.error("Error cargando carrito:", error);
+        setItems([]);
+        return [];
+      } finally {
+        setLoading(false);
+      }
+    },
+    [user]
+  );
+
+  /* ===============================
+     FETCH PEDIDOS
   =============================== */
   const fetchPedidos = useCallback(async () => {
     if (!user) {
       setPedidos([]);
       return [];
     }
+
     setLoadingPedidos(true);
+
     try {
-      const res = await fetch(`/api/pedidos/usuario?usuarioId=${user.id}`, { credentials: "include" });
+      const res = await fetch(
+        `/api/pedidos/usuario?usuarioId=${user.id}`,
+        { credentials: "include" }
+      );
+
       const data = await res.json();
-      const lista = data.success ? data.pedidos || [] : [];
-      setPedidos(lista);
-      return lista;
+
+      setPedidos(data.success ? data.pedidos || [] : []);
+
+      return data.pedidos || [];
     } catch (error) {
       console.error("Error cargando pedidos:", error);
       setPedidos([]);
@@ -65,7 +111,7 @@ export function CarritoProvider({ children }) {
   }, [user]);
 
   /* ===============================
-     🔥 EFECTO PRINCIPAL
+     INIT
   =============================== */
   useEffect(() => {
     if (!user) {
@@ -73,67 +119,77 @@ export function CarritoProvider({ children }) {
       setPedidos([]);
       setLoading(false);
       setLoadingPedidos(false);
+      hasLoadedRef.current = false;
       return;
     }
 
-    // Cargar carrito y pedidos en paralelo
-    fetchCarrito();
+    fetchCarrito(true);
     fetchPedidos();
   }, [user, fetchCarrito, fetchPedidos]);
 
   /* ===============================
-     🔔 SYNC ENTRE PESTAÑAS
-  =============================== */
-  useEffect(() => {
-    const handleStorage = (e) => {
-      if (e.key === "carrito_actualizado") fetchCarrito();
-      if (e.key === "pedidos_actualizados") fetchPedidos();
-    };
-    window.addEventListener("storage", handleStorage);
-    return () => window.removeEventListener("storage", handleStorage);
-  }, [fetchCarrito, fetchPedidos]);
-
-  /* ===============================
-     ➕ AGREGAR ITEM
+     ADD ITEM
   =============================== */
   const addItem = async (productoId, variacionId, cantidad = 1) => {
+    if (addingRef.current || adding) return false;
+
+    addingRef.current = true;
+    setAdding(true);
+
     try {
       const res = await fetch("/api/carrito/agregar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ productoId, variacionId, cantidad }),
+        body: JSON.stringify({
+          productoId,
+          variacionId,
+          cantidad,
+        }),
       });
+
       const data = await res.json();
+
       if (!data.success) return false;
 
-      await fetchCarrito();
-      localStorage.setItem("carrito_actualizado", Date.now());
+      await fetchCarrito(true);
+
       return true;
     } catch (error) {
       console.error("Error agregar item:", error);
       return false;
+    } finally {
+      addingRef.current = false;
+      setAdding(false);
     }
   };
 
   /* ===============================
-     🔄 ACTUALIZAR ITEM
+     UPDATE ITEM
   =============================== */
   const actualizarItem = async (idItem, cantidad) => {
     if (cantidad < 1) return false;
+
+    setItems((prev) =>
+      prev.map((i) =>
+        i.id_item === idItem ? { ...i, cantidad: Number(cantidad) } : i
+      )
+    );
+
     try {
       const res = await fetch("/api/carrito/actualizar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ idItem, cantidad }),
+        body: JSON.stringify({
+          idItem,
+          cantidad,
+        }),
       });
-      const data = await res.json();
-      if (!data.success) return false;
 
-      await fetchCarrito();
-      localStorage.setItem("carrito_actualizado", Date.now());
-      return true;
+      const data = await res.json();
+
+      return data.success;
     } catch (error) {
       console.error("Error actualizar item:", error);
       return false;
@@ -141,9 +197,11 @@ export function CarritoProvider({ children }) {
   };
 
   /* ===============================
-     🗑 ELIMINAR ITEM
+     DELETE ITEM
   =============================== */
   const eliminarItem = async (idItem) => {
+    setItems((prev) => prev.filter((i) => i.id_item !== idItem));
+
     try {
       const res = await fetch("/api/carrito/eliminar", {
         method: "DELETE",
@@ -151,58 +209,81 @@ export function CarritoProvider({ children }) {
         credentials: "include",
         body: JSON.stringify({ idItem }),
       });
-      const data = await res.json();
-      if (!data.success) return false;
 
-      await fetchCarrito();
-      localStorage.setItem("carrito_actualizado", Date.now());
+      const data = await res.json();
+
+      if (!data.success) {
+        await fetchCarrito(true);
+        return false;
+      }
+
       return true;
     } catch (error) {
       console.error("Error eliminar item:", error);
+      await fetchCarrito(true);
       return false;
     }
   };
 
   /* ===============================
-     🧾 CONFIRMAR PEDIDO
+     CONFIRMAR PEDIDO (FIX FINAL)
   =============================== */
   const confirmarPedido = async () => {
-    if (!user || items.length === 0) return { success: false, message: "Carrito vacío" };
+    if (!user || items.length === 0) {
+      return {
+        success: false,
+        message: "Carrito vacío o usuario no logueado",
+      };
+    }
 
     try {
-      const itemsParaAPI = items.map((i) => ({
-        id_producto: i.id_producto,
-        nombre_producto: i.producto_nombre,
-        cantidad: i.cantidad,
-        precio: i.precio || 0,
+      const itemsFormateados = items.map((item) => ({
+        id_producto: item.producto_id,
+        nombre_producto: item.producto_nombre,
+        cantidad: Number(item.cantidad || 0),
+        precio: Number(item.precio_unitario || 0),
+
+        // FIX: backend espera imagen
+        imagen: item.imagen_url,
       }));
 
       const res = await fetch("/api/pedidos/confirmar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ usuarioId: user.id, items: itemsParaAPI }),
+        body: JSON.stringify({
+          items: itemsFormateados,
+        }),
       });
 
       const data = await res.json();
-      if (!data.success) return { success: false, message: data.message || "❌ No se pudo confirmar el pedido" };
 
-      // Vaciar carrito y actualizar pedidos
+      if (!data.success) {
+        return {
+          success: false,
+          message: data.message || "Error al confirmar pedido",
+        };
+      }
+
       setItems([]);
       await fetchPedidos();
-      localStorage.setItem("carrito_actualizado", Date.now());
-      localStorage.setItem("pedidos_actualizados", Date.now());
 
-      return { success: true, message: data.message || "✅ Pedido realizado correctamente" };
+      return {
+        success: true,
+        message: data.message || "Pedido realizado correctamente",
+      };
     } catch (error) {
-      console.error("Error confirmando pedido:", error);
-      return { success: false, message: error.message || "❌ Error al confirmar pedido" };
+      console.error("Error confirmar pedido:", error);
+
+      return {
+        success: false,
+        message: "Error inesperado al confirmar pedido",
+      };
     }
   };
 
   const vaciarCarrito = () => {
     setItems([]);
-    localStorage.setItem("carrito_actualizado", Date.now());
   };
 
   return (
@@ -210,15 +291,21 @@ export function CarritoProvider({ children }) {
       value={{
         items,
         loading,
+
         fetchCarrito,
+
         addItem,
         actualizarItem,
         eliminarItem,
         vaciarCarrito,
+
         pedidos,
         loadingPedidos,
         fetchPedidos,
+
         confirmarPedido,
+
+        adding,
       }}
     >
       {children}
@@ -228,6 +315,10 @@ export function CarritoProvider({ children }) {
 
 export function useCarrito() {
   const context = useContext(CarritoContext);
-  if (!context) throw new Error("useCarrito debe usarse dentro de CarritoProvider");
+
+  if (!context) {
+    throw new Error("useCarrito debe usarse dentro de CarritoProvider");
+  }
+
   return context;
 }
