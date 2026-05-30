@@ -94,7 +94,7 @@ export default function PanelLeft({
                   name: "Acerca de la empresa",
                   path: "/quickcart/sobrenosotros",
                 },
-                { name: "Ver Portafolio", path: "/" },
+                { name: "Ver portafolio", path: "/" },
               ].map((item) => (
                 <button
                   key={item.name}
