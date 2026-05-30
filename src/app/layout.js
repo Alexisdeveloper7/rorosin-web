@@ -34,6 +34,29 @@ export default function RootLayout({ children }) {
     <html lang="en" className="h-full">
       <head>
         <title>QuickCart</title>
+
+        <meta
+          name="description"
+          content="Tienda online de demostración creada para presentar mis habilidades en desarrollo web."
+        />
+
+        <meta property="og:title" content="QuickCart | Tienda online demo" />
+        <meta
+          property="og:description"
+          content="Tienda online de demostración creada para presentar mis habilidades en desarrollo web."
+        />
+        <meta property="og:url" content="https://alexissanchez.vercel.app" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://alexissanchez.vercel.app/iconoo.png" />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="QuickCart | Tienda online demo" />
+        <meta
+          name="twitter:description"
+          content="Tienda online de demostración creada para presentar mis habilidades en desarrollo web."
+        />
+        <meta name="twitter:image" content="https://alexissanchez.vercel.app/iconoo.png" />
+
         <link rel="icon" href="/icone.png" />
       </head>
 
