@@ -33,11 +33,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="es" className="h-full">
       <head>
-        <title>QuickCart</title>
+        <title>QuickCart | Miguel Alexis Sánchez Carranza</title>
 
         <meta
           name="description"
-          content="Tienda online demostrativa creada para mostrar una experiencia de compra moderna, intuitiva y fácil de usar."
+          content="Portafolio y tienda online de demostración con carrito y experiencia de compra sin productos reales."
         />
 
         <meta
@@ -47,7 +47,7 @@ export default function RootLayout({ children }) {
 
         <meta
           property="og:description"
-          content="Tienda online demostrativa creada para mostrar una experiencia de compra moderna, intuitiva y fácil de usar."
+          content="Portafolio y tienda online de demostración con carrito y experiencia de compra sin productos reales."
         />
 
         <meta property="og:url" content="https://alexissanchez.vercel.app" />
@@ -71,7 +71,7 @@ export default function RootLayout({ children }) {
 
         <meta
           name="twitter:description"
-          content="Tienda online demostrativa creada para mostrar una experiencia de compra moderna, intuitiva y fácil de usar."
+          content="Portafolio y tienda online de demostración con carrito y experiencia de compra sin productos reales."
         />
 
         <meta
