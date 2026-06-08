@@ -8,12 +8,9 @@ import {
 } from "react-icons/fa";
 
 export default function Footer() {
-  const contactoNumero = "+52 3312891927";
-  const whatsappNumero = "523312891927";
-  const correo = "alexisdev7@outlook.com";
-
-  const ubicacionLink =
-    "https://www.google.com/maps/place/Guadalajara,+Jalisco,+México";
+  const mostrarAvisoDemo = () => {
+    alert("Esta es una versión de demostración. No contiene contactos reales.");
+  };
 
   return (
     <footer className="text-gray-700 text-sm border-t border-gray-200 bg-white">
@@ -23,63 +20,65 @@ export default function Footer() {
           {/* Teléfono */}
           <div className="flex items-center gap-2">
             <FaPhoneAlt className="text-gray-500 text-xs" />
-            <a
-              href={`tel:${contactoNumero}`}
-              className="text-gray-600 hover:text-gray-900 transition text-xs"
+            <button
+              type="button"
+              onClick={mostrarAvisoDemo}
+              className="text-gray-600 hover:text-gray-900 transition text-xs cursor-pointer"
             >
-              {contactoNumero}
-            </a>
+              +52 000 000 0000
+            </button>
           </div>
 
           {/* Email */}
           <div className="flex items-center gap-2">
             <FaEnvelope className="text-gray-500 text-xs" />
-            <a
-              href={`mailto:${correo}`}
-              className="text-gray-600 hover:text-gray-900 transition text-xs"
+            <button
+              type="button"
+              onClick={mostrarAvisoDemo}
+              className="text-gray-600 hover:text-gray-900 transition text-xs cursor-pointer"
             >
-              {correo}
-            </a>
+              contact@example.com
+            </button>
           </div>
 
           {/* Ubicación */}
           <div className="flex items-center gap-2 text-[11px]">
             <FaMapMarkerAlt className="text-gray-400" />
-            <a
-              href={ubicacionLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-500 hover:text-gray-900 hover:underline transition"
+            <button
+              type="button"
+              onClick={mostrarAvisoDemo}
+              className="text-gray-500 hover:text-gray-900 hover:underline transition cursor-pointer"
             >
               Guadalajara, Jalisco, México
-            </a>
+            </button>
           </div>
         </div>
 
         {/* REDES / ACCIONES */}
         <div className="flex gap-2 mt-1">
-          <a
-            href={`tel:${contactoNumero}`}
-            className="bg-gray-100 p-1.5 rounded-full hover:bg-gray-200 transition text-gray-700 flex items-center justify-center"
+          <button
+            type="button"
+            onClick={mostrarAvisoDemo}
+            className="bg-gray-100 p-1.5 rounded-full hover:bg-gray-200 transition text-gray-700 flex items-center justify-center cursor-pointer"
           >
             <FaPhoneAlt size={14} />
-          </a>
+          </button>
 
-          <a
-            href={`https://wa.me/${whatsappNumero}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-[#25D366] p-1.5 rounded-full hover:bg-[#1fb855] transition text-white flex items-center justify-center shadow-sm"
+          <button
+            type="button"
+            onClick={mostrarAvisoDemo}
+            className="bg-[#25D366] p-1.5 rounded-full hover:bg-[#1fb855] transition text-white flex items-center justify-center shadow-sm cursor-pointer"
           >
             <FaWhatsapp size={20} />
-          </a>
+          </button>
 
-          <a
-            href={`mailto:${correo}`}
-            className="bg-gray-100 p-1.5 rounded-full hover:bg-gray-200 transition text-gray-700 flex items-center justify-center"
+          <button
+            type="button"
+            onClick={mostrarAvisoDemo}
+            className="bg-gray-100 p-1.5 rounded-full hover:bg-gray-200 transition text-gray-700 flex items-center justify-center cursor-pointer"
           >
             <FaEnvelope size={14} />
-          </a>
+          </button>
         </div>
 
         {/* TEXTO FINAL */}

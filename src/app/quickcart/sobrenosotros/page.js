@@ -70,7 +70,7 @@ export default function SobreNosotros() {
                 </h3>
 
                 <p className="mt-2 text-sm md:text-base text-gray-600 leading-relaxed">
-                  La web está enfocada en un diseño limpio, moderno y responsive,
+                  La web está enfocada en un diseño limpio, moderno y responsivo,
                   pensado para verse bien en móviles pequeños y también en
                   escritorio.
                 </p>
@@ -110,9 +110,10 @@ export default function SobreNosotros() {
                 </h3>
 
                 <p className="mt-2 text-sm md:text-base text-gray-600 leading-relaxed">
-                  Desarrollado por Alexis Sánchez como web de portafolio para
-                  mostrar habilidades en React, Next.js, Tailwind CSS, APIs,
-                  autenticación y desarrollo Full Stack.
+                  Desarrollado por Alexis Sánchez como proyecto de portafolio
+                  para mostrar habilidades en React, Next.js, Tailwind CSS,
+                  autenticación, base de datos, carrito de compras, pedidos y
+                  flujo de usuario.
                 </p>
               </div>
             </div>
@@ -154,13 +155,15 @@ export default function SobreNosotros() {
           </h2>
 
           <p className="mt-3 text-sm md:text-base text-gray-600 max-w-2xl mx-auto">
-            Web de portafolio desarrollada para demostrar habilidades reales en
-            frontend, backend, diseño responsive y experiencia de usuario.
+            Proyecto web full stack de portafolio, desarrollado para demostrar
+            funcionalidades de e-commerce como autenticación, base de datos,
+            carrito de compras, pedidos y flujo de usuario. No incluye pagos
+            reales.
           </p>
 
           <div className="mt-6 text-xs md:text-sm text-gray-400 space-y-1">
             <p>Desarrollado por Alexis Sánchez</p>
-            <p>Programador Freelancer Full Stack</p>
+            <p>Desarrollador Web Freelancer</p>
             <p>Guadalajara, Jalisco, México</p>
           </div>
         </div>

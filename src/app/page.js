@@ -5,10 +5,6 @@ import PortfolioHeader from "@/components/PortfolioHeader";
 import PortfolioFooter from "@/components/PortfolioFooter";
 
 export default function Home() {
-  const telefono = "+52 3312891927";
-  const whatsapp = "523312891927";
-  const correo = "alexisdev7@outlook.com";
-
   const scrollSuave = (id) => {
     const seccion = document.getElementById(id);
     if (!seccion) return;
@@ -22,6 +18,22 @@ export default function Home() {
       top,
       behavior: "smooth",
     });
+  };
+
+  const abrirWhatsApp = () => {
+    window.open(
+      "https://wa.me/5213312891927?text=Hola,%20quiero%20cotizar%20una%20página%20web",
+      "_blank"
+    );
+  };
+
+  const llamar = () => {
+    window.location.href = "tel:+523312891927";
+  };
+
+  const enviarCorreo = () => {
+    window.location.href =
+      "mailto:alexissanchezdev7@gmail.com?subject=Cotización%20de%20página%20web";
   };
 
   return (
@@ -45,29 +57,27 @@ export default function Home() {
             </h1>
 
             <p className="mt-5 text-white/65 text-[15px] md:text-lg max-w-2xl leading-relaxed">
-              Creo, mejoro y doy mantenimiento a proyectos web, desde páginas profesionales hasta sistemas administrativos conectados a base de datos, creando una experiencia clara para cada usuario.
-
+              Creo, mejoro y doy mantenimiento a sitios web, desde páginas profesionales y tiendas online hasta sistemas de citas, reservaciones,
+              control de inventario y sistemas administrativos.
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row gap-3 md:gap-4">
               <button
                 type="button"
                 onClick={() => scrollSuave("projects")}
-                className="bg-white text-black px-6 py-3 rounded-full text-sm font-medium hover:opacity-90 transition text-center shadow-sm"
+                className="bg-white text-black px-6 py-3 rounded-full text-sm font-medium hover:opacity-90 transition text-center shadow-sm cursor-pointer"
               >
-                Ver proyectos
+                Ver proyectos propios
               </button>
 
               <button
                 type="button"
                 onClick={() => scrollSuave("contact")}
-                className="border border-white/10 bg-white/5 px-6 py-3 rounded-full text-sm hover:bg-white/10 transition text-center"
+                className="border border-white/10 bg-white/5 px-6 py-3 rounded-full text-sm hover:bg-white/10 transition text-center cursor-pointer"
               >
-                Contactar
+                Cotizar página web
               </button>
             </div>
-
-            
           </div>
         </div>
       </section>
@@ -80,16 +90,15 @@ export default function Home() {
         <div className="mx-auto max-w-6xl">
           <div className="max-w-2xl">
             <p className="text-xs md:text-sm text-white/40 tracking-[0.18em] uppercase">
-              Portfolio
+              Portafolio
             </p>
 
             <h2 className="mt-3 text-2xl md:text-4xl font-semibold">
-              Proyectos destacados
+              Proyectos propios
             </h2>
 
             <p className="mt-4 text-white/55 text-sm md:text-base leading-relaxed">
-              Algunos trabajos donde aplico diseño, código limpio, lógica y
-              estructura web.
+              Una selección de proyectos creados para mostrar mi forma de trabajar.
             </p>
           </div>
 
@@ -106,13 +115,12 @@ export default function Home() {
               </div>
 
               <p className="mt-3 text-white/60 text-sm md:text-base leading-relaxed">
-                Tienda digital con catálogo de productos, carrito de compras y
-                flujo de pedido. Una experiencia simple, clara y moderna.
+                Tienda online de demostración con catálogo de productos, carrito de compras y flujo de pedido simulado.
               </p>
 
               <Link
                 href="/quickcart"
-                className="mt-5 inline-block text-sm text-white/80 hover:text-white transition"
+                className="mt-5 inline-block text-sm text-white/80 hover:text-white transition cursor-pointer"
               >
                 Ver proyecto →
               </Link>
@@ -121,7 +129,7 @@ export default function Home() {
             <div className="p-5 md:p-7 rounded-2xl bg-[#2a2a2a] border border-white/5 hover:bg-[#313131] transition">
               <div className="flex items-center justify-between gap-4">
                 <h3 className="text-lg font-medium">
-                  Próximamente
+                  Próximo proyecto
                 </h3>
 
                 <span className="text-xs text-white/40 border border-white/10 rounded-full px-3 py-1">
@@ -130,13 +138,11 @@ export default function Home() {
               </div>
 
               <p className="mt-3 text-white/60 text-sm md:text-base leading-relaxed">
-                Estoy preparando nuevos proyectos web con usuarios, paneles
-                administrativos, base de datos y funciones hechas a la medida.
-                Esta sección se actualizará con próximos trabajos reales.
+                Estoy trabajando en nuevos proyectos para ampliar mi portafolio y mostrar más tipos de páginas y sistemas.
               </p>
 
               <span className="mt-5 inline-block text-sm text-white/35">
-                Nuevo proyecto pronto →
+                Proyecto en desarrollo →
               </span>
             </div>
           </div>
@@ -151,18 +157,15 @@ export default function Home() {
           </p>
 
           <h2 className="mt-3 text-2xl md:text-4xl font-semibold">
-            Desarrollo web con enfoque práctico
+            Desarrollo páginas y sistemas funcionales
           </h2>
 
           <p className="mt-5 text-white/70 text-[15px] md:text-lg leading-relaxed">
-            Me gusta crear páginas y sistemas que se vean bien, funcionen bien
-            y sean fáciles de usar.
+            Me gusta crear sitios claros, modernos y fáciles de usar, cuidando tanto el diseño como el funcionamiento.
           </p>
 
           <p className="mt-4 text-white/60 text-sm md:text-base leading-relaxed">
-            Estudié una carrera técnica orientada al desarrollo y programación
-            en la Escuela Politécnica de Guadalajara, donde fortalecí mis bases
-            en lógica, software y tecnologías web.
+            Estudié la carrera de Tecnólogo Profesional en Sistemas Informáticos (TPSI) en la Escuela Politécnica de Guadalajara, donde fortalecí mis bases en lógica, programación, software y tecnologías web.
           </p>
 
           <p className="mt-4 text-white/60 text-sm md:text-base leading-relaxed">
@@ -183,38 +186,41 @@ export default function Home() {
           </p>
 
           <h2 className="mt-3 text-3xl md:text-5xl font-semibold leading-tight">
-            ¿Tienes un proyecto web?
+            ¿Necesitas una página o sistema web?
           </h2>
 
           <p className="mt-5 text-white/70 text-sm md:text-base leading-relaxed">
-            Puedo ayudarte a crear, mejorar o mantener tu página, tienda online
-            o sistema web.
+            Creo, mejoro o doy mantenimiento a tu página, <br />
+            tienda online o sistema administrativo.
           </p>
 
           <div className="mt-7 flex flex-col sm:flex-row justify-center gap-3">
-            <a
-              href={`https://wa.me/${whatsapp}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-white text-black px-7 md:px-8 py-3 md:py-4 rounded-full font-medium hover:opacity-90 transition text-center"
+            <button
+              type="button"
+              onClick={abrirWhatsApp}
+              className="bg-white text-black px-7 md:px-8 py-3 md:py-4 rounded-full font-medium hover:opacity-90 transition text-center cursor-pointer"
             >
               Contactar por WhatsApp
-            </a>
+            </button>
 
-            <a
-              href={`tel:${telefono}`}
-              className="border border-white/10 bg-white/5 px-7 md:px-8 py-3 md:py-4 rounded-full font-medium hover:bg-white/10 transition text-center"
+            <button
+              type="button"
+              onClick={llamar}
+              className="border border-white/10 bg-white/5 px-7 md:px-8 py-3 md:py-4 rounded-full font-medium hover:bg-white/10 transition text-center cursor-pointer"
             >
               Llamar
-            </a>
+            </button>
 
-            <a
-              href={`mailto:${correo}`}
-              className="border border-white/10 bg-white/5 px-7 md:px-8 py-3 md:py-4 rounded-full font-medium hover:bg-white/10 transition text-center"
+            <button
+              type="button"
+              onClick={enviarCorreo}
+              className="border border-white/10 bg-white/5 px-7 md:px-8 py-3 md:py-4 rounded-full font-medium hover:bg-white/10 transition text-center cursor-pointer"
             >
               Correo
-            </a>
+            </button>
           </div>
+
+          
         </div>
       </section>
 
