@@ -54,7 +54,7 @@ export default function RootLayout({ children }) {
 
         <meta
           property="og:image"
-          content="https://alexissanchez.vercel.app/iconoo.png"
+          content="https://alexissanchez.vercel.app/iconooo.png"
         />
 
         <meta property="og:image:width" content="1200" />
@@ -75,7 +75,7 @@ export default function RootLayout({ children }) {
 
         <meta
           name="twitter:image"
-          content="https://alexissanchez.vercel.app/iconoo.png"
+          content="https://alexissanchez.vercel.app/iconooo.png"
         />
 
         <link rel="icon" href="/icone.png" />
