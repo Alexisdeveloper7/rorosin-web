@@ -5,7 +5,6 @@ import AppProvider from "@/components/AppProvider";
 import { useUser } from "@/context/UserContext";
 import GlobalOverlay from "@/components/GlobalOverlay";
 
-// Wrapper para mostrar overlay global de modales de usuario
 function UserOverlay() {
   const {
     loginModalOpen,
@@ -37,7 +36,7 @@ export default function RootLayout({ children }) {
 
         <meta
           name="description"
-          content="Portafolio y tienda online de demostración con carrito y experiencia de compra sin productos reales."
+          content="Portafolio y tienda online de demostración con carrito y experiencia de compra sin ventas reales."
         />
 
         <meta
@@ -47,7 +46,7 @@ export default function RootLayout({ children }) {
 
         <meta
           property="og:description"
-          content="Portafolio y tienda online de demostración con carrito y experiencia de compra sin productos reales."
+          content="Portafolio y tienda online de demostración con carrito y experiencia de compra sin ventas reales."
         />
 
         <meta property="og:url" content="https://alexissanchez.vercel.app" />
@@ -71,7 +70,7 @@ export default function RootLayout({ children }) {
 
         <meta
           name="twitter:description"
-          content="Portafolio y tienda online de demostración con carrito y experiencia de compra sin productos reales."
+          content="Portafolio y tienda online de demostración con carrito y experiencia de compra sin ventas reales."
         />
 
         <meta
@@ -86,9 +85,7 @@ export default function RootLayout({ children }) {
         <AppProvider>
           <UserOverlay />
 
-          <main className="flex flex-1 flex-col">
-            {children}
-          </main>
+          <main className="flex flex-1 flex-col">{children}</main>
         </AppProvider>
       </body>
     </html>
