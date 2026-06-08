@@ -33,8 +33,7 @@ export default function Page() {
         </h2>
 
         <p className="text-gray-600 max-w-xl mx-auto mb-7 leading-relaxed text-sm md:text-base">
-          QuickCart es una tienda online demostrativa creada para presentar mis habilidades en desarrollo web. Los productos no están a la venta; forman parte de una simulación diseñada para mostrar una experiencia de compra moderna, intuitiva y funcional.
-
+          QuickCart es una tienda online demostrativa desarrollada para reflejar mis habilidades en desarrollo web. Los productos no están a la venta; forman parte de una simulación enfocada en recrear una experiencia de compra moderna, intuitiva y funcional.
         </p>
 
         <div className="flex flex-col sm:flex-row justify-center gap-3 max-w-sm sm:max-w-none mx-auto">
