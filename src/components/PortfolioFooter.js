@@ -6,7 +6,7 @@ export default function PortfolioFooter() {
       <p>© 2026 Miguel Alexis Sánchez Carranza.</p>
 
       <div className="mt-3 space-y-1">
-        <p>WhatsApp: 331 289 1927</p>
+        <p>WhatsApp: 33 12 89 19 27</p>
         <p>Correo: alexissanchezdev7@gmail.com</p>
       </div>
     </footer>
