@@ -3,6 +3,7 @@
 import Link from "next/link";
 import PortfolioHeader from "@/components/PortfolioHeader";
 import PortfolioFooter from "@/components/PortfolioFooter";
+import PortfolioReviews from "@/components/PortfolioReviews";
 
 export default function Home() {
   const scrollSuave = (id) => {
@@ -103,51 +104,95 @@ export default function Home() {
           </div>
 
           <div className="mt-7 md:mt-8 grid md:grid-cols-2 gap-4 md:gap-6">
-            <div className="p-5 md:p-7 rounded-2xl bg-[#2a2a2a] border border-white/5 hover:bg-[#313131] transition">
-              <div className="flex items-center justify-between gap-4">
-                <h3 className="text-lg font-medium">
-                  QuickCart
-                </h3>
+  <div className="p-5 md:p-7 rounded-2xl bg-[#2a2a2a] border border-white/5 hover:bg-[#313131] transition">
+    <div className="flex items-center justify-between gap-4">
+      <h3 className="text-lg font-medium">QuickCart</h3>
 
-                <span className="text-xs text-white/40 border border-white/10 rounded-full px-3 py-1">
-                  Tienda online
-                </span>
-              </div>
+      <span className="text-xs text-white/40 border border-white/10 rounded-full px-3 py-1">
+        Tienda online
+      </span>
+    </div>
 
-              <p className="mt-3 text-white/60 text-sm md:text-base leading-relaxed">
-                Tienda online de demostración con catálogo de productos, carrito de compras y flujo de pedido simulado.
-              </p>
+    <p className="mt-3 text-white/60 text-sm md:text-base leading-relaxed">
+      Tienda online de demostración con catálogo de productos, carrito de compras y flujo de pedido simulado.
+    </p>
 
-              <Link
-                href="/quickcart"
-                className="mt-5 inline-block text-sm text-white/80 hover:text-white transition cursor-pointer"
-              >
-                Ver proyecto →
-              </Link>
-            </div>
+    <Link
+      href="/quickcart"
+      className="mt-5 inline-block text-sm text-white/80 hover:text-white transition cursor-pointer"
+    >
+      Ver proyecto →
+    </Link>
+  </div>
 
-            <div className="p-5 md:p-7 rounded-2xl bg-[#2a2a2a] border border-white/5 hover:bg-[#313131] transition">
-              <div className="flex items-center justify-between gap-4">
-                <h3 className="text-lg font-medium">
-                  Próximo proyecto
-                </h3>
+  <div className="p-5 md:p-7 rounded-2xl bg-[#2a2a2a] border border-white/5 hover:bg-[#313131] transition">
+    <div className="flex items-center justify-between gap-4">
+      <h3 className="text-lg font-medium">Bi Ne Bianni</h3>
 
-                <span className="text-xs text-white/40 border border-white/10 rounded-full px-3 py-1">
-                  En desarrollo
-                </span>
-              </div>
+      <span className="text-xs text-white/40 border border-white/10 rounded-full px-3 py-1">
+        Sitio empresarial
+      </span>
+    </div>
 
-              <p className="mt-3 text-white/60 text-sm md:text-base leading-relaxed">
-                Estoy trabajando en nuevos proyectos para ampliar mi portafolio y mostrar más tipos de páginas y sistemas.
-              </p>
+    <p className="mt-3 text-white/60 text-sm md:text-base leading-relaxed">
+      Sitio web profesional para una consultoría social, con secciones informativas, presentación de servicios y diseño responsivo.
+    </p>
 
-              <span className="mt-5 inline-block text-sm text-white/35">
-                Proyecto en desarrollo →
-              </span>
-            </div>
-          </div>
+    <a
+      href="https://binebianni.vercel.app/"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="mt-5 inline-block text-sm text-white/80 hover:text-white transition cursor-pointer"
+    >
+      Ver sitio →
+    </a>
+  </div>
+
+  <div className="p-5 md:p-7 rounded-2xl bg-[#2a2a2a] border border-white/5 hover:bg-[#313131] transition">
+    <div className="flex items-center justify-between gap-4">
+      <h3 className="text-lg font-medium">Hamburguesas Fátima</h3>
+
+      <span className="text-xs text-white/40 border border-white/10 rounded-full px-3 py-1">
+        Restaurante
+      </span>
+    </div>
+
+    <p className="mt-3 text-white/60 text-sm md:text-base leading-relaxed">
+      Página web para negocio de comida, enfocada en mostrar productos, mejorar la presentación del negocio y facilitar el contacto con clientes.
+    </p>
+
+    <a
+      href="https://hamburguesas-fatima.vercel.app/"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="mt-5 inline-block text-sm text-white/80 hover:text-white transition cursor-pointer"
+    >
+      Ver sitio →
+    </a>
+  </div>
+
+  <div className="p-5 md:p-7 rounded-2xl bg-[#2a2a2a] border border-white/5 hover:bg-[#313131] transition">
+    <div className="flex items-center justify-between gap-4">
+      <h3 className="text-lg font-medium">Próximo proyecto</h3>
+
+      <span className="text-xs text-white/40 border border-white/10 rounded-full px-3 py-1">
+        En desarrollo
+      </span>
+    </div>
+
+    <p className="mt-3 text-white/60 text-sm md:text-base leading-relaxed">
+      Estoy trabajando en nuevos proyectos para ampliar mi portafolio y mostrar más tipos de páginas y sistemas.
+    </p>
+
+    <span className="mt-5 inline-block text-sm text-white/35">
+      Proyecto en desarrollo →
+    </span>
+  </div>
+</div>
         </div>
       </section>
+
+      <PortfolioReviews />
 
       {/* ABOUT */}
       <section className="px-5 md:px-6 py-12 md:py-16 bg-[#242424] border-t border-white/5">

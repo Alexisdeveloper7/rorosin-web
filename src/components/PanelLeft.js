@@ -158,7 +158,7 @@ export default function PanelLeft({
                         "0 8px 24px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.9)",
                     }}
                   >
-                    Mi Cuenta
+                    Ver mi Cuenta
                   </button>
 
                   <button
