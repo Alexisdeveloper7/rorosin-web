@@ -189,26 +189,26 @@ function TiendaContent() {
   };
 
   const SkeletonCard = () => (
-    <div className="w-[240px] bg-white rounded-[24px] border border-gray-200 shadow-sm overflow-hidden animate-pulse flex flex-col">
+    <div className="w-full max-w-[158px] min-[380px]:max-w-[170px] sm:max-w-[220px] xl:max-w-[240px] bg-white rounded-[18px] sm:rounded-[24px] border border-gray-200 shadow-sm overflow-hidden animate-pulse flex flex-col">
       <div className="aspect-square bg-gray-200 w-full" />
-      <div className="p-3 flex flex-col gap-3">
-        <div className="h-4 bg-gray-200 rounded w-[85%]" />
-        <div className="h-4 bg-gray-200 rounded w-[60%]" />
-        <div className="h-3 bg-gray-200 rounded w-[40%]" />
-        <div className="h-6 bg-gray-200 rounded w-[50%]" />
-        <div className="h-10 bg-gray-200 rounded-2xl" />
-        <div className="h-10 bg-gray-200 rounded-2xl" />
+      <div className="p-2 sm:p-3 flex flex-col gap-2 sm:gap-3">
+        <div className="h-3 sm:h-4 bg-gray-200 rounded w-[85%]" />
+        <div className="h-3 sm:h-4 bg-gray-200 rounded w-[60%]" />
+        <div className="h-2.5 sm:h-3 bg-gray-200 rounded w-[40%]" />
+        <div className="h-5 sm:h-6 bg-gray-200 rounded w-[50%]" />
+        <div className="h-8 sm:h-10 bg-gray-200 rounded-2xl" />
+        <div className="h-8 sm:h-10 bg-gray-200 rounded-2xl" />
       </div>
     </div>
   );
 
   const SkeletonButton = ({ w = "w-32" }) => (
-    <div className={`h-10 ${w} bg-gray-200 rounded-xl animate-pulse`} />
+    <div className={`h-9 sm:h-10 ${w} bg-gray-200 rounded-xl animate-pulse`} />
   );
 
   const SkeletonTitle = () => (
     <div className="flex justify-center mb-3">
-      <div className="h-6 w-60 bg-gray-200 rounded animate-pulse" />
+      <div className="h-5 sm:h-6 w-48 sm:w-60 bg-gray-200 rounded animate-pulse" />
     </div>
   );
 
@@ -217,7 +217,7 @@ function TiendaContent() {
       {Array.from({ length: 5 }).map((_, i) => (
         <div
           key={i}
-          className="w-10 h-10 bg-gray-200 rounded-xl animate-pulse"
+          className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-200 rounded-xl animate-pulse"
         />
       ))}
     </div>

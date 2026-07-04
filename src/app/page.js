@@ -22,10 +22,7 @@ export default function Home() {
   };
 
   const abrirWhatsApp = () => {
-    window.open(
-      "https://wa.me/5213312891927?text=Hola,%20quiero%20cotizar%20una%20página%20web",
-      "_blank"
-    );
+    window.open("https://wa.me/5213312891927", "_blank");
   };
 
   const llamar = () => {
@@ -38,18 +35,18 @@ export default function Home() {
   };
 
   return (
-    <div className="bg-[#1f1f1f] text-white min-h-screen">
+    <div className="min-h-screen bg-[#1f1f1f] text-white">
       <PortfolioHeader />
 
       {/* HERO */}
-      <section className="min-h-[68vh] md:min-h-[78vh] flex items-center px-5 md:px-6 bg-[#242424] pt-24 pb-8 md:pb-12">
-        <div className="mx-auto max-w-6xl w-full">
+      <section className="flex min-h-[68vh] items-center bg-[#242424] px-5 pb-8 pt-24 md:min-h-[78vh] md:px-6 md:pb-12">
+        <div className="mx-auto w-full max-w-6xl">
           <div className="max-w-4xl">
-            <p className="mb-4 text-xs md:text-sm text-white/45 tracking-[0.22em] uppercase">
+            <p className="mb-4 text-xs uppercase tracking-[0.22em] text-white/45 md:text-sm">
               Desarrollador web • Freelancer
             </p>
 
-            <h1 className="text-[2.45rem] sm:text-5xl md:text-7xl font-semibold leading-[1.08] md:leading-tight tracking-tight">
+            <h1 className="text-[2.45rem] font-semibold leading-[1.08] tracking-tight sm:text-5xl md:text-7xl md:leading-tight">
               Desarrollo sitios web,
               <br className="hidden sm:block" />
               <span className="text-white/90">
@@ -57,16 +54,17 @@ export default function Home() {
               </span>
             </h1>
 
-            <p className="mt-5 text-white/65 text-[15px] md:text-lg max-w-2xl leading-relaxed">
-              Creo, mejoro y doy mantenimiento a sitios web, desde páginas profesionales y tiendas online hasta sistemas de citas, reservaciones,
-              control de inventario y sistemas administrativos.
+            <p className="mt-5 max-w-2xl text-[15px] leading-relaxed text-white/65 md:text-lg">
+              Creo, mejoro y doy mantenimiento a sitios web, desde páginas
+              profesionales y tiendas online hasta sistemas de citas,
+              reservaciones, control de inventario y sistemas administrativos.
             </p>
 
-            <div className="mt-8 flex flex-col sm:flex-row gap-3 md:gap-4">
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row md:gap-4">
               <button
                 type="button"
                 onClick={() => scrollSuave("projects")}
-                className="bg-white text-black px-6 py-3 rounded-full text-sm font-medium hover:opacity-90 transition text-center shadow-sm cursor-pointer"
+                className="cursor-pointer rounded-full bg-white px-6 py-3 text-center text-sm font-medium text-black shadow-sm transition hover:opacity-90"
               >
                 Ver proyectos propios
               </button>
@@ -74,7 +72,7 @@ export default function Home() {
               <button
                 type="button"
                 onClick={() => scrollSuave("contact")}
-                className="border border-white/10 bg-white/5 px-6 py-3 rounded-full text-sm hover:bg-white/10 transition text-center cursor-pointer"
+                className="cursor-pointer rounded-full border border-white/10 bg-white/5 px-6 py-3 text-center text-sm transition hover:bg-white/10"
               >
                 Cotizar página web
               </button>
@@ -86,134 +84,143 @@ export default function Home() {
       {/* PROJECTS */}
       <section
         id="projects"
-        className="px-5 md:px-6 py-12 md:py-16 bg-[#1f1f1f] border-t border-white/5"
+        className="border-t border-white/5 bg-[#1f1f1f] px-5 py-12 md:px-6 md:py-16"
       >
         <div className="mx-auto max-w-6xl">
           <div className="max-w-2xl">
-            <p className="text-xs md:text-sm text-white/40 tracking-[0.18em] uppercase">
+            <p className="text-xs uppercase tracking-[0.18em] text-white/40 md:text-sm">
               Portafolio
             </p>
 
-            <h2 className="mt-3 text-2xl md:text-4xl font-semibold">
+            <h2 className="mt-3 text-2xl font-semibold md:text-4xl">
               Proyectos propios
             </h2>
 
-            <p className="mt-4 text-white/55 text-sm md:text-base leading-relaxed">
-              Una selección de proyectos creados para mostrar mi forma de trabajar.
+            <p className="mt-4 text-sm leading-relaxed text-white/55 md:text-base">
+              Una selección de proyectos creados para mostrar mi forma de
+              trabajar.
             </p>
           </div>
 
-          <div className="mt-7 md:mt-8 grid md:grid-cols-2 gap-4 md:gap-6">
-  <div className="p-5 md:p-7 rounded-2xl bg-[#2a2a2a] border border-white/5 hover:bg-[#313131] transition">
-    <div className="flex items-center justify-between gap-4">
-      <h3 className="text-lg font-medium">QuickCart</h3>
+          <div className="mt-7 grid gap-4 md:mt-8 md:grid-cols-2 md:gap-6">
+            <div className="rounded-2xl border border-white/5 bg-[#2a2a2a] p-5 transition hover:bg-[#313131] md:p-7">
+              <div className="flex items-center justify-between gap-4">
+                <h3 className="text-lg font-medium">QuickCart</h3>
 
-      <span className="text-xs text-white/40 border border-white/10 rounded-full px-3 py-1">
-        Tienda online
-      </span>
-    </div>
+                <span className="rounded-full border border-white/10 px-3 py-1 text-xs text-white/40">
+                  Tienda online
+                </span>
+              </div>
 
-    <p className="mt-3 text-white/60 text-sm md:text-base leading-relaxed">
-      Tienda online de demostración con catálogo de productos, carrito de compras y flujo de pedido simulado.
-    </p>
+              <p className="mt-3 text-sm leading-relaxed text-white/60 md:text-base">
+                Tienda online de demostración con catálogo de productos, carrito
+                de compras y flujo de pedido simulado.
+              </p>
 
-    <Link
-      href="/quickcart"
-      className="mt-5 inline-block text-sm text-white/80 hover:text-white transition cursor-pointer"
-    >
-      Ver proyecto →
-    </Link>
-  </div>
+              <Link
+                href="/quickcart"
+                className="mt-5 inline-block cursor-pointer text-sm text-white/80 transition hover:text-white"
+              >
+                Ver proyecto →
+              </Link>
+            </div>
 
-  <div className="p-5 md:p-7 rounded-2xl bg-[#2a2a2a] border border-white/5 hover:bg-[#313131] transition">
-    <div className="flex items-center justify-between gap-4">
-      <h3 className="text-lg font-medium">Bi Ne Bianni</h3>
+            <div className="rounded-2xl border border-white/5 bg-[#2a2a2a] p-5 transition hover:bg-[#313131] md:p-7">
+              <div className="flex items-center justify-between gap-4">
+                <h3 className="text-lg font-medium">Bi Ne Bianni</h3>
 
-      <span className="text-xs text-white/40 border border-white/10 rounded-full px-3 py-1">
-        Sitio empresarial
-      </span>
-    </div>
+                <span className="rounded-full border border-white/10 px-3 py-1 text-xs text-white/40">
+                  Sitio empresarial
+                </span>
+              </div>
 
-    <p className="mt-3 text-white/60 text-sm md:text-base leading-relaxed">
-      Sitio web profesional para una consultoría social, con secciones informativas, presentación de servicios y diseño responsivo.
-    </p>
+              <p className="mt-3 text-sm leading-relaxed text-white/60 md:text-base">
+                Sitio web para una consultoría social, con secciones
+                informativas, presentación de servicios y diseño moderno.
+              </p>
 
-    <a
-      href="https://binebianni.vercel.app/"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="mt-5 inline-block text-sm text-white/80 hover:text-white transition cursor-pointer"
-    >
-      Ver sitio →
-    </a>
-  </div>
+              <a
+                href="https://binebianni.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-5 inline-block cursor-pointer text-sm text-white/80 transition hover:text-white"
+              >
+                Ver sitio →
+              </a>
+            </div>
 
-  <div className="p-5 md:p-7 rounded-2xl bg-[#2a2a2a] border border-white/5 hover:bg-[#313131] transition">
-    <div className="flex items-center justify-between gap-4">
-      <h3 className="text-lg font-medium">Hamburguesas Fátima</h3>
+            <div className="rounded-2xl border border-white/5 bg-[#2a2a2a] p-5 transition hover:bg-[#313131] md:p-7">
+              <div className="flex items-center justify-between gap-4">
+                <h3 className="text-lg font-medium">Hamburguesas Fátima</h3>
 
-      <span className="text-xs text-white/40 border border-white/10 rounded-full px-3 py-1">
-        Restaurante
-      </span>
-    </div>
+                <span className="rounded-full border border-white/10 px-3 py-1 text-xs text-white/40">
+                  Restaurante
+                </span>
+              </div>
 
-    <p className="mt-3 text-white/60 text-sm md:text-base leading-relaxed">
-      Página web para negocio de comida, enfocada en mostrar productos, mejorar la presentación del negocio y facilitar el contacto con clientes.
-    </p>
+              <p className="mt-3 text-sm leading-relaxed text-white/60 md:text-base">
+                Página web para negocio de comida, enfocada en mostrar un menú
+                digital con carrito, recibir pedidos a domicilio por WhatsApp y
+                facilitar la atención directa con clientes.
+              </p>
 
-    <a
-      href="https://hamburguesas-fatima.vercel.app/"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="mt-5 inline-block text-sm text-white/80 hover:text-white transition cursor-pointer"
-    >
-      Ver sitio →
-    </a>
-  </div>
+              <a
+                href="https://hamburguesas-fatima.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-5 inline-block cursor-pointer text-sm text-white/80 transition hover:text-white"
+              >
+                Ver sitio →
+              </a>
+            </div>
 
-  <div className="p-5 md:p-7 rounded-2xl bg-[#2a2a2a] border border-white/5 hover:bg-[#313131] transition">
-    <div className="flex items-center justify-between gap-4">
-      <h3 className="text-lg font-medium">Próximo proyecto</h3>
+            <div className="rounded-2xl border border-white/5 bg-[#2a2a2a] p-5 transition hover:bg-[#313131] md:p-7">
+              <div className="flex items-center justify-between gap-4">
+                <h3 className="text-lg font-medium">Próximo proyecto</h3>
 
-      <span className="text-xs text-white/40 border border-white/10 rounded-full px-3 py-1">
-        En desarrollo
-      </span>
-    </div>
+                <span className="rounded-full border border-white/10 px-3 py-1 text-xs text-white/40">
+                  En desarrollo
+                </span>
+              </div>
 
-    <p className="mt-3 text-white/60 text-sm md:text-base leading-relaxed">
-      Estoy trabajando en nuevos proyectos para ampliar mi portafolio y mostrar más tipos de páginas y sistemas.
-    </p>
+              <p className="mt-3 text-sm leading-relaxed text-white/60 md:text-base">
+                Estoy trabajando en nuevos proyectos para ampliar mi portafolio
+                y mostrar más tipos de páginas y sistemas.
+              </p>
 
-    <span className="mt-5 inline-block text-sm text-white/35">
-      Proyecto en desarrollo →
-    </span>
-  </div>
-</div>
+              <span className="mt-5 inline-block text-sm text-white/35">
+                Proyecto en desarrollo →
+              </span>
+            </div>
+          </div>
         </div>
       </section>
 
       <PortfolioReviews />
 
       {/* ABOUT */}
-      <section className="px-5 md:px-6 py-12 md:py-16 bg-[#242424] border-t border-white/5">
+      <section className="border-t border-white/5 bg-[#242424] px-5 py-12 md:px-6 md:py-16">
         <div className="mx-auto max-w-5xl">
-          <p className="text-xs md:text-sm text-white/40 tracking-[0.18em] uppercase">
+          <p className="text-xs uppercase tracking-[0.18em] text-white/40 md:text-sm">
             Sobre mí
           </p>
 
-          <h2 className="mt-3 text-2xl md:text-4xl font-semibold">
+          <h2 className="mt-3 text-2xl font-semibold md:text-4xl">
             Desarrollo páginas y sistemas funcionales
           </h2>
 
-          <p className="mt-5 text-white/70 text-[15px] md:text-lg leading-relaxed">
-            Me gusta crear sitios claros, modernos y fáciles de usar, cuidando tanto el diseño como el funcionamiento.
+          <p className="mt-5 text-[15px] leading-relaxed text-white/70 md:text-lg">
+            Me gusta crear sitios claros, modernos y fáciles de usar, cuidando
+            tanto el diseño como el funcionamiento.
           </p>
 
-          <p className="mt-4 text-white/60 text-sm md:text-base leading-relaxed">
-            Estudié la carrera de Tecnólogo Profesional en Sistemas Informáticos (TPSI) en la Escuela Politécnica de Guadalajara, donde fortalecí mis bases en lógica, programación, software y tecnologías web.
+          <p className="mt-4 text-sm leading-relaxed text-white/60 md:text-base">
+            Estudié la carrera de Tecnólogo Profesional en Sistemas Informáticos
+            (TPSI) en la Escuela Politécnica de Guadalajara, donde fortalecí mis
+            bases en lógica, programación, software y tecnologías web.
           </p>
 
-          <p className="mt-4 text-white/60 text-sm md:text-base leading-relaxed">
+          <p className="mt-4 text-sm leading-relaxed text-white/60 md:text-base">
             Trabajo con dedicación, cuidando el diseño, la estructura del código
             y la experiencia del usuario.
           </p>
@@ -223,27 +230,29 @@ export default function Home() {
       {/* CONTACT */}
       <section
         id="contact"
-        className="px-5 md:px-6 py-14 md:py-18 bg-[#1f1f1f] border-t border-white/5 text-center"
+        className="border-t border-white/5 bg-[#1f1f1f] px-5 py-14 text-center md:px-6 md:py-[4.5rem]"
       >
         <div className="mx-auto max-w-3xl">
-          <p className="text-xs md:text-sm text-white/40 tracking-[0.18em] uppercase">
+          <p className="text-xs uppercase tracking-[0.18em] text-white/40 md:text-sm">
             Contacto
           </p>
 
-          <h2 className="mt-3 text-3xl md:text-5xl font-semibold leading-tight">
+          <h2 className="mt-3 text-3xl font-semibold leading-tight md:text-5xl">
             ¿Necesitas una página o sistema web?
           </h2>
 
-          <p className="mt-5 text-white/70 text-sm md:text-base leading-relaxed">
-            Creo, mejoro o doy mantenimiento a tu página, <br />
-            tienda online o sistema administrativo.
+          <p className="mx-auto mt-5 max-w-2xl text-sm leading-relaxed text-white/65 md:text-base">
+            Dime qué tipo de página necesitas, para qué negocio o proyecto será,
+            o si buscas mejorar o dar mantenimiento a un sitio existente. El
+            precio depende del tipo de sitio web, las secciones y funciones que
+            necesites.
           </p>
 
-          <div className="mt-7 flex flex-col sm:flex-row justify-center gap-3">
+          <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
             <button
               type="button"
               onClick={abrirWhatsApp}
-              className="bg-white text-black px-7 md:px-8 py-3 md:py-4 rounded-full font-medium hover:opacity-90 transition text-center cursor-pointer"
+              className="cursor-pointer rounded-full bg-white px-7 py-3 text-center font-medium text-black transition hover:opacity-90 md:px-8 md:py-4"
             >
               Contactar por WhatsApp
             </button>
@@ -251,7 +260,7 @@ export default function Home() {
             <button
               type="button"
               onClick={llamar}
-              className="border border-white/10 bg-white/5 px-7 md:px-8 py-3 md:py-4 rounded-full font-medium hover:bg-white/10 transition text-center cursor-pointer"
+              className="cursor-pointer rounded-full border border-white/10 bg-white/5 px-7 py-3 text-center font-medium transition hover:bg-white/10 md:px-8 md:py-4"
             >
               Llamar
             </button>
@@ -259,13 +268,11 @@ export default function Home() {
             <button
               type="button"
               onClick={enviarCorreo}
-              className="border border-white/10 bg-white/5 px-7 md:px-8 py-3 md:py-4 rounded-full font-medium hover:bg-white/10 transition text-center cursor-pointer"
+              className="cursor-pointer rounded-full border border-white/10 bg-white/5 px-7 py-3 text-center font-medium transition hover:bg-white/10 md:px-8 md:py-4"
             >
               Correo
             </button>
           </div>
-
-          
         </div>
       </section>
 
