@@ -2,8 +2,9 @@
 
 import "./globals.css";
 import AppProvider from "@/components/AppProvider";
-import { useUser } from "@/context/UserContext";
+import PortfolioHeader from "@/components/PortfolioHeader";
 import GlobalOverlay from "@/components/GlobalOverlay";
+import { useUser } from "@/context/UserContext";
 
 function UserOverlay() {
   const {
@@ -49,7 +50,11 @@ export default function RootLayout({ children }) {
           content="Portafolio y tienda online de demostración con carrito y experiencia de compra sin ventas reales."
         />
 
-        <meta property="og:url" content="https://alexissanchez.vercel.app" />
+        <meta
+          property="og:url"
+          content="https://alexissanchez.vercel.app"
+        />
+
         <meta property="og:type" content="website" />
 
         <meta
@@ -81,11 +86,17 @@ export default function RootLayout({ children }) {
         <link rel="icon" href="/icone.png" />
       </head>
 
-      <body className="bg-re min-h-screen flex flex-col">
+      <body className="min-h-screen bg-[#09060f] text-white">
         <AppProvider>
           <UserOverlay />
 
-          <main className="flex flex-1 flex-col">{children}</main>
+          <div className="flex min-h-screen flex-col">
+            <PortfolioHeader />
+
+            <main className="flex min-h-0 flex-1 flex-col">
+              {children}
+            </main>
+          </div>
         </AppProvider>
       </body>
     </html>

@@ -58,7 +58,9 @@ export default function PortfolioReviews({ abrirLogin, abrirSignup }) {
         cache: "no-store",
       });
 
-      if (!res.ok) throw new Error("No se pudieron cargar los comentarios");
+      if (!res.ok) {
+        throw new Error("No se pudieron cargar los comentarios");
+      }
 
       const data = await res.json();
       setResenas(Array.isArray(data) ? data : []);
@@ -207,19 +209,31 @@ export default function PortfolioReviews({ abrirLogin, abrirSignup }) {
   return (
     <section
       id="resenas"
-      className="border-t border-white/5 bg-[#242424] px-5 py-10 md:px-6 md:py-12"
+      className="relative isolate overflow-hidden border-t border-violet-400/10 bg-[#09060f] px-5 py-10 md:px-6 md:py-12"
     >
-      <div className="mx-auto max-w-6xl">
+      {/* Resplandores morados del fondo */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
+      >
+        <div className="absolute -left-40 top-10 h-80 w-80 rounded-full bg-violet-600/20 blur-[120px]" />
+
+        <div className="absolute -right-44 top-1/3 h-96 w-96 rounded-full bg-fuchsia-600/15 blur-[140px]" />
+
+        <div className="absolute bottom-0 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-purple-500/10 blur-[130px]" />
+      </div>
+
+      <div className="relative z-10 mx-auto max-w-6xl">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-xs uppercase tracking-[0.22em] text-white/40 md:text-sm">
+          <p className="text-xs font-medium uppercase tracking-[0.22em] text-violet-300/60 md:text-sm">
             Comentarios
           </p>
 
-          <h2 className="mt-2 text-2xl font-semibold text-white md:text-4xl">
+          <h2 className="mt-2 bg-gradient-to-r from-white via-violet-100 to-fuchsia-200 bg-clip-text text-2xl font-semibold text-transparent md:text-4xl">
             Comentarios de clientes
           </h2>
 
-          <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-white/55 md:text-base">
+          <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-violet-100/50 md:text-base">
             Comentarios reales de personas y negocios con los que he trabajado.
           </p>
 
@@ -227,27 +241,29 @@ export default function PortfolioReviews({ abrirLogin, abrirSignup }) {
             <button
               type="button"
               onClick={abrirFormulario}
-              className="w-full cursor-pointer rounded-full bg-white px-6 py-2.5 text-sm font-medium text-black transition hover:opacity-90 sm:w-auto"
+              className="w-full cursor-pointer rounded-full border border-violet-300/20 bg-gradient-to-r from-violet-600 to-fuchsia-600 px-6 py-2.5 text-sm font-medium text-white shadow-[0_12px_38px_rgba(124,58,237,0.32)] transition duration-300 hover:-translate-y-0.5 hover:from-violet-500 hover:to-fuchsia-500 hover:shadow-[0_16px_44px_rgba(168,85,247,0.4)] sm:w-auto"
             >
               Dejar comentario
             </button>
           </div>
         </div>
 
-        <div className="mx-auto mt-6 max-w-4xl rounded-[1.4rem] border border-white/10 bg-[#1f1f1f] p-3.5 text-center md:p-4">
+        {/* Estado de la cuenta */}
+        <div className="mx-auto mt-6 max-w-4xl rounded-[1.4rem] border border-violet-400/15 bg-[#120b1d]/80 p-3.5 text-center shadow-[0_18px_60px_rgba(0,0,0,0.28)] backdrop-blur-xl md:p-4">
           {loadingUser ? (
             <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/35">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-violet-200/40">
                 Verificando sesión
               </p>
 
-              <div className="mx-auto mt-2.5 h-3.5 w-40 animate-pulse rounded-full bg-white/10" />
-              <div className="mx-auto mt-2 h-3 w-60 max-w-full animate-pulse rounded-full bg-white/10" />
+              <div className="mx-auto mt-2.5 h-3.5 w-40 animate-pulse rounded-full bg-violet-300/10" />
+
+              <div className="mx-auto mt-2 h-3 w-60 max-w-full animate-pulse rounded-full bg-violet-300/10" />
             </div>
           ) : user ? (
             <div className="flex flex-col items-center justify-between gap-3 md:flex-row md:text-left">
               <div className="min-w-0 text-center md:text-left">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/35">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-violet-200/40">
                   Sesión iniciada como
                 </p>
 
@@ -255,7 +271,7 @@ export default function PortfolioReviews({ abrirLogin, abrirSignup }) {
                   {nombreCuentaVisual}
                 </p>
 
-                <p className="mt-0.5 text-xs text-white/40">
+                <p className="mt-0.5 text-xs text-violet-100/40">
                   Tu comentario se publicará con este nombre.
                 </p>
               </div>
@@ -264,7 +280,7 @@ export default function PortfolioReviews({ abrirLogin, abrirSignup }) {
                 <button
                   type="button"
                   onClick={irMiCuenta}
-                  className="cursor-pointer rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-white/75 transition hover:bg-white/10 hover:text-white"
+                  className="cursor-pointer rounded-full border border-violet-300/15 bg-violet-400/5 px-4 py-2 text-sm font-medium text-violet-100/75 transition duration-300 hover:border-violet-300/30 hover:bg-violet-400/10 hover:text-white"
                 >
                   Ver mi cuenta
                 </button>
@@ -272,7 +288,7 @@ export default function PortfolioReviews({ abrirLogin, abrirSignup }) {
                 <button
                   type="button"
                   onClick={cerrarSesion}
-                  className="cursor-pointer rounded-full border border-red-400/20 bg-red-500/10 px-4 py-2 text-sm font-medium text-red-200 transition hover:bg-red-500/15"
+                  className="cursor-pointer rounded-full border border-red-400/20 bg-red-500/10 px-4 py-2 text-sm font-medium text-red-200 transition duration-300 hover:border-red-400/30 hover:bg-red-500/15"
                 >
                   Cerrar sesión
                 </button>
@@ -281,15 +297,15 @@ export default function PortfolioReviews({ abrirLogin, abrirSignup }) {
           ) : (
             <div className="flex flex-col items-center justify-between gap-3 md:flex-row md:text-left">
               <div className="text-center md:text-left">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/35">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-violet-200/40">
                   Comentarios de clientes
                 </p>
 
-                <p className="mt-1 text-sm font-medium text-white/80 md:text-base">
+                <p className="mt-1 text-sm font-medium text-violet-50/85 md:text-base">
                   Debes iniciar sesión para dejar un comentario.
                 </p>
 
-                <p className="mt-0.5 text-xs text-white/40">
+                <p className="mt-0.5 text-xs text-violet-100/40">
                   Así tu comentario se publica con el nombre de tu cuenta.
                 </p>
               </div>
@@ -298,7 +314,7 @@ export default function PortfolioReviews({ abrirLogin, abrirSignup }) {
                 <button
                   type="button"
                   onClick={abrirModalLogin}
-                  className="cursor-pointer rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-white/75 transition hover:bg-white/10 hover:text-white"
+                  className="cursor-pointer rounded-full border border-violet-300/15 bg-violet-400/5 px-4 py-2 text-sm font-medium text-violet-100/75 transition duration-300 hover:border-violet-300/30 hover:bg-violet-400/10 hover:text-white"
                 >
                   Iniciar sesión
                 </button>
@@ -306,7 +322,7 @@ export default function PortfolioReviews({ abrirLogin, abrirSignup }) {
                 <button
                   type="button"
                   onClick={abrirModalSignup}
-                  className="cursor-pointer rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-white/75 transition hover:bg-white/10 hover:text-white"
+                  className="cursor-pointer rounded-full border border-violet-300/20 bg-gradient-to-r from-violet-600 to-fuchsia-600 px-4 py-2 text-sm font-medium text-white shadow-[0_8px_25px_rgba(124,58,237,0.25)] transition duration-300 hover:from-violet-500 hover:to-fuchsia-500"
                 >
                   Crear cuenta
                 </button>
@@ -315,23 +331,25 @@ export default function PortfolioReviews({ abrirLogin, abrirSignup }) {
           )}
         </div>
 
+        {/* Formulario */}
         {formAbierto && user && (
-          <div className="mx-auto mt-7 max-w-4xl rounded-[1.4rem] border border-white/10 bg-[#1f1f1f] p-4 md:p-5">
+          <div className="mx-auto mt-7 max-w-4xl rounded-[1.4rem] border border-violet-400/20 bg-[#120b1d]/90 p-4 shadow-[0_24px_70px_rgba(76,29,149,0.15)] backdrop-blur-xl md:p-5">
             <div className="flex flex-col gap-3 text-center sm:flex-row sm:items-start sm:justify-between sm:text-left">
               <div>
                 <h3 className="text-xl font-semibold text-white md:text-2xl">
                   Escribe tu comentario
                 </h3>
 
-                <p className="mt-1.5 text-sm leading-relaxed text-white/50">
-                  Comparte tu experiencia sobre una de las páginas que he realizado.
+                <p className="mt-1.5 text-sm leading-relaxed text-violet-100/50">
+                  Comparte tu experiencia sobre una de las páginas que he
+                  realizado.
                 </p>
               </div>
 
               <button
                 type="button"
                 onClick={cerrarFormulario}
-                className="mx-auto cursor-pointer rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/60 hover:bg-white/10 sm:mx-0"
+                className="mx-auto cursor-pointer rounded-full border border-violet-300/15 bg-violet-400/5 px-4 py-2 text-sm text-violet-100/60 transition duration-300 hover:border-violet-300/30 hover:bg-violet-400/10 hover:text-white sm:mx-0"
               >
                 Cerrar
               </button>
@@ -339,23 +357,23 @@ export default function PortfolioReviews({ abrirLogin, abrirSignup }) {
 
             <form onSubmit={enviarResena} className="mt-5 grid gap-3.5">
               <div>
-                <label className="block text-center text-xs font-medium uppercase tracking-[0.16em] text-white/35 sm:text-left">
+                <label className="block text-center text-xs font-medium uppercase tracking-[0.16em] text-violet-200/40 sm:text-left">
                   Publicando como
                 </label>
 
-                <div className="mt-2 rounded-2xl border border-white/10 bg-white/5 px-4 py-2.5 text-center sm:text-left">
+                <div className="mt-2 rounded-2xl border border-violet-300/15 bg-violet-400/5 px-4 py-2.5 text-center sm:text-left">
                   <p className="truncate text-sm font-semibold text-white">
                     {nombreCuentaVisual}
                   </p>
 
-                  <p className="mt-0.5 text-xs text-white/35">
+                  <p className="mt-0.5 text-xs text-violet-100/35">
                     Este nombre viene de tu cuenta y no se puede cambiar aquí.
                   </p>
                 </div>
               </div>
 
               <div>
-                <label className="block text-center text-xs font-medium uppercase tracking-[0.16em] text-white/35 sm:text-left">
+                <label className="block text-center text-xs font-medium uppercase tracking-[0.16em] text-violet-200/40 sm:text-left">
                   Página comentada
                 </label>
 
@@ -363,18 +381,20 @@ export default function PortfolioReviews({ abrirLogin, abrirSignup }) {
                   name="proyecto"
                   value={form.proyecto}
                   onChange={cambiarCampo}
-                  className="mt-2 w-full cursor-pointer rounded-2xl border border-white/10 bg-[#2a2a2a] px-4 py-2.5 text-center text-sm text-white outline-none focus:border-white/25 sm:text-left"
+                  className="mt-2 w-full cursor-pointer rounded-2xl border border-violet-300/15 bg-[#0d0815] px-4 py-2.5 text-center text-sm text-white outline-none transition duration-300 focus:border-violet-400/60 focus:ring-2 focus:ring-violet-500/15 sm:text-left"
                 >
                   <option value="">Elige una página</option>
+
                   <option value="Hamburguesas Fátima">
                     Hamburguesas Fátima
                   </option>
+
                   <option value="Bi Ne Bianni">Bi Ne Bianni</option>
                 </select>
               </div>
 
               <div>
-                <label className="block text-center text-xs font-medium uppercase tracking-[0.16em] text-white/35 sm:text-left">
+                <label className="block text-center text-xs font-medium uppercase tracking-[0.16em] text-violet-200/40 sm:text-left">
                   Comentario
                 </label>
 
@@ -384,7 +404,7 @@ export default function PortfolioReviews({ abrirLogin, abrirSignup }) {
                   onChange={cambiarCampo}
                   placeholder="Escribe tu comentario sobre el trabajo realizado..."
                   rows={4}
-                  className="mt-2 w-full resize-none rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none placeholder:text-white/25 focus:border-white/25"
+                  className="mt-2 w-full resize-none rounded-2xl border border-violet-300/15 bg-[#0d0815]/80 px-4 py-3 text-sm text-white outline-none transition duration-300 placeholder:text-violet-100/25 focus:border-violet-400/60 focus:ring-2 focus:ring-violet-500/15"
                 />
               </div>
 
@@ -398,7 +418,7 @@ export default function PortfolioReviews({ abrirLogin, abrirSignup }) {
                 <button
                   type="button"
                   onClick={cerrarFormulario}
-                  className="cursor-pointer rounded-full border border-white/10 bg-white/5 px-6 py-2.5 text-sm font-medium text-white/70 hover:bg-white/10"
+                  className="cursor-pointer rounded-full border border-violet-300/15 bg-violet-400/5 px-6 py-2.5 text-sm font-medium text-violet-100/70 transition duration-300 hover:border-violet-300/30 hover:bg-violet-400/10 hover:text-white"
                 >
                   Cancelar
                 </button>
@@ -406,7 +426,7 @@ export default function PortfolioReviews({ abrirLogin, abrirSignup }) {
                 <button
                   type="submit"
                   disabled={enviando}
-                  className="cursor-pointer rounded-full bg-white px-6 py-2.5 text-sm font-medium text-black transition hover:opacity-90 disabled:opacity-50"
+                  className="cursor-pointer rounded-full border border-violet-300/20 bg-gradient-to-r from-violet-600 to-fuchsia-600 px-6 py-2.5 text-sm font-medium text-white shadow-[0_10px_30px_rgba(124,58,237,0.3)] transition duration-300 hover:-translate-y-0.5 hover:from-violet-500 hover:to-fuchsia-500 disabled:pointer-events-none disabled:translate-y-0 disabled:opacity-50"
                 >
                   {enviando ? "Guardando..." : "Publicar comentario"}
                 </button>
@@ -415,28 +435,32 @@ export default function PortfolioReviews({ abrirLogin, abrirSignup }) {
           </div>
         )}
 
+        {/* Comentarios */}
         <div className="mt-8">
           {loadingResenas ? (
             <div className="grid gap-3 md:grid-cols-2 md:gap-4">
               {[1, 2].map((item) => (
                 <div
                   key={item}
-                  className="animate-pulse rounded-[1.4rem] border border-white/5 bg-[#2a2a2a] p-5"
+                  className="animate-pulse rounded-[1.4rem] border border-violet-400/10 bg-[#120b1d]/80 p-5 backdrop-blur-xl"
                 >
-                  <div className="mx-auto h-3.5 w-24 rounded bg-white/10" />
-                  <div className="mx-auto mt-3 h-4 w-40 rounded bg-white/10" />
-                  <div className="mt-5 h-4 w-full rounded bg-white/10" />
-                  <div className="mx-auto mt-2.5 h-4 w-[85%] rounded bg-white/10" />
+                  <div className="mx-auto h-3.5 w-24 rounded bg-violet-300/10" />
+
+                  <div className="mx-auto mt-3 h-4 w-40 rounded bg-violet-300/10" />
+
+                  <div className="mt-5 h-4 w-full rounded bg-violet-300/10" />
+
+                  <div className="mx-auto mt-2.5 h-4 w-[85%] rounded bg-violet-300/10" />
                 </div>
               ))}
             </div>
           ) : resenas.length === 0 ? (
-            <div className="rounded-[1.4rem] border border-white/5 bg-[#2a2a2a] p-7 text-center md:p-8">
-              <p className="text-lg font-medium text-white/80 md:text-xl">
+            <div className="rounded-[1.4rem] border border-violet-400/10 bg-[#120b1d]/80 p-7 text-center shadow-[0_20px_60px_rgba(0,0,0,0.25)] backdrop-blur-xl md:p-8">
+              <p className="text-lg font-medium text-violet-50/85 md:text-xl">
                 No hay comentarios actualmente.
               </p>
 
-              <p className="mx-auto mt-2 max-w-md text-sm text-white/40">
+              <p className="mx-auto mt-2 max-w-md text-sm text-violet-100/40">
                 Cuando un cliente deje un comentario, aparecerá en esta sección.
               </p>
             </div>
@@ -445,10 +469,10 @@ export default function PortfolioReviews({ abrirLogin, abrirSignup }) {
               {resenas.map((resena) => (
                 <article
                   key={resena.id}
-                  className="w-full max-w-xl rounded-[1.4rem] border border-white/5 bg-[#2a2a2a] p-4 text-center transition hover:border-white/10 hover:bg-[#2d2d2d] md:w-[calc(50%-0.5rem)] md:p-5"
+                  className="group w-full max-w-xl rounded-[1.4rem] border border-violet-400/10 bg-gradient-to-br from-[#160d25]/95 via-[#120b1d]/95 to-[#0d0816]/95 p-4 text-center shadow-[0_18px_55px_rgba(0,0,0,0.25)] backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:border-violet-400/25 hover:shadow-[0_24px_70px_rgba(124,58,237,0.16)] md:w-[calc(50%-0.5rem)] md:p-5"
                 >
                   <div className="mx-auto max-w-md">
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/35">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-violet-200/40">
                       Nombre
                     </p>
 
@@ -457,23 +481,23 @@ export default function PortfolioReviews({ abrirLogin, abrirSignup }) {
                     </h3>
 
                     {resena.proyecto && (
-                      <div className="mx-auto mt-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-2.5">
-                        <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-white/35">
+                      <div className="mx-auto mt-3 rounded-2xl border border-violet-400/15 bg-violet-500/5 px-4 py-2.5 transition duration-300 group-hover:bg-violet-500/10">
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-violet-200/40">
                           Página comentada
                         </p>
 
-                        <p className="mt-1 text-sm font-medium text-white/80">
+                        <p className="mt-1 text-sm font-medium text-violet-50/85">
                           {resena.proyecto}
                         </p>
                       </div>
                     )}
 
-                    <div className="mt-4 border-t border-white/5 pt-4">
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/35">
+                    <div className="mt-4 border-t border-violet-400/10 pt-4">
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-violet-200/40">
                         Comentario
                       </p>
 
-                      <p className="mx-auto mt-2.5 text-sm leading-relaxed text-white/80 md:text-[15px]">
+                      <p className="mx-auto mt-2.5 text-sm leading-relaxed text-violet-50/80 md:text-[15px]">
                         “{resena.comentario}”
                       </p>
                     </div>
