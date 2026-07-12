@@ -1,4 +1,5 @@
 import PortfolioFooter from "@/components/PortfolioFooter";
+import PortfolioHeader from "@/components/PortfolioHeader";
 
 import {
   HeroSection,
@@ -11,6 +12,7 @@ import {
 export default function Home() {
   return (
     <div className="min-h-screen overflow-x-clip bg-[#09060f] text-white">
+<PortfolioHeader />
       <HeroSection />
 
       <AboutSection />

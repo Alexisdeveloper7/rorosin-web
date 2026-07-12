@@ -3,7 +3,7 @@
 /* Colores base */
 :root {
   --background: #09060f;
-  --foreground: #ffffff;
+  --foreground: #000000;
 }
 
 /* Scroll y tamaño general */
@@ -12,6 +12,7 @@ html {
   overflow-x: clip;
   scroll-behavior: smooth;
   scroll-padding-top: 90px;
+  background: var(--background);
 }
 
 /* Estilos generales */
@@ -94,19 +95,16 @@ svg {
 /* Movimiento del mockup completo */
 .mockup-float {
   animation: mockup-float 5s ease-in-out infinite;
-  will-change: transform;
 }
 
 /* Movimiento de la página en la laptop */
 .desktop-screen-scroll {
   animation: desktop-screen-scroll 14s ease-in-out infinite alternate;
-  will-change: transform;
 }
 
 /* Movimiento de la página en el celular */
 .mobile-screen-scroll {
   animation: mobile-screen-scroll 12s ease-in-out infinite alternate;
-  will-change: transform;
 }
 
 /* Mockup más grande en móvil */

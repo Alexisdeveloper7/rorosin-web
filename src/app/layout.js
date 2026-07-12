@@ -1,103 +1,48 @@
-"use client";
-
 import "./globals.css";
+
 import AppProvider from "@/components/AppProvider";
-import PortfolioHeader from "@/components/PortfolioHeader";
-import GlobalOverlay from "@/components/GlobalOverlay";
-import { useUser } from "@/context/UserContext";
 
-function UserOverlay() {
-  const {
-    loginModalOpen,
-    signupModalOpen,
-    closeLoginModal,
-    closeSignupModal,
-  } = useUser();
+const title = "QuickCart | Miguel Alexis Sánchez Carranza";
 
-  const overlayVisible = loginModalOpen || signupModalOpen;
+const description =
+  "Portafolio y tienda online de demostración con carrito y experiencia de compra sin ventas reales.";
 
-  const handleClickOverlay = () => {
-    if (loginModalOpen) closeLoginModal();
-    if (signupModalOpen) closeSignupModal();
-  };
+export const metadata = {
+  title,
+  description,
 
-  return (
-    <GlobalOverlay
-      isVisible={overlayVisible}
-      onClick={handleClickOverlay}
-    />
-  );
-}
+  icons: {
+    icon: "/icone.png",
+  },
+
+  openGraph: {
+    title,
+    description,
+    url: "https://alexissanchez.vercel.app",
+    type: "website",
+    images: [
+      {
+        url: "https://alexissanchez.vercel.app/iconooo.png",
+        width: 1200,
+        height: 630,
+        alt: "QuickCart",
+      },
+    ],
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+    images: ["https://alexissanchez.vercel.app/iconooo.png"],
+  },
+};
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="es" className="h-full">
-      <head>
-        <title>QuickCart | Miguel Alexis Sánchez Carranza</title>
-
-        <meta
-          name="description"
-          content="Portafolio y tienda online de demostración con carrito y experiencia de compra sin ventas reales."
-        />
-
-        <meta
-          property="og:title"
-          content="QuickCart | Miguel Alexis Sánchez Carranza"
-        />
-
-        <meta
-          property="og:description"
-          content="Portafolio y tienda online de demostración con carrito y experiencia de compra sin ventas reales."
-        />
-
-        <meta
-          property="og:url"
-          content="https://alexissanchez.vercel.app"
-        />
-
-        <meta property="og:type" content="website" />
-
-        <meta
-          property="og:image"
-          content="https://alexissanchez.vercel.app/iconooo.png"
-        />
-
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-        <meta property="og:image:alt" content="QuickCart" />
-
-        <meta name="twitter:card" content="summary_large_image" />
-
-        <meta
-          name="twitter:title"
-          content="QuickCart | Miguel Alexis Sánchez Carranza"
-        />
-
-        <meta
-          name="twitter:description"
-          content="Portafolio y tienda online de demostración con carrito y experiencia de compra sin ventas reales."
-        />
-
-        <meta
-          name="twitter:image"
-          content="https://alexissanchez.vercel.app/iconooo.png"
-        />
-
-        <link rel="icon" href="/icone.png" />
-      </head>
-
-      <body className="min-h-screen bg-[#09060f] text-white">
-        <AppProvider>
-          <UserOverlay />
-
-          <div className="flex min-h-screen flex-col">
-            <PortfolioHeader />
-
-            <main className="flex min-h-0 flex-1 flex-col">
-              {children}
-            </main>
-          </div>
-        </AppProvider>
+    <html lang="es" className="min-h-full bg-[#09060f]">
+      <body className="min-h-screen bg-[#09060f]">
+        <AppProvider>{children}</AppProvider>
       </body>
     </html>
   );

@@ -2,23 +2,25 @@
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import UserOverlay from "@/components/UserOverlay";
 
 export default function QuickCartLayout({ children }) {
   return (
-    <div className="flex flex-col flex-1 min-h-screen">
-      
-      {/* HEADER */}
+    <div className="relative flex min-h-screen w-full flex-col bg-white text-slate-950">
+      <UserOverlay />
+
       <Header />
 
-      {/* TRIGGER */}
-      <div id="header-trigger" className="h-[1px]" />
+      <div
+        id="header-trigger"
+        aria-hidden="true"
+        className="pointer-events-none h-px w-full shrink-0"
+      />
 
-      {/* CONTENIDO (expande y empuja footer) */}
-      <div className="flex-1 flex flex-col">
+      <main className="flex min-w-0 flex-1 flex-col">
         {children}
-      </div>
+      </main>
 
-      {/* FOOTER */}
       <Footer />
     </div>
   );
