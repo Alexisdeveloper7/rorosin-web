@@ -311,7 +311,7 @@ export default function AboutSection() {
             }
           `}
         >
-          Desarrollo páginas y sistemas funcionales
+          Desarrollo páginas y sistemas interactivos
         </h2>
 
         <p

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { FaWhatsapp } from "react-icons/fa";
+import LaptopMockup from "@/components/LaptopMockup";
 
 const whatsappMessage =
   "Hola, me interesa solicitar información sobre la creación de un sitio web.";
@@ -223,7 +224,11 @@ export default function ContactSection() {
           precio depende del tipo de sitio web, las secciones y funciones que
           necesites.
         </p>
-
+<LaptopMockup
+          image="/proyectos/binebianni.webp"
+          href="https://binebianni.com"
+          alt="Sitio web de Bi Ne Bianni"
+        />
         {/* Botones */}
         <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
           {/* WhatsApp */}
