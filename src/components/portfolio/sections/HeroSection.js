@@ -5,7 +5,7 @@ import { FaWhatsapp } from "react-icons/fa";
 import HeroMockup from "./HeroMockup";
 
 const whatsappMessage =
-  "Hola, me interesa solicitar información sobre la creación de un sitio web.";
+  "";
 
 const whatsappUrl = `https://wa.me/5213312891927?text=${encodeURIComponent(
   whatsappMessage,

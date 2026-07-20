@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import { FaWhatsapp } from "react-icons/fa";
-import LaptopMockup from "@/components/LaptopMockup";
 
 const whatsappMessage =
   "Hola, me interesa solicitar información sobre la creación de un sitio web.";
@@ -15,54 +14,6 @@ const phoneUrl = "tel:+523312891927";
 
 const emailUrl =
   "mailto:alexissanchezdev7@gmail.com?subject=Cotización%20de%20página%20web";
-
-function BiNeBianniDivider({ position }) {
-  const posicion =
-    position === "top"
-      ? "top-0 -translate-x-1/2 -translate-y-1/2"
-      : "bottom-0 -translate-x-1/2 translate-y-1/2";
-
-  return (
-    <div
-      aria-hidden="true"
-      className={`
-        pointer-events-none absolute left-1/2 z-20
-        flex w-full max-w-none
-        items-center justify-center gap-0
-        ${posicion}
-      `}
-    >
-      <span
-        className="
-          h-px flex-1
-          bg-gradient-to-r
-          from-transparent
-          via-[#a78bfa]/80
-          to-[#a78bfa]/40
-        "
-      />
-
-      <span
-        className="
-          h-2.5 w-2.5 shrink-0 rotate-45
-          rounded-[2px]
-          bg-[#a78bfa]
-          shadow-[0_0_18px_rgba(167,139,250,0.75)]
-        "
-      />
-
-      <span
-        className="
-          h-px flex-1
-          bg-gradient-to-l
-          from-transparent
-          via-[#a78bfa]/80
-          to-[#a78bfa]/40
-        "
-      />
-    </div>
-  );
-}
 
 export default function ContactSection() {
   const sectionRef = useRef(null);
@@ -121,9 +72,6 @@ export default function ContactSection() {
         md:px-6 md:py-[4.5rem]
       "
     >
-      {/* Separador siempre visible, sin animación ni flashes */}
-      <BiNeBianniDivider position="top" />
-
       {/*
         Fondo estático optimizado.
 
@@ -224,11 +172,6 @@ export default function ContactSection() {
           precio depende del tipo de sitio web, las secciones y funciones que
           necesites.
         </p>
-<LaptopMockup
-          image="/proyectos/binebianni.webp"
-          href="https://binebianni.com"
-          alt="Sitio web de Bi Ne Bianni"
-        />
         {/* Botones */}
         <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
           {/* WhatsApp */}
@@ -361,8 +304,6 @@ export default function ContactSection() {
         </div>
       </div>
 
-      {/* Separador siempre visible, independiente del observer */}
-      <BiNeBianniDivider position="bottom" />
     </section>
   );
 }
